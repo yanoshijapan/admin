@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yanoshi Dashboard</title>
+    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#CC0000">
     <link rel="apple-touch-icon" href="https://yanoshijapan.github.io/asetonline/logoappyanoshi.png">
@@ -1535,10 +1536,10 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
       .then(registration => {
-        console.log('ServiceWorker terdaftar dengan scope: ', registration.scope);
+        console.log('ServiceWorker terdaftar:', registration.scope);
       })
       .catch(err => {
-        console.log('Pendaftaran ServiceWorker gagal: ', err);
+        console.log('Pendaftaran ServiceWorker gagal:', err);
       });
   });
 }
