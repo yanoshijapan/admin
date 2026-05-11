@@ -1,10 +1,9 @@
 const CACHE_NAME = 'yanoshi-dashboard-v1';
 const urlsToCache = [
   './',
-  './appyanoshi2.html',
+  './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  'https://yanoshijapan.github.io/asetonline/logoappyanoshi.png' /* <--- Link logo dimasukkan ke sini */
 ];
 
 // Install Service Worker
