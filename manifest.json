@@ -2,7 +2,7 @@
   "name": "Yanoshi Dashboard",
   "short_name": "Yanoshi",
   "description": "Dashboard Admin Yanoshi Omiyage",
-  "start_url": "index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#CC0000",
