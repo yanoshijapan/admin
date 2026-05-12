@@ -1,8 +1,8 @@
-const CACHE_NAME = 'yanoshi-dashboard-v1';
+const CACHE_NAME = 'yanoshi-dashboard-v2'; 
+
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
+  'index.html',     // Ganti dari './index.html' menjadi 'index.html'
+  'manifest.json',  // Ganti dari './manifest.json' menjadi 'manifest.json'
   'https://yanoshijapan.github.io/asetonline/logohitam.png',
   'https://yanoshijapan.github.io/asetonline/logoappyanoshi.png'
 ];
