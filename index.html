@@ -749,10 +749,37 @@
                     <div class="iframe-wrap">
                         <iframe src="https://www.posindonesia.co.id/id/check-tarif" class="iframe-height-lg"
                                 sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                                loading="lazy" title="Cek Ongkir Raja Ongkir"></iframe>
+                                loading="lazy" title="Cek Ongkir Pos"></iframe>
                     </div>
                     <div style="padding:12px 16px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;">
                         <button class="btn-ext primary" @click="openExternal('https://www.posindonesia.co.id/id/check-tarif')">
+                            🔗 Buka di Tab Baru
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="embed-panel">
+                <div class="embed-header">
+                    <div class="embed-title-wrap">
+                        <div class="embed-icon blue">💴</div>
+                        <div>
+                            <div class="embed-title">Kurs Brastel Remit</div>
+                            <div class="embed-sub">Cek nilai tukar JPY ke IDR hari ini</div>
+                        </div>
+                    </div>
+                    <button class="embed-toggle" @click="brastelOpen = !brastelOpen">
+                        <span x-text="brastelOpen ? '▲ Tutup' : '▼ Buka'"></span>
+                    </button>
+                </div>
+                <div class="embed-body" :class="{ expanded: brastelOpen, collapsed: !brastelOpen }">
+                    <div class="iframe-wrap">
+                        <iframe src="https://brastelremit.jp/ind/rates" class="iframe-height-lg"
+                                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                                loading="lazy" title="Kurs Brastel Remit"></iframe>
+                    </div>
+                    <div style="padding:12px 16px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;">
+                        <button class="btn-ext primary" @click="openExternal('https://brastelremit.jp/ind/rates')">
                             🔗 Buka di Tab Baru
                         </button>
                     </div>
@@ -1044,7 +1071,7 @@ const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0O
 function appState() {
     return {
         isLoggedIn: false, currentUser: '', menuOpen: false, activePanel: null,
-        popupOpen: false, popupPanel: null, resiOpen: false, ongkirOpen: false,
+        popupOpen: false, popupPanel: null, resiOpen: false, ongkirOpen: false, brastelOpen: false,
         editUserModal: false, loginForm: { username: '', password: '' },
         loginLoading: false, loginError: '',
         editForm: { username: '', newPassword: '', confirmPassword: '' },
