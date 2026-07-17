@@ -246,6 +246,30 @@
         .menu-icon.blue   { background: linear-gradient(135deg, #f0f4ff, #e5eeff); }
         .menu-icon.green  { background: linear-gradient(135deg, #f0fff8, #d1fae5); }
         .menu-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); line-height: 1.3; }
+				/* ===== MENU WIDE (PIPIH & LEBAR) ===== */
+        .menu-card-wide {
+            background: white; border-radius: 18px; padding: 14px 20px;
+            box-shadow: var(--shadow-sm); cursor: pointer;
+            border: 1.5px solid #f0f0f0; 
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; gap: 16px;
+            
+            /* KUNCI AGAR FULL LEBAR DI DALAM GRID */
+            grid-column: 1 / -1;
+            width: 100%;
+        }
+        .menu-card-wide:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: transparent; }
+        .menu-card-wide::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold));
+            transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
+        }
+        .menu-card-wide:hover::after { transform: scaleX(1); }
+        .menu-card-wide .menu-icon { margin: 0; width: 44px; height: 44px; flex-shrink: 0; font-size: 20px; }
+        .menu-card-wide .menu-label { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); }
+        .menu-card-wide .arrow-icon { margin-left: auto; color: #ccc; font-weight: bold; font-size: 16px; transition: transform 0.2s, color 0.2s; }
+        .menu-card-wide:hover .arrow-icon { transform: translateX(6px); color: var(--red); }
 
         /* ===== POPUP MODAL MENU ===== */
         .popup-overlay {
@@ -682,7 +706,7 @@
             </div>
 
             <div class="section-title">Menu Utama</div>
-            <div class="menu-grid">
+            <div class="menu-grid" style="margin-bottom: 32px;">
                 <div class="menu-card" :class="{ active: popupPanel === 'pencapaian' }"
                      @click="togglePanel('pencapaian')">
                     <div class="menu-icon red">🎯</div>
@@ -703,9 +727,10 @@
                     <div class="menu-icon blue">🛒</div>
                     <div class="menu-label">Webstore</div>
                 </div>
-                <div class="menu-card" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
+								<div class="menu-card-wide" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
                     <div class="menu-icon green">🖨️</div>
-                    <div class="menu-label">Cetak Stiker</div>
+                    <div class="menu-label">Cetak Stiker Dashboard</div>
+                    <div class="arrow-icon">➔</div>
                 </div>
             </div>
 
@@ -1178,6 +1203,7 @@
 //  CONFIG — URL APPS SCRIPT
 // ─────────────────────────────────────────────────────────────
 const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0OHcpS102oD6frRSgacOdiADCt5C0Zphp7wI8mkDP3dKDvo-d6mCw/exec';
+
 
 // ─────────────────────────────────────────────────────────────
 //  ALPINE STATE UTAMA (Login, Menu, Popup)
@@ -1670,7 +1696,7 @@ function pesananApp() {
 function statusCustomerApp() {
     return {
         // Ganti URL ini dengan URL gabungan API Backend Anda yang memiliki action=getSheets & getCustomerData
-        apiUrl: AUTH_API_URL, 
+        apiUrl: P_API_READ_UPDATE, 
         
         statusAppLoading: false, loadingMessage: '', statusStep: 1,
         availableSheets: [], selectedSheet: '', statusData: [],
