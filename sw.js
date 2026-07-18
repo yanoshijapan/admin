@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yanoshi-dashboard-v14'; 
+const CACHE_NAME = 'yanoshi-dashboard-v15'; 
 
 const urlsToCache = [
   'index.html',     // Ganti dari './index.html' menjadi 'index.html'
