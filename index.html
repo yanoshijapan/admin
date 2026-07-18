@@ -1213,7 +1213,7 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h3 class="font-extrabold text-gray-800 text-lg break-words" x-text="item.nama"></h3>
-                                    <p class="text-xs text-gray-500 font-medium mt-1">Diinput: <span x-text="item.tanggal"></span></p>
+																		<p class="text-xs text-gray-500 font-medium mt-1">Diinput: <span x-text="formatTanggal(item.tanggal)"></span></p>
                                 </div>
                                 <button @click="hapusData(item.id)" class="bg-red-50 text-red-600 px-3 py-1.5 text-xs font-bold rounded hover:bg-red-100 transition shrink-0 ml-3">Hapus</button>
                             </div>
@@ -1668,12 +1668,24 @@ function pesananApp() {
         },
 
         get filteredData() {
-            return this.allData.filter(i => {
-                const matchSearch = i.customer.toLowerCase().includes(this.searchQuery.toLowerCase());
-                const matchStatus = this.statusFilter === '' || i.status === this.statusFilter;
-                return matchSearch && matchStatus;
-            });
-        },
+            let data = [...this.localData];
+            
+            // --- UPDATE LOGIKA FILTER AGAR SUPPORT FORMAT ISO ---
+            if(this.fTgl) {
+                data = data.filter(d => {
+                    let dDate = new Date(d.tanggal);
+                    // Ambil format YYYY-MM-DD dari waktu lokal perangkat
+                    let localDateStr = dDate.getFullYear() + "-" + String(dDate.getMonth() + 1).padStart(2, '0') + "-" + String(dDate.getDate()).padStart(2, '0');
+                    return localDateStr === this.fTgl || d.tanggal === this.fTgl;
+                });
+            }
+            
+            if(this.fNama) data = data.filter(d => d.nama.toLowerCase().includes(this.fNama.toLowerCase()));
+            if(this.fPack) data = data.filter(d => d.status_packing === this.fPack);
+            if(this.fKirim !== "") data = data.filter(d => String(d.status_kirim) === this.fKirim);
+            
+            return data.sort((a, b) => b.id - a.id);
+        }
 
         pHandleFileSelect(event, item, type) {
             const file = event.target.files[0]; if (!file) return;
