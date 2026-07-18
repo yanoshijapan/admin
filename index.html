@@ -217,8 +217,9 @@
         }
 
         /* ===== GRID MENU CARDS ===== */
+        /* Perubahan Grid: 2 Kolom (3 baris) di mobile, dan 6 Kolom (1 baris) di Desktop */
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 32px; }
-        @media (min-width: 640px) { .menu-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 800px) { .menu-grid { grid-template-columns: repeat(6, 1fr); } }
 
         .menu-card {
             background: white; border-radius: 18px; padding: 22px 16px;
@@ -226,6 +227,7 @@
             border: 1.5px solid #f0f0f0;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center; user-select: none; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .menu-card::after {
             content: ''; position: absolute; bottom: 0; left: 0; right: 0;
@@ -239,49 +241,14 @@
 
         .menu-icon {
             width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 12px;
-            display: flex; align-items: center; justify-content: center; font-size: 22px;
+            display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
         }
         .menu-icon.red    { background: linear-gradient(135deg, #fff0f0, #ffe5e5); }
         .menu-icon.gold   { background: linear-gradient(135deg, #fffbf0, #fff3cc); }
         .menu-icon.blue   { background: linear-gradient(135deg, #f0f4ff, #e5eeff); }
         .menu-icon.green  { background: linear-gradient(135deg, #f0fff8, #d1fae5); }
-        .menu-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); line-height: 1.3; }
-				/* ===== MENU WIDE (PIPIH & LEBAR) ===== */
-        .menu-card-wide {
-            background: white; border-radius: 18px; padding: 14px 20px;
-            box-shadow: var(--shadow-sm); cursor: pointer;
-            border: 1.5px solid #f0f0f0; 
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
-            
-            /* Kunci Layout */
-            display: flex; 
-            align-items: center; 
-            justify-content: center; /* Memusatkan icon dan teks di tengah */
-            gap: 12px; /* Jarak antara icon dan teks */
-            
-            grid-column: 1 / -1;
-            width: 100%;
-        }
-        .menu-card-wide:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: transparent; }
-        .menu-card-wide::after {
-            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold));
-            transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
-        }
-        .menu-card-wide:hover::after { transform: scaleX(1); }
-        .menu-card-wide .menu-icon { margin: 0; width: 44px; height: 44px; flex-shrink: 0; font-size: 20px; }
-        .menu-card-wide .menu-label { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); }
+        .menu-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); line-height: 1.3; margin: 0; }
         
-        /* Memaksa panah tetap di ujung kanan meski teksnya di tengah */
-        .menu-card-wide .arrow-icon { 
-            position: absolute; 
-            right: 20px; 
-            color: #ccc; font-weight: bold; font-size: 16px; 
-            transition: transform 0.2s, color 0.2s; 
-        }
-        .menu-card-wide:hover .arrow-icon { transform: translateX(4px); color: var(--red); }
-
         /* ===== POPUP MODAL MENU ===== */
         .popup-overlay {
             position: fixed; inset: 0; z-index: 3000;
@@ -295,7 +262,7 @@
             to   { opacity: 1; }
         }
         .popup-sheet {
-            background: white; width: 100%; max-width: 800px;
+            background: white; width: 100%; max-width: 900px; /* Diperbesar sedikit agar lega untuk Admin Sales */
             border-radius: 24px 24px 0 0;
             max-height: 88vh; display: flex; flex-direction: column;
             box-shadow: 0 -8px 60px rgba(0,0,0,0.25);
@@ -717,7 +684,7 @@
             </div>
 
             <div class="section-title">Menu Utama</div>
-            <div class="menu-grid" style="margin-bottom: 32px;">
+            <div class="menu-grid">
                 <div class="menu-card" :class="{ active: popupPanel === 'pencapaian' }"
                      @click="togglePanel('pencapaian')">
                     <div class="menu-icon red">🎯</div>
@@ -728,20 +695,25 @@
                     <div class="menu-icon gold">📦</div>
                     <div class="menu-label">Pesanan Online</div>
                 </div>
-								<!-- MENU BARU: STATUS CUSTOMER -->
                 <div class="menu-card" :class="{ active: popupPanel === 'status_customer' }"
                      @click="togglePanel('status_customer')">
                     <div class="menu-icon" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff);">📊</div>
                     <div class="menu-label">Status Customer</div>
                 </div>
+                <!-- MENU BARU: ADMIN SALES -->
+                <div class="menu-card" :class="{ active: popupPanel === 'admin_sales' }"
+                     @click="togglePanel('admin_sales')">
+                    <div class="menu-icon" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">💼</div>
+                    <div class="menu-label">Update Kiriman</div>
+                </div>
                 <div class="menu-card" @click="openExternal('https://yanoshistore.netlify.app/')">
                     <div class="menu-icon blue">🛒</div>
                     <div class="menu-label">Webstore</div>
                 </div>
-								<div class="menu-card-wide" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
+                <!-- CETAK STIKER DASHBOARD (TAMPILAN DISERAGAMKAN AGAR 1 BARIS) -->
+                <div class="menu-card" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
                     <div class="menu-icon green">🖨️</div>
-                    <div class="menu-label">Cetak Stiker Dashboard</div>
-                    <div class="arrow-icon">➔</div>
+                    <div class="menu-label">Cetak Stiker</div>
                 </div>
             </div>
 
@@ -840,9 +812,9 @@
         <div class="popup-drag-handle"></div>
         <div class="popup-header">
             <div class="popup-title-wrap">
-                <span style="font-size:20px;" x-text="popupPanel === 'pencapaian' ? '🎯' : '📦'"></span>
+                <span style="font-size:20px;" x-text="popupPanel === 'pencapaian' ? '🎯' : (popupPanel === 'pesanan' ? '📦' : (popupPanel === 'status_customer' ? '📊' : (popupPanel === 'admin_sales' ? '💼' : '')))"></span>
                 <div>
-                    <div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : 'Admin Pesanan Online'"></div>
+                    <div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Dashboard Admin Sales' : '')))"></div>
                 </div>
             </div>
             <button class="popup-close-btn" @click="closePopup()">✕</button>
@@ -905,7 +877,7 @@
                 </div>
             </div>
 
-            <div x-show="popupPanel === 'pesanan'" x-data="pesananApp()" x-init="initPesanan()" class="w-full">
+            <div x-show="popupPanel === 'pesanan'" x-data="pesananApp()" x-init="initPesanan()" class="w-full" x-cloak>
                 
                 <div class="sticky top-0 z-10 bg-white pb-4 border-b-2 border-gray-100 mb-6 pt-1">
                     <div class="flex flex-col sm:flex-row gap-3">
@@ -1073,7 +1045,7 @@
 
             </div> 
 						
-						<!-- ========================================================= -->
+            <!-- ========================================================= -->
             <!-- UI STATUS CUSTOMER -->
             <!-- ========================================================= -->
             <div x-show="popupPanel === 'status_customer'" x-data="statusCustomerApp()" x-init="initStatus()" class="w-full" x-cloak>
@@ -1108,7 +1080,7 @@
                             <div class="flex flex-wrap gap-2 w-full sm:w-auto">
                                 <input type="text" x-model="scSearchNama" placeholder="Cari nama..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 flex-1 min-w-[120px] font-medium">
                                 <input type="text" x-model="scSearchTanggal" placeholder="Tgl kirim (ex: 17 Jul)..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 flex-1 min-w-[130px] font-medium">
-																<select x-model="scFilterDari" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                                <select x-model="scFilterDari" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
                                     <option value="">Tau Dari</option>
                                     <option value="exata">Exata</option><option value="jastip">Jastip</option><option value="LPK">LPK</option>
                                     <option value="senior">Senior</option><option value="Affiliate">Affiliate</option><option value="IG">IG</option>
@@ -1179,8 +1151,90 @@
                     </div>
                 </div>
             </div>
-						
-						</div>
+
+            <!-- ========================================================= -->
+            <!-- UI ADMIN SALES (FITUR BARU) -->
+            <!-- ========================================================= -->
+            <div x-show="popupPanel === 'admin_sales'" x-data="adminSalesApp()" x-init="initSales()" class="w-full" x-cloak>
+                
+                <!-- Sticky Header Filter -->
+                <div class="sticky top-0 z-10 bg-white pb-4 border-b-2 border-gray-100 mb-6 pt-1">
+                    <div class="flex flex-col gap-4">
+                        <!-- Input Nama Bar -->
+                        <div class="flex gap-2">
+                            <input type="text" x-model="inputNama" placeholder="Masukkan Nama Pelanggan..." @keydown.enter="tambahData()"
+                                   class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 outline-none transition text-sm font-medium">
+                            <button @click="tambahData()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg transition shadow-sm text-sm">Submit</button>
+                        </div>
+                        <!-- Filter Bar -->
+                        <div class="flex flex-wrap sm:flex-nowrap gap-2">
+                            <input type="date" x-model="fTgl" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium">
+                            <input type="text" x-model="fNama" placeholder="Cari Nama..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium flex-1">
+                            <select x-model="fPack" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                                <option value="">Semua Packing</option>
+                                <option value="Menunggu">Menunggu</option>
+                                <option value="Sudah di Packing">Sudah di Packing</option>
+                                <option value="Belum Lengkap">Belum Lengkap</option>
+                            </select>
+                            <select x-model="fKirim" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                                <option value="">Semua Kirim</option>
+                                <option value="true">Sudah Kirim</option>
+                                <option value="false">Belum Kirim</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="loading" class="flex justify-center items-center py-16">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+                </div>
+
+                <!-- List Item Container -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-10" x-show="!loading">
+                    <template x-for="item in filteredData" :key="item.id">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-red-600 p-5 flex flex-col gap-3 transition-transform hover:-translate-y-1 hover:shadow-md">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-extrabold text-gray-800 text-lg break-words" x-text="item.nama"></h3>
+                                    <p class="text-xs text-gray-500 font-medium mt-1">Diinput: <span x-text="item.tanggal"></span></p>
+                                </div>
+                                <button @click="hapusData(item.id)" class="bg-red-50 text-red-600 px-3 py-1.5 text-xs font-bold rounded hover:bg-red-100 transition shrink-0 ml-3">Hapus</button>
+                            </div>
+                            <div class="flex gap-2 text-[11px] font-bold uppercase tracking-wide mt-2">
+                                <span :class="item.status_packing === 'Sudah di Packing' ? 'bg-yellow-100 text-yellow-700' : item.status_packing === 'Belum Lengkap' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'" class="px-2.5 py-1 rounded" x-text="'Packing: ' + item.status_packing"></span>
+                                <span :class="item.status_kirim ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'" class="px-2.5 py-1 rounded" x-text="'Kirim: ' + (item.status_kirim ? 'Sudah' : 'Belum')"></span>
+                            </div>
+                            <div class="text-[12px] font-semibold text-red-600 bg-red-50 p-2 rounded-lg mt-1" x-show="item.note">
+                                Note Admin Packing: <span x-text="item.note" class="text-gray-800"></span>
+                            </div>
+                            
+                            <!-- Tombol Kirim jika belum terkirim -->
+                            <button x-show="!item.status_kirim" @click="bukaModalKirim(item.id)" class="mt-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2.5 rounded-lg text-xs transition uppercase tracking-wide shadow-sm">
+                                Tandai Sudah Kirim
+                            </button>
+                        </div>
+                    </template>
+                    
+                    <div x-show="filteredData.length === 0" class="col-span-full text-center py-12">
+                        <div class="text-4xl mb-3 text-gray-300">📋</div>
+                        <div class="text-sm font-bold text-gray-400">Belum ada data input sales.</div>
+                    </div>
+                </div>
+
+                <!-- Modal Konfirmasi Kirim (Admin Sales) -->
+                <div x-show="modalKirimId !== null" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalKirim()">
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl">
+                        <h3 class="text-lg font-extrabold mb-2 text-gray-800">Konfirmasi Pengiriman</h3>
+                        <p class="text-sm text-gray-600 mb-6 font-medium">Apakah barang ini sudah di kirim?</p>
+                        <div class="flex justify-around gap-3">
+                            <button @click="tutupModalKirim()" class="flex-1 py-2.5 border-2 border-red-600 text-red-600 font-bold rounded-xl hover:bg-red-50 transition text-sm">Tidak</button>
+                            <button @click="confirmKirim()" class="flex-1 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition shadow-lg text-sm">Ya, Sudah</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -1228,7 +1282,7 @@ function appState() {
         loginLoading: false, loginError: '',
         editForm: { username: '', newPassword: '', confirmPassword: '' },
         editError: '', editSaving: false,
-        pencapaianLoaded: false, pesananLoaded: false,
+        pencapaianLoaded: false, pesananLoaded: false, adminSalesLoaded: false,
 
         init() {
             const saved = localStorage.getItem('yanoshi_user') || sessionStorage.getItem('yanoshi_user');
@@ -1707,12 +1761,11 @@ function pesananApp() {
 // ─────────────────────────────────────────────────────────────
 function statusCustomerApp() {
     return {
-        // Ganti URL ini dengan URL gabungan API Backend Anda yang memiliki action=getSheets & getCustomerData
         apiUrl: P_API_READ_UPDATE, 
         
         statusAppLoading: false, loadingMessage: '', statusStep: 1,
-				
-				availableSheets: [], selectedSheet: '', statusData: [],
+                
+        availableSheets: [], selectedSheet: '', statusData: [],
         scSearchNama: '', scSearchTanggal: '', scFilterDari: '', scFilterBayar: '', scFilterInvoice: '',
 
         async initStatus() {
@@ -1735,9 +1788,9 @@ function statusCustomerApp() {
                 const response = await fetch(`${this.apiUrl}?action=getCustomerData&sheetName=${encodeURIComponent(this.selectedSheet)}`);
                 this.statusData = await response.json();
 
-								// Reset filter form saat membuka sheet baru
+                // Reset filter form saat membuka sheet baru
                 this.scSearchNama = ''; this.scSearchTanggal = ''; this.scFilterDari = ''; this.scFilterBayar = ''; this.scFilterInvoice = '';
-								
+                                
             } catch (e) { 
                 showToast("Gagal memuat data sheet.", "error"); 
                 this.statusStep = 1;
@@ -1769,6 +1822,128 @@ function statusCustomerApp() {
         }
     }
 }
+
+// ─────────────────────────────────────────────────────────────
+//  ADMIN SALES LOGIC (FITUR BARU)
+// ─────────────────────────────────────────────────────────────
+function adminSalesApp() {
+    return {
+        // Jika Anda sudah mendeploy Apps Script untuk Admin Sales, masukkan URL-nya di sini
+        apiUrl: 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec',
+        localData: [],
+        loading: false,
+        inputNama: '',
+        fTgl: '', fNama: '', fPack: '', fKirim: '',
+        modalKirimId: null,
+
+        initSales() {
+            // Ambil data yang tersimpan dari cache/localStorage (Bisa Offline)
+            this.localData = JSON.parse(localStorage.getItem('dashOpsData')) || [];
+            
+            // Sync dengan database Server (Jika API URL sudah dimasukkan)
+            this.fetchData();
+            
+            // Background Auto-Refresh setiap 10 detik saat panel terbuka
+            setInterval(() => {
+                const state = document.querySelector('[x-data="appState()"]').__x.$data;
+                if (state && state.popupPanel === 'admin_sales') {
+                    this.fetchData(true);
+                }
+            }, 10000);
+        },
+
+        async fetchData(isSilent = false) {
+            if (!isSilent) this.loading = true;
+            try {
+                if (this.apiUrl && this.apiUrl.startsWith('http')) {
+                    const response = await fetch(this.apiUrl);
+                    this.localData = await response.json();
+                    localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
+                }
+            } catch (error) {
+                console.error('Fetch Admin Sales error:', error);
+            }
+            if (!isSilent) this.loading = false;
+        },
+
+        async sendToSheet(action, dataObj) {
+            this.loading = true;
+            try {
+                if (this.apiUrl && this.apiUrl.startsWith('http')) {
+                    // Update ke server Apps Script
+                    await fetch(this.apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain' },
+                        body: JSON.stringify({ action: action, data: dataObj })
+                    });
+                    await this.fetchData();
+                } else {
+                    // Fallback jika belum pasang API URL (Bermain Local Storage layaknya sebelumnya)
+                    if(action === 'tambah') this.localData.push(dataObj);
+                    if(action === 'hapus') this.localData = this.localData.filter(d => d.id !== dataObj.id);
+                    if(action === 'update') {
+                        let idx = this.localData.findIndex(d => d.id === dataObj.id);
+                        if (idx !== -1) Object.assign(this.localData[idx], dataObj);
+                    }
+                    localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
+                    this.loading = false;
+                }
+            } catch (error) {
+                showToast('Gagal sinkronisasi data Admin Sales.', 'error');
+                this.loading = false;
+            }
+        },
+
+        tambahData() {
+            if (!this.inputNama) return showToast('Nama tidak boleh kosong!', 'error');
+            
+            const newData = {
+                id: Date.now().toString(),
+                nama: this.inputNama,
+                tanggal: new Date().toISOString().split('T')[0],
+                status_packing: 'Menunggu',
+                status_kirim: false,
+                note: ''
+            };
+            
+            this.inputNama = '';
+            this.sendToSheet('tambah', newData);
+        },
+
+        hapusData(id) {
+            if(confirm('Yakin ingin menghapus data nama pelanggan ini?')) {
+                this.sendToSheet('hapus', { id: id });
+            }
+        },
+
+        bukaModalKirim(id) {
+            this.modalKirimId = id;
+        },
+        tutupModalKirim() {
+            this.modalKirimId = null;
+        },
+        confirmKirim() {
+            let item = this.localData.find(d => d.id === this.modalKirimId);
+            if(item) {
+                item.status_kirim = true;
+                this.sendToSheet('update', item);
+            }
+            this.tutupModalKirim();
+        },
+
+        get filteredData() {
+            let data = [...this.localData];
+            if(this.fTgl) data = data.filter(d => d.tanggal === this.fTgl);
+            if(this.fNama) data = data.filter(d => d.nama.toLowerCase().includes(this.fNama.toLowerCase()));
+            if(this.fPack) data = data.filter(d => d.status_packing === this.fPack);
+            if(this.fKirim !== "") data = data.filter(d => String(d.status_kirim) === this.fKirim);
+            
+            // Urutkan selalu dari yang terbaru ke terlama
+						return data.sort((a, b) => b.id - a.id);
+        }
+    };
+}
+
 
 function pFileToBase64(file) {
     return new Promise((resolve, reject) => {
