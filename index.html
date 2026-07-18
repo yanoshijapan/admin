@@ -1107,19 +1107,20 @@
                             
                             <div class="flex flex-wrap gap-2 w-full sm:w-auto">
                                 <input type="text" x-model="scSearchNama" placeholder="Cari nama..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 flex-1 min-w-[120px] font-medium">
-                                <select x-model="scFilterDari" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
-                                    <option value="">Semua Asal</option>
+                                <input type="text" x-model="scSearchTanggal" placeholder="Tgl kirim (ex: 17 Jul)..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 flex-1 min-w-[130px] font-medium">
+																<select x-model="scFilterDari" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                                    <option value="">Tau Dari</option>
                                     <option value="exata">Exata</option><option value="jastip">Jastip</option><option value="LPK">LPK</option>
                                     <option value="senior">Senior</option><option value="Affiliate">Affiliate</option><option value="IG">IG</option>
                                     <option value="FB">FB</option><option value="tiktok">Tiktok</option><option value="chatbot">Chatbot</option><option value="web">Web</option>
                                 </select>
                                 <select x-model="scFilterBayar" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
-                                    <option value="">Semua Bayar</option>
+                                    <option value="">Status Bayar</option>
                                     <option value="sudah">Sudah Bayar</option>
                                     <option value="belum">Belum Bayar</option>
                                 </select>
                                 <select x-model="scFilterInvoice" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
-                                    <option value="">Semua Invoice</option>
+                                    <option value="">Status Invoice</option>
                                     <option value="sudah">Sudah Invoice</option>
                                     <option value="belum">Belum Invoice</option>
                                 </select>
@@ -1710,8 +1711,9 @@ function statusCustomerApp() {
         apiUrl: P_API_READ_UPDATE, 
         
         statusAppLoading: false, loadingMessage: '', statusStep: 1,
-        availableSheets: [], selectedSheet: '', statusData: [],
-        scSearchNama: '', scFilterDari: '', scFilterBayar: '', scFilterInvoice: '',
+				
+				availableSheets: [], selectedSheet: '', statusData: [],
+        scSearchNama: '', scSearchTanggal: '', scFilterDari: '', scFilterBayar: '', scFilterInvoice: '',
 
         async initStatus() {
             this.statusAppLoading = true;
@@ -1732,9 +1734,10 @@ function statusCustomerApp() {
             try {
                 const response = await fetch(`${this.apiUrl}?action=getCustomerData&sheetName=${encodeURIComponent(this.selectedSheet)}`);
                 this.statusData = await response.json();
-                
-                // Reset filter form saat membuka sheet baru
-                this.scSearchNama = ''; this.scFilterDari = ''; this.scFilterBayar = ''; this.scFilterInvoice = '';
+
+								// Reset filter form saat membuka sheet baru
+                this.scSearchNama = ''; this.scSearchTanggal = ''; this.scFilterDari = ''; this.scFilterBayar = ''; this.scFilterInvoice = '';
+								
             } catch (e) { 
                 showToast("Gagal memuat data sheet.", "error"); 
                 this.statusStep = 1;
@@ -1748,7 +1751,11 @@ function statusCustomerApp() {
                 const mDari = this.scFilterDari === '' || (c.dari && c.dari.includes(this.scFilterDari));
                 const mBayar = this.scFilterBayar === '' || (this.scFilterBayar === 'sudah' ? c.bayar : !c.bayar);
                 const mInvoice = this.scFilterInvoice === '' || (this.scFilterInvoice === 'sudah' ? c.invoice : !c.invoice);
-                return mNama && mDari && mBayar && mInvoice;
+                
+                // LOGIKA FILTER TANGGAL BARU
+                const mTanggal = this.scSearchTanggal === '' || (c.tglKirim && c.tglKirim.toLowerCase().includes(this.scSearchTanggal.toLowerCase()));
+                
+                return mNama && mDari && mBayar && mInvoice && mTanggal;
             });
         },
 
