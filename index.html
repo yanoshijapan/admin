@@ -1646,7 +1646,6 @@ function pesananApp() {
                 const response = await fetch(`${this.apiUrl}?action=read`);
                 let data = await response.json();
                 
-                // Urutkan pesanan dari yang terbaru sesuai user preference
                 data.sort((a, b) => {
                     const dA = new Date(a.tglOrder).getTime();
                     const dB = new Date(b.tglOrder).getTime();
@@ -1668,24 +1667,12 @@ function pesananApp() {
         },
 
         get filteredData() {
-            let data = [...this.localData];
-            
-            // --- UPDATE LOGIKA FILTER AGAR SUPPORT FORMAT ISO ---
-            if(this.fTgl) {
-                data = data.filter(d => {
-                    let dDate = new Date(d.tanggal);
-                    // Ambil format YYYY-MM-DD dari waktu lokal perangkat
-                    let localDateStr = dDate.getFullYear() + "-" + String(dDate.getMonth() + 1).padStart(2, '0') + "-" + String(dDate.getDate()).padStart(2, '0');
-                    return localDateStr === this.fTgl || d.tanggal === this.fTgl;
-                });
-            }
-            
-            if(this.fNama) data = data.filter(d => d.nama.toLowerCase().includes(this.fNama.toLowerCase()));
-            if(this.fPack) data = data.filter(d => d.status_packing === this.fPack);
-            if(this.fKirim !== "") data = data.filter(d => String(d.status_kirim) === this.fKirim);
-            
-            return data.sort((a, b) => b.id - a.id);
-        }
+            return this.allData.filter(i => {
+                const matchSearch = i.customer.toLowerCase().includes(this.searchQuery.toLowerCase());
+                const matchStatus = this.statusFilter === '' || i.status === this.statusFilter;
+                return matchSearch && matchStatus;
+            });
+        },
 
         pHandleFileSelect(event, item, type) {
             const file = event.target.files[0]; if (!file) return;
@@ -1786,9 +1773,6 @@ function pesananApp() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  STATUS CUSTOMER APP LOGIC (Alpine Embedded)
-// ─────────────────────────────────────────────────────────────
-// ─────────────────────────────────────────────────────────────
 //  STATUS CUSTOMER APP LOGIC
 // ─────────────────────────────────────────────────────────────
 function statusCustomerApp() {
@@ -1849,7 +1833,6 @@ function statusCustomerApp() {
             return colors[name] || 'bg-gray-500';
         },
 
-        // --- TAMBAHAN FUNGSI MODAL & KIRIM DATA ---
         bukaModalSiapkan(nama) {
             this.namaYangDisiapkan = nama || 'Tanpa Nama';
             this.modalSiapkanOpen = true;
@@ -1861,7 +1844,6 @@ function statusCustomerApp() {
         },
         
         konfirmasiSiapkan() {
-            // Tembakkan event global yang akan ditangkap otomatis oleh adminSalesApp
             window.dispatchEvent(new CustomEvent('tambah-ke-sales', { 
                 detail: { nama: this.namaYangDisiapkan } 
             }));
@@ -1872,12 +1854,6 @@ function statusCustomerApp() {
     }
 }
 
-// ─────────────────────────────────────────────────────────────
-//  ADMIN SALES LOGIC (FITUR BARU)
-// ─────────────────────────────────────────────────────────────
-// ─────────────────────────────────────────────────────────────
-//  ADMIN SALES LOGIC
-// ─────────────────────────────────────────────────────────────
 // ─────────────────────────────────────────────────────────────
 //  ADMIN SALES LOGIC (FULL & INTEGRATED)
 // ─────────────────────────────────────────────────────────────
@@ -1890,6 +1866,11 @@ function adminSalesApp() {
         inputNama: '',
         fTgl: '', fNama: '', fPack: '', fKirim: '',
         modalKirimId: null,
+        
+        formatTanggal(dateStr) {
+            if (!dateStr) return '-';
+            return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        },
 
         initSales() {
             this.localData = JSON.parse(localStorage.getItem('dashOpsData')) || [];
@@ -1974,7 +1955,6 @@ function adminSalesApp() {
             this.tutupModalKirim();
         },
 
-        // --- FUNGSI TANGKAP DARI MENU STATUS CUSTOMER ---
         tambahDariStatus(nama) {
             const newData = {
                 id: Date.now().toString(),
@@ -1984,18 +1964,22 @@ function adminSalesApp() {
                 status_kirim: false,
                 note: ''
             };
-            // Langsung otomatis hit API Google Sheets tanpa harus pindah halaman!
             this.sendToSheet('tambah', newData); 
         },
 
         get filteredData() {
             let data = [...this.localData];
-            if(this.fTgl) data = data.filter(d => d.tanggal === this.fTgl);
+            if(this.fTgl) {
+                data = data.filter(d => {
+                    let dDate = new Date(d.tanggal);
+                    let localDateStr = dDate.getFullYear() + "-" + String(dDate.getMonth() + 1).padStart(2, '0') + "-" + String(dDate.getDate()).padStart(2, '0');
+                    return localDateStr === this.fTgl || d.tanggal === this.fTgl;
+                });
+            }
             if(this.fNama) data = data.filter(d => d.nama.toLowerCase().includes(this.fNama.toLowerCase()));
             if(this.fPack) data = data.filter(d => d.status_packing === this.fPack);
             if(this.fKirim !== "") data = data.filter(d => String(d.status_kirim) === this.fKirim);
             
-            // Urutkan berdasarkan waktu input paling baru
             return data.sort((a, b) => b.id - a.id);
         }
     };
