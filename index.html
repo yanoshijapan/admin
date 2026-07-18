@@ -704,7 +704,7 @@
                 <div class="menu-card" :class="{ active: popupPanel === 'admin_sales' }"
                      @click="togglePanel('admin_sales')">
                     <div class="menu-icon" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">💼</div>
-                    <div class="menu-label">Update Kiriman</div>
+                    <div class="menu-label">Admin Sales</div>
                 </div>
                 <div class="menu-card" @click="openExternal('https://yanoshistore.netlify.app/')">
                     <div class="menu-icon blue">🛒</div>
@@ -1135,11 +1135,17 @@
                                         <span>Tgl Kirim:</span>
                                         <span class="text-xs text-gray-900" x-text="c.tglKirim || '-'"></span>
                                     </div>
-                                    <template x-if="c.kirimStatus">
-                                        <span :class="c.kirimStatus === 'kirim indo' ? 'bg-green-200 text-green-800 border-green-300' : 'bg-yellow-200 text-yellow-800 border-yellow-300'" 
-                                              class="px-2 py-1 rounded-md text-[10px] font-extrabold uppercase border" 
-                                              x-text="c.kirimStatus"></span>
-                                    </template>
+                                    <div class="flex items-center gap-2">
+                                        <template x-if="c.kirimStatus">
+                                            <span :class="c.kirimStatus === 'kirim indo' ? 'bg-green-200 text-green-800 border-green-300' : 'bg-yellow-200 text-yellow-800 border-yellow-300'" 
+                                                  class="px-2 py-1 rounded-md text-[10px] font-extrabold uppercase border" 
+                                                  x-text="c.kirimStatus"></span>
+                                        </template>
+                                        <!-- Tombol Siapkan -->
+                                        <button @click="bukaModalSiapkan(c.nama)" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm">
+                                            📦 Siapkan
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </template>
@@ -1150,12 +1156,23 @@
                         </div>
                     </div>
                 </div>
+								
+								<div x-show="modalSiapkanOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalSiapkan()">
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl">
+                        <h3 class="text-lg font-extrabold mb-2 text-gray-800">Verifikasi Packing</h3>
+                        <p class="text-sm text-gray-600 mb-6 font-medium">Siapkan packingan untuk <strong x-text="namaYangDisiapkan" class="text-red-600"></strong>?</p>
+                        <div class="flex justify-around gap-3">
+                            <button @click="tutupModalSiapkan()" class="flex-1 py-2.5 border-2 border-red-600 text-red-600 font-bold rounded-xl hover:bg-red-50 transition text-sm">Tidak</button>
+                            <button @click="konfirmasiSiapkan()" class="flex-1 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition shadow-lg text-sm">Ya, Siapkan</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- ========================================================= -->
             <!-- UI ADMIN SALES (FITUR BARU) -->
             <!-- ========================================================= -->
-            <div x-show="popupPanel === 'admin_sales'" x-data="adminSalesApp()" x-init="initSales()" class="w-full" x-cloak>
+            <div x-show="popupPanel === 'admin_sales'" x-data="adminSalesApp()" x-init="initSales()" @tambah-ke-sales.window="tambahDariStatus($event.detail.nama)" class="w-full" x-cloak>
                 
                 <!-- Sticky Header Filter -->
                 <div class="sticky top-0 z-10 bg-white pb-4 border-b-2 border-gray-100 mb-6 pt-1">
@@ -1759,6 +1776,9 @@ function pesananApp() {
 // ─────────────────────────────────────────────────────────────
 //  STATUS CUSTOMER APP LOGIC (Alpine Embedded)
 // ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+//  STATUS CUSTOMER APP LOGIC
+// ─────────────────────────────────────────────────────────────
 function statusCustomerApp() {
     return {
         apiUrl: P_API_READ_UPDATE, 
@@ -1767,6 +1787,10 @@ function statusCustomerApp() {
                 
         availableSheets: [], selectedSheet: '', statusData: [],
         scSearchNama: '', scSearchTanggal: '', scFilterDari: '', scFilterBayar: '', scFilterInvoice: '',
+        
+        // --- TAMBAHAN VARIABEL MODAL ---
+        modalSiapkanOpen: false,
+        namaYangDisiapkan: '',
 
         async initStatus() {
             this.statusAppLoading = true;
@@ -1774,23 +1798,18 @@ function statusCustomerApp() {
                 const response = await fetch(`${this.apiUrl}?action=getSheets`);
                 const result = await response.json();
                 this.availableSheets = result.sheets || [];
-            } catch (e) {
-                console.error("Gagal memuat list sheet", e);
-            }
+            } catch (e) { console.error("Gagal memuat list sheet", e); }
             this.statusAppLoading = false;
         },
 
         async loadCustomerData() {
             this.statusAppLoading = true; 
             this.loadingMessage = `Membaca data dari Sheet: ${this.selectedSheet}...`;
-            this.statusStep = 2; // Langsung pindah view ke loading screen
+            this.statusStep = 2; 
             try {
                 const response = await fetch(`${this.apiUrl}?action=getCustomerData&sheetName=${encodeURIComponent(this.selectedSheet)}`);
                 this.statusData = await response.json();
-
-                // Reset filter form saat membuka sheet baru
                 this.scSearchNama = ''; this.scSearchTanggal = ''; this.scFilterDari = ''; this.scFilterBayar = ''; this.scFilterInvoice = '';
-                                
             } catch (e) { 
                 showToast("Gagal memuat data sheet.", "error"); 
                 this.statusStep = 1;
@@ -1804,10 +1823,7 @@ function statusCustomerApp() {
                 const mDari = this.scFilterDari === '' || (c.dari && c.dari.includes(this.scFilterDari));
                 const mBayar = this.scFilterBayar === '' || (this.scFilterBayar === 'sudah' ? c.bayar : !c.bayar);
                 const mInvoice = this.scFilterInvoice === '' || (this.scFilterInvoice === 'sudah' ? c.invoice : !c.invoice);
-                
-                // LOGIKA FILTER TANGGAL BARU
                 const mTanggal = this.scSearchTanggal === '' || (c.tglKirim && c.tglKirim.toLowerCase().includes(this.scSearchTanggal.toLowerCase()));
-                
                 return mNama && mDari && mBayar && mInvoice && mTanggal;
             });
         },
@@ -1819,6 +1835,27 @@ function statusCustomerApp() {
                 'FB': 'bg-blue-800', 'tiktok': 'bg-black', 'chatbot': 'bg-teal-500', 'web': 'bg-orange-500'
             };
             return colors[name] || 'bg-gray-500';
+        },
+
+        // --- TAMBAHAN FUNGSI MODAL & KIRIM DATA ---
+        bukaModalSiapkan(nama) {
+            this.namaYangDisiapkan = nama || 'Tanpa Nama';
+            this.modalSiapkanOpen = true;
+        },
+        
+        tutupModalSiapkan() {
+            this.modalSiapkanOpen = false;
+            this.namaYangDisiapkan = '';
+        },
+        
+        konfirmasiSiapkan() {
+            // Tembakkan event global yang akan ditangkap otomatis oleh adminSalesApp
+            window.dispatchEvent(new CustomEvent('tambah-ke-sales', { 
+                detail: { nama: this.namaYangDisiapkan } 
+            }));
+            
+            showToast(`✅ Data ${this.namaYangDisiapkan} dikirim ke Admin Sales!`, 'success');
+            this.tutupModalSiapkan();
         }
     }
 }
@@ -1826,10 +1863,16 @@ function statusCustomerApp() {
 // ─────────────────────────────────────────────────────────────
 //  ADMIN SALES LOGIC (FITUR BARU)
 // ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+//  ADMIN SALES LOGIC
+// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+//  ADMIN SALES LOGIC (FULL & INTEGRATED)
+// ─────────────────────────────────────────────────────────────
 function adminSalesApp() {
     return {
-        // Jika Anda sudah mendeploy Apps Script untuk Admin Sales, masukkan URL-nya di sini
-        apiUrl: 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec',
+        // PENTING: Ganti tulisan di bawah dengan URL Apps Script Dashboard Packing Anda
+        apiUrl: 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec', 
         localData: [],
         loading: false,
         inputNama: '',
@@ -1837,13 +1880,8 @@ function adminSalesApp() {
         modalKirimId: null,
 
         initSales() {
-            // Ambil data yang tersimpan dari cache/localStorage (Bisa Offline)
             this.localData = JSON.parse(localStorage.getItem('dashOpsData')) || [];
-            
-            // Sync dengan database Server (Jika API URL sudah dimasukkan)
             this.fetchData();
-            
-            // Background Auto-Refresh setiap 10 detik saat panel terbuka
             setInterval(() => {
                 const state = document.querySelector('[x-data="appState()"]').__x.$data;
                 if (state && state.popupPanel === 'admin_sales') {
@@ -1870,7 +1908,6 @@ function adminSalesApp() {
             this.loading = true;
             try {
                 if (this.apiUrl && this.apiUrl.startsWith('http')) {
-                    // Update ke server Apps Script
                     await fetch(this.apiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'text/plain' },
@@ -1878,7 +1915,6 @@ function adminSalesApp() {
                     });
                     await this.fetchData();
                 } else {
-                    // Fallback jika belum pasang API URL (Bermain Local Storage layaknya sebelumnya)
                     if(action === 'tambah') this.localData.push(dataObj);
                     if(action === 'hapus') this.localData = this.localData.filter(d => d.id !== dataObj.id);
                     if(action === 'update') {
@@ -1896,7 +1932,6 @@ function adminSalesApp() {
 
         tambahData() {
             if (!this.inputNama) return showToast('Nama tidak boleh kosong!', 'error');
-            
             const newData = {
                 id: Date.now().toString(),
                 nama: this.inputNama,
@@ -1905,7 +1940,6 @@ function adminSalesApp() {
                 status_kirim: false,
                 note: ''
             };
-            
             this.inputNama = '';
             this.sendToSheet('tambah', newData);
         },
@@ -1916,12 +1950,9 @@ function adminSalesApp() {
             }
         },
 
-        bukaModalKirim(id) {
-            this.modalKirimId = id;
-        },
-        tutupModalKirim() {
-            this.modalKirimId = null;
-        },
+        bukaModalKirim(id) { this.modalKirimId = id; },
+        tutupModalKirim() { this.modalKirimId = null; },
+        
         confirmKirim() {
             let item = this.localData.find(d => d.id === this.modalKirimId);
             if(item) {
@@ -1931,6 +1962,20 @@ function adminSalesApp() {
             this.tutupModalKirim();
         },
 
+        // --- FUNGSI TANGKAP DARI MENU STATUS CUSTOMER ---
+        tambahDariStatus(nama) {
+            const newData = {
+                id: Date.now().toString(),
+                nama: nama,
+                tanggal: new Date().toISOString().split('T')[0],
+                status_packing: 'Menunggu',
+                status_kirim: false,
+                note: ''
+            };
+            // Langsung otomatis hit API Google Sheets tanpa harus pindah halaman!
+            this.sendToSheet('tambah', newData); 
+        },
+
         get filteredData() {
             let data = [...this.localData];
             if(this.fTgl) data = data.filter(d => d.tanggal === this.fTgl);
@@ -1938,8 +1983,8 @@ function adminSalesApp() {
             if(this.fPack) data = data.filter(d => d.status_packing === this.fPack);
             if(this.fKirim !== "") data = data.filter(d => String(d.status_kirim) === this.fKirim);
             
-            // Urutkan selalu dari yang terbaru ke terlama
-						return data.sort((a, b) => b.id - a.id);
+            // Urutkan berdasarkan waktu input paling baru
+            return data.sort((a, b) => b.id - a.id);
         }
     };
 }
