@@ -217,9 +217,8 @@
         }
 
         /* ===== GRID MENU CARDS ===== */
-        /* Perubahan Grid: 2 Kolom (3 baris) di mobile, dan 6 Kolom (1 baris) di Desktop */
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 32px; }
-        @media (min-width: 800px) { .menu-grid { grid-template-columns: repeat(6, 1fr); } }
+        @media (min-width: 800px) { .menu-grid { grid-template-columns: repeat(5, 1fr); } }
 
         .menu-card {
             background: white; border-radius: 18px; padding: 22px 16px;
@@ -249,6 +248,28 @@
         .menu-icon.green  { background: linear-gradient(135deg, #f0fff8, #d1fae5); }
         .menu-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); line-height: 1.3; margin: 0; }
         
+        /* ===== WIDE MENU UNTUK CETAK STIKER ===== */
+        .menu-card-wide {
+            background: white; border-radius: 18px; padding: 14px 20px;
+            box-shadow: var(--shadow-sm); cursor: pointer;
+            border: 1.5px solid #f0f0f0; 
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            grid-column: 1 / -1; width: 100%;
+        }
+        .menu-card-wide:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: transparent; }
+        .menu-card-wide::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold));
+            transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
+        }
+        .menu-card-wide:hover::after { transform: scaleX(1); }
+        .menu-card-wide .menu-icon { margin: 0; width: 44px; height: 44px; flex-shrink: 0; font-size: 20px; }
+        .menu-card-wide .menu-label { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); }
+        .menu-card-wide .arrow-icon { position: absolute; right: 20px; color: #ccc; font-weight: bold; font-size: 16px; transition: transform 0.2s, color 0.2s; }
+        .menu-card-wide:hover .arrow-icon { transform: translateX(4px); color: var(--red); }
+
         /* ===== POPUP MODAL MENU ===== */
         .popup-overlay {
             position: fixed; inset: 0; z-index: 3000;
@@ -262,7 +283,7 @@
             to   { opacity: 1; }
         }
         .popup-sheet {
-            background: white; width: 100%; max-width: 900px; /* Diperbesar sedikit agar lega untuk Admin Sales */
+            background: white; width: 100%; max-width: 900px;
             border-radius: 24px 24px 0 0;
             max-height: 88vh; display: flex; flex-direction: column;
             box-shadow: 0 -8px 60px rgba(0,0,0,0.25);
@@ -685,24 +706,20 @@
 
             <div class="section-title">Menu Utama</div>
             <div class="menu-grid">
-                <div class="menu-card" :class="{ active: popupPanel === 'pencapaian' }"
-                     @click="togglePanel('pencapaian')">
+                <div class="menu-card" :class="{ active: popupPanel === 'pencapaian' }" @click="togglePanel('pencapaian')">
                     <div class="menu-icon red">🎯</div>
                     <div class="menu-label">Pencapaian</div>
                 </div>
-                <div class="menu-card" :class="{ active: popupPanel === 'pesanan' }"
-                     @click="togglePanel('pesanan')">
+                <div class="menu-card" :class="{ active: popupPanel === 'pesanan' }" @click="togglePanel('pesanan')">
                     <div class="menu-icon gold">📦</div>
                     <div class="menu-label">Pesanan Online</div>
                 </div>
-                <div class="menu-card" :class="{ active: popupPanel === 'status_customer' }"
-                     @click="togglePanel('status_customer')">
+                <div class="menu-card" :class="{ active: popupPanel === 'status_customer' }" @click="togglePanel('status_customer')">
                     <div class="menu-icon" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff);">📊</div>
                     <div class="menu-label">Status Customer</div>
                 </div>
                 <!-- MENU BARU: ADMIN SALES -->
-                <div class="menu-card" :class="{ active: popupPanel === 'admin_sales' }"
-                     @click="togglePanel('admin_sales')">
+                <div class="menu-card" :class="{ active: popupPanel === 'admin_sales' }" @click="togglePanel('admin_sales')">
                     <div class="menu-icon" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">💼</div>
                     <div class="menu-label">Admin Sales</div>
                 </div>
@@ -710,10 +727,12 @@
                     <div class="menu-icon blue">🛒</div>
                     <div class="menu-label">Webstore</div>
                 </div>
-                <!-- CETAK STIKER DASHBOARD (TAMPILAN DISERAGAMKAN AGAR 1 BARIS) -->
-                <div class="menu-card" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
+                
+                <!-- CETAK STIKER DASHBOARD (TAMPILAN WIDE MEMANJANG PENUH) -->
+                <div class="menu-card-wide" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
                     <div class="menu-icon green">🖨️</div>
-                    <div class="menu-label">Cetak Stiker</div>
+                    <div class="menu-label">Cetak Stiker Dashboard</div>
+                    <div class="arrow-icon">➔</div>
                 </div>
             </div>
 
@@ -807,6 +826,9 @@
     </main>
 </div>
 
+<!-- ========================================================= -->
+<!-- SINGLE POPUP MASTER CONTAINER (HANYA ADA 1 DI SELURUH KODE) -->
+<!-- ========================================================= -->
 <div class="popup-overlay" x-show="popupOpen" @click.self="closePopup()" x-cloak>
     <div class="popup-sheet">
         <div class="popup-drag-handle"></div>
@@ -821,6 +843,7 @@
         </div>
         <div class="popup-body relative">
 
+            <!-- 1. PENCAPAIAN (TARGET HARIAN) -->
             <div x-show="popupPanel === 'pencapaian'">
                 <div class="th-container">
                     <div class="th-header-card">
@@ -877,6 +900,7 @@
                 </div>
             </div>
 
+            <!-- 2. PESANAN ONLINE -->
             <div x-show="popupPanel === 'pesanan'" x-data="pesananApp()" x-init="initPesanan()" class="w-full" x-cloak>
                 
                 <div class="sticky top-0 z-10 bg-white pb-4 border-b-2 border-gray-100 mb-6 pt-1">
@@ -1044,57 +1068,46 @@
                 </div>
 
             </div> 
-						
-            <!-- ========================================================= -->
-            <!-- UI STATUS CUSTOMER -->
-            <!-- ========================================================= -->
+                        
+            <!-- 3. STATUS CUSTOMER (ALL DATA DENGAN FILTER & WARNA) -->
             <div x-show="popupPanel === 'status_customer'" x-data="statusCustomerApp()" x-init="initStatus()" class="w-full" x-cloak>
                 
-                <!-- STEP 1: Pilih Sheet -->
-                <div x-show="statusStep === 1 && !statusAppLoading" class="max-w-md mx-auto mt-10 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center">
-                    <h3 class="text-xl font-extrabold mb-5 text-gray-800">Pilih Sheet Database</h3>
-                    <select x-model="selectedSheet" class="w-full p-3.5 border-2 border-gray-200 rounded-xl mb-5 text-gray-700 outline-none font-semibold focus:border-red-600 transition">
-                        <option value="" disabled>-- Pilih Sheet --</option>
-                        <template x-for="sh in availableSheets" :key="sh">
-                            <option :value="sh" x-text="sh"></option>
-                        </template>
-                    </select>
-                    <button @click="loadCustomerData()" :disabled="!selectedSheet" 
-                            class="w-full bg-gray-800 hover:bg-black text-white font-bold py-3.5 rounded-xl transition shadow-md disabled:bg-gray-300 disabled:shadow-none">
-                        TAMPILKAN DATA
-                    </button>
-                </div>
-
-                <!-- STEP 2: View Data -->
-                <div x-show="statusStep === 2" class="w-full">
+                <div class="w-full">
                     <!-- Sticky Header Filter -->
                     <div class="sticky top-0 bg-white pb-4 border-b-2 border-gray-100 mb-6 pt-1 z-10">
-                        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                            <div class="flex items-center gap-3">
-                                <button @click="statusStep = 1; statusData = []" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg font-bold text-xs transition">
-                                    ⬅ KEMBALI
-                                </button>
-                                <h2 class="text-sm font-bold text-gray-500">Customer: <span class="text-gray-900 font-extrabold uppercase text-lg" x-text="selectedSheet"></span></h2>
-                            </div>
+                        <div class="flex flex-col xl:flex-row justify-between xl:items-center gap-4">
+                            <h2 class="text-lg font-extrabold text-gray-800 flex items-center gap-2">
+                                <span>📊</span> Data Keseluruhan Customer
+                            </h2>
                             
-                            <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                            <div class="flex flex-wrap gap-2 w-full xl:w-auto">
                                 <input type="text" x-model="scSearchNama" placeholder="Cari nama..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 flex-1 min-w-[120px] font-medium">
                                 <input type="text" x-model="scSearchTanggal" placeholder="Tgl kirim (ex: 17 Jul)..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 flex-1 min-w-[130px] font-medium">
+                                
+                                <!-- FILTER BARU: BERDASARKAN SHEET -->
+                                <select x-model="scFilterSheet" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                                    <option value="">Semua Sheet</option>
+                                    <template x-for="sh in availableSheets" :key="sh">
+                                        <option :value="sh" x-text="sh"></option>
+                                    </template>
+                                </select>
+                                
                                 <select x-model="scFilterDari" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
-                                    <option value="">Tau Dari</option>
+                                    <option value="">Semua Asal</option>
                                     <option value="exata">Exata</option><option value="jastip">Jastip</option><option value="LPK">LPK</option>
                                     <option value="senior">Senior</option><option value="Affiliate">Affiliate</option><option value="IG">IG</option>
                                     <option value="FB">FB</option><option value="tiktok">Tiktok</option><option value="chatbot">Chatbot</option><option value="web">Web</option>
                                 </select>
-                                <select x-model="scFilterBayar" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
-                                    <option value="">Status Bayar</option>
-                                    <option value="sudah">Sudah Bayar</option>
-                                    <option value="belum">Belum Bayar</option>
-                                </select>
-                                <select x-model="scFilterInvoice" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
-                                    <option value="">Status Invoice</option>
-                                    <option value="sudah">Sudah Invoice</option>
-                                    <option value="belum">Belum Invoice</option>
+
+                                <!-- FILTER BARU: BERDASARKAN STATUS WARNA -->
+                                <select x-model="scFilterStatus" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-extrabold bg-gray-50 cursor-pointer text-gray-700">
+                                    <option value="">Semua Status</option>
+                                    <option value="sudah kirim">✅ Sudah Kirim</option>
+                                    <option value="kirim hari ini">📦 Kirim Hari Ini</option>
+                                    <option value="belum di kirim">💰 Sudah Bayar (Belum Dikirim)</option>
+                                    <option value="belum bayar">⏳ Belum Bayar</option>
+                                    <option value="kirim jepang">✈️ Kirim Jepang</option>
+                                    <option value="cancel">❌ Cancel</option>
                                 </select>
                             </div>
                         </div>
@@ -1102,46 +1115,36 @@
 
                     <div x-show="statusAppLoading" class="flex flex-col justify-center items-center py-16">
                         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mb-4"></div>
-                        <p class="font-bold text-gray-500 animate-pulse text-sm" x-text="loadingMessage"></p>
+                        <p class="font-bold text-gray-500 animate-pulse text-sm">Menarik data dari seluruh sheet...</p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-10" x-show="!statusAppLoading">
-                        <template x-for="c in filteredStatusData" :key="c.nama">
-                            <div :class="c.bayar ? 'bg-green-50 border-green-200' : (c.invoice ? 'bg-yellow-50 border-yellow-200' : 'bg-white border-gray-200')" 
-                                 class="rounded-xl shadow-sm border p-5 flex flex-col gap-4 relative break-words transition-all hover:shadow-md">
+                        <template x-for="c in filteredStatusData" :key="c.nama + c.sheetName">
+                            <!-- WARNA KOTAK OTOMATIS BERUBAH BERDASARKAN STATUS -->
+                            <div :class="getCardColor(c.statusCustomer)" 
+                                 class="rounded-xl shadow-sm border p-5 flex flex-col gap-3 relative break-words transition-all hover:shadow-md">
                                 
+                                <div class="flex justify-between items-start border-b border-black/10 pb-2 mb-1">
+                                    <span class="text-[10px] font-extrabold uppercase tracking-widest opacity-60" x-text="'SHEET: ' + c.sheetName"></span>
+                                    <span class="text-[10px] font-extrabold uppercase px-2 py-1 bg-white/50 rounded-md shadow-sm" x-text="c.statusCustomer"></span>
+                                </div>
+
                                 <div>
                                     <h3 class="font-extrabold text-gray-900 text-lg uppercase leading-tight" x-text="c.nama || 'Tanpa Nama'"></h3>
                                     <div class="flex flex-wrap gap-1.5 mt-2">
                                         <template x-for="d in c.dari">
-                                            <span :class="getPillColor(d)" class="px-2.5 py-0.5 rounded-md text-[10px] font-bold text-white uppercase tracking-wider" x-text="d"></span>
+                                            <span :class="getPillColor(d)" class="px-2.5 py-0.5 rounded-md text-[10px] font-bold text-white uppercase tracking-wider shadow-sm" x-text="d"></span>
                                         </template>
                                     </div>
                                 </div>
 
-                                <div class="flex gap-2 text-[11px] font-bold mt-1">
-                                    <span :class="c.bayar ? 'bg-green-500 text-white shadow-sm' : 'bg-gray-100 text-gray-400'" class="px-2.5 py-1.5 rounded-lg flex-1 text-center transition">
-                                        <span x-show="c.bayar">✓ Sudah Bayar</span>
-                                        <span x-show="!c.bayar">Belum Bayar</span>
-                                    </span>
-                                    <span :class="c.invoice ? 'bg-yellow-400 text-black shadow-sm' : 'bg-gray-100 text-gray-400'" class="px-2.5 py-1.5 rounded-lg flex-1 text-center transition">
-                                        <span x-show="c.invoice">✓ Sudah Invoice</span>
-                                        <span x-show="!c.invoice">Belum Invoice</span>
-                                    </span>
-                                </div>
-
-                                <div class="mt-auto pt-4 border-t border-black/5 flex justify-between items-center">
-                                    <div class="text-[10px] text-gray-500 font-bold flex flex-col uppercase tracking-wide">
-                                        <span>Tgl Kirim:</span>
-                                        <span class="text-xs text-gray-900" x-text="c.tglKirim || '-'"></span>
+                                <div class="mt-auto pt-4 border-t border-black/10 flex justify-between items-center">
+                                    <div class="text-[10px] text-gray-800 font-bold flex flex-col uppercase tracking-wide">
+                                        <span class="opacity-70">Tgl Kirim:</span>
+                                        <span class="text-xs font-extrabold" x-text="c.tglKirim || '-'"></span>
                                     </div>
+                                    <!-- TOMBOL SIAPKAN -->
                                     <div class="flex items-center gap-2">
-                                        <template x-if="c.kirimStatus">
-                                            <span :class="c.kirimStatus === 'kirim indo' ? 'bg-green-200 text-green-800 border-green-300' : 'bg-yellow-200 text-yellow-800 border-yellow-300'" 
-                                                  class="px-2 py-1 rounded-md text-[10px] font-extrabold uppercase border" 
-                                                  x-text="c.kirimStatus"></span>
-                                        </template>
-                                        <!-- Tombol Siapkan -->
                                         <button @click="bukaModalSiapkan(c.nama)" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm">
                                             📦 Siapkan
                                         </button>
@@ -1156,8 +1159,9 @@
                         </div>
                     </div>
                 </div>
-								
-								<div x-show="modalSiapkanOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalSiapkan()">
+                
+                <!-- MODAL SIAPKAN -->
+                <div x-show="modalSiapkanOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalSiapkan()">
                     <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl">
                         <h3 class="text-lg font-extrabold mb-2 text-gray-800">Verifikasi Packing</h3>
                         <p class="text-sm text-gray-600 mb-6 font-medium">Siapkan packingan untuk <strong x-text="namaYangDisiapkan" class="text-red-600"></strong>?</p>
@@ -1169,9 +1173,7 @@
                 </div>
             </div>
 
-            <!-- ========================================================= -->
-            <!-- UI ADMIN SALES (FITUR BARU) -->
-            <!-- ========================================================= -->
+            <!-- 4. ADMIN SALES (FITUR PACKING / OPS) -->
             <div x-show="popupPanel === 'admin_sales'" x-data="adminSalesApp()" x-init="initSales()" @tambah-ke-sales.window="tambahDariStatus($event.detail.nama)" class="w-full" x-cloak>
                 
                 <!-- Sticky Header Filter -->
@@ -1213,7 +1215,7 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h3 class="font-extrabold text-gray-800 text-lg break-words" x-text="item.nama"></h3>
-																		<p class="text-xs text-gray-500 font-medium mt-1">Diinput: <span x-text="formatTanggal(item.tanggal)"></span></p>
+                                    <p class="text-xs text-gray-500 font-medium mt-1">Diinput: <span x-text="formatTanggal(item.tanggal)"></span></p>
                                 </div>
                                 <button @click="hapusData(item.id)" class="bg-red-50 text-red-600 px-3 py-1.5 text-xs font-bold rounded hover:bg-red-100 transition shrink-0 ml-3">Hapus</button>
                             </div>
@@ -1255,6 +1257,7 @@
     </div>
 </div>
 
+<!-- ================== MODAL EDIT USER ================== -->
 <div class="modal-overlay" x-show="editUserModal" @click.self="editUserModal = false" x-cloak>
     <div class="modal-box">
         <div class="modal-title">⚙️ Ubah Akun</div>
@@ -1283,10 +1286,21 @@
 
 <script>
 // ─────────────────────────────────────────────────────────────
-//  CONFIG — URL APPS SCRIPT
+//  CONFIG — URL APPS SCRIPT (SUDAH DIPISAHKAN SESUAI INSTRUKSI)
 // ─────────────────────────────────────────────────────────────
+
+// 1. URL Login & Edit Password
 const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0OHcpS102oD6frRSgacOdiADCt5C0Zphp7wI8mkDP3dKDvo-d6mCw/exec';
 
+// 2. URL Pencapaian (Target Harian)
+const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbzzWyRgZ2fk5NLCPyAViYHF6qyliNfi86ZsbqVHOsAIv3PcKFOK9-eq-4RrjVTkIw0I/exec';
+
+// 3. URL Pesanan Online & Status Customer
+const PESANAN_STATUS_API_URL = 'https://script.google.com/macros/s/AKfycbz3V7oaXEBuQAATvcrZsDtGFIXAKTl_h3drbgjksBkJEbFZhjJP2WUSTrPv9mxHm35M/exec';
+const P_API_UPLOAD = 'https://script.google.com/macros/s/AKfycbx7w2FXv0ayhq61Le63K7zJsb-znvXq6cjLcLO6shrECvOwN-lF3vBO3-pn1dRCX6dH/exec'; // Upload Bawaan Pesanan
+
+// 4. URL Admin Sales (Packing)
+const ADMIN_SALES_API_URL = 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec';
 
 // ─────────────────────────────────────────────────────────────
 //  ALPINE STATE UTAMA (Login, Menu, Popup)
@@ -1410,7 +1424,6 @@ document.addEventListener('keydown', function(e) {
 // ─────────────────────────────────────────────────────────────
 //  TARGET HARIAN PENCAPAIAN LOGIC (Native Embedded)
 // ─────────────────────────────────────────────────────────────
-const TH_GAS_URL = "https://script.google.com/macros/s/AKfycbzzWyRgZ2fk5NLCPyAViYHF6qyliNfi86ZsbqVHOsAIv3PcKFOK9-eq-4RrjVTkIw0I/exec";
 const TH_REKAP_KEY = "yanoshi_rekap_v3";
 const TH_LAST_AUTO_KEY = "yanoshi_last_auto";
 const TH_NAMA_BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
@@ -1618,12 +1631,9 @@ function th_capFirst(s) { if (!s) return ''; return s.split(' ').map(w => w.char
 // ─────────────────────────────────────────────────────────────
 //  PESANAN APP LOGIC (Alpine Embedded)
 // ─────────────────────────────────────────────────────────────
-const P_API_READ_UPDATE = 'https://script.google.com/macros/s/AKfycbz3V7oaXEBuQAATvcrZsDtGFIXAKTl_h3drbgjksBkJEbFZhjJP2WUSTrPv9mxHm35M/exec';
-const P_API_UPLOAD      = 'https://script.google.com/macros/s/AKfycbx7w2FXv0ayhq61Le63K7zJsb-znvXq6cjLcLO6shrECvOwN-lF3vBO3-pn1dRCX6dH/exec';
-
 function pesananApp() {
     return {
-        apiUrl:       P_API_READ_UPDATE,
+        apiUrl:       PESANAN_STATUS_API_URL,
         uploadUrl:    P_API_UPLOAD,
         loading:      true,
         allData:      [],
@@ -1777,38 +1787,37 @@ function pesananApp() {
 // ─────────────────────────────────────────────────────────────
 function statusCustomerApp() {
     return {
-        apiUrl: P_API_READ_UPDATE, 
+        apiUrl: PESANAN_STATUS_API_URL, 
         
-        statusAppLoading: false, loadingMessage: '', statusStep: 1,
-                
-        availableSheets: [], selectedSheet: '', statusData: [],
-        scSearchNama: '', scSearchTanggal: '', scFilterDari: '', scFilterBayar: '', scFilterInvoice: '',
-        
-        // --- TAMBAHAN VARIABEL MODAL ---
+        statusAppLoading: false, 
+        availableSheets: [], statusData: [],
+        scSearchNama: '', scSearchTanggal: '', scFilterDari: '', scFilterSheet: '', scFilterStatus: '',
+
         modalSiapkanOpen: false,
         namaYangDisiapkan: '',
 
         async initStatus() {
             this.statusAppLoading = true;
             try {
-                const response = await fetch(`${this.apiUrl}?action=getSheets`);
+                const response = await fetch(`${this.apiUrl}?action=getAllCustomerData`);
                 const result = await response.json();
-                this.availableSheets = result.sheets || [];
-            } catch (e) { console.error("Gagal memuat list sheet", e); }
-            this.statusAppLoading = false;
-        },
-
-        async loadCustomerData() {
-            this.statusAppLoading = true; 
-            this.loadingMessage = `Membaca data dari Sheet: ${this.selectedSheet}...`;
-            this.statusStep = 2; 
-            try {
-                const response = await fetch(`${this.apiUrl}?action=getCustomerData&sheetName=${encodeURIComponent(this.selectedSheet)}`);
-                this.statusData = await response.json();
-                this.scSearchNama = ''; this.scSearchTanggal = ''; this.scFilterDari = ''; this.scFilterBayar = ''; this.scFilterInvoice = '';
-            } catch (e) { 
-                showToast("Gagal memuat data sheet.", "error"); 
-                this.statusStep = 1;
+                
+                if (Array.isArray(result)) {
+                    this.statusData = result;
+                } else {
+                    console.error("Data error / bukan array:", result);
+                    this.statusData = [];
+                    if (result.status === "connected") {
+                        alert("ERROR SISTEM: Anda belum melakukan 'New Deployment' di Google Apps Script!");
+                    }
+                }
+                
+                const sheets = this.statusData.map(item => item.sheetName);
+                this.availableSheets = [...new Set(sheets)];
+            } catch (e) {
+                console.error("Gagal memuat data keseluruhan", e);
+                this.statusData = [];
+                showToast("Gagal memuat data dari Spreadsheet.", "error"); 
             }
             this.statusAppLoading = false;
         },
@@ -1816,12 +1825,22 @@ function statusCustomerApp() {
         get filteredStatusData() {
             return this.statusData.filter(c => {
                 const mNama = (c.nama || '').toLowerCase().includes(this.scSearchNama.toLowerCase());
-                const mDari = this.scFilterDari === '' || (c.dari && c.dari.includes(this.scFilterDari));
-                const mBayar = this.scFilterBayar === '' || (this.scFilterBayar === 'sudah' ? c.bayar : !c.bayar);
-                const mInvoice = this.scFilterInvoice === '' || (this.scFilterInvoice === 'sudah' ? c.invoice : !c.invoice);
                 const mTanggal = this.scSearchTanggal === '' || (c.tglKirim && c.tglKirim.toLowerCase().includes(this.scSearchTanggal.toLowerCase()));
-                return mNama && mDari && mBayar && mInvoice && mTanggal;
+                const mDari = this.scFilterDari === '' || (c.dari && c.dari.includes(this.scFilterDari));
+                const mSheet = this.scFilterSheet === '' || c.sheetName === this.scFilterSheet;
+                const mStatus = this.scFilterStatus === '' || c.statusCustomer === this.scFilterStatus;
+                
+                return mNama && mTanggal && mDari && mSheet && mStatus;
             });
+        },
+
+        getCardColor(status) {
+            if (status === 'sudah kirim') return 'bg-green-100 border-green-400 text-green-900';
+            if (status === 'belum di kirim') return 'bg-blue-100 border-blue-400 text-blue-900';
+            if (status === 'kirim jepang') return 'bg-gradient-to-br from-purple-200 to-yellow-200 border-purple-400 text-purple-900';
+            if (status === 'kirim hari ini') return 'bg-orange-100 border-orange-400 text-orange-900';
+            if (status === 'cancel') return 'bg-red-100 border-red-400 text-red-900';
+            return 'bg-white border-gray-200';
         },
 
         getPillColor(name) {
@@ -1855,12 +1874,11 @@ function statusCustomerApp() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  ADMIN SALES LOGIC (FULL & INTEGRATED)
+//  ADMIN SALES LOGIC
 // ─────────────────────────────────────────────────────────────
 function adminSalesApp() {
     return {
-        // PENTING: Ganti tulisan di bawah dengan URL Apps Script Dashboard Packing Anda
-        apiUrl: 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec', 
+        apiUrl: ADMIN_SALES_API_URL, 
         localData: [],
         loading: false,
         inputNama: '',
@@ -1985,7 +2003,6 @@ function adminSalesApp() {
     };
 }
 
-
 function pFileToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -1998,12 +2015,7 @@ function pFileToBase64(file) {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
-      .then(registration => {
-        console.log('ServiceWorker terdaftar:', registration.scope);
-      })
-      .catch(err => {
-        console.log('Pendaftaran ServiceWorker gagal:', err);
-      });
+      .catch(err => console.log('SW error:', err));
   });
 }
 </script>
