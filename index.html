@@ -6,78 +6,111 @@
     <title>Yanoshi Dashboard</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#CC0000">
+    <meta name="theme-color" content="#0A0A0B">
     <link rel="apple-touch-icon" href="https://yanoshijapan.github.io/asetonline/logoappyanoshi.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
-            --red: #CC0000;
-            --red-dark: #990000;
-            --red-light: #ff1a1a;
+            --red: #E11D2E;
+            --red-dark: #7A0000;
+            --red-light: #FF4550;
             --gold: #D4AF37;
-            --gold-light: #F0CC5A;
-            --gold-dark: #B8941C;
-            --white: #FFFFFF;
-            --off-white: #FFF8F0;
-            --gray-soft: #F5F5F5;
-            --text-dark: #1A1A1A;
-            --text-mid: #555555;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
-            --shadow-lg: 0 8px 40px rgba(0,0,0,0.16);
+            --gold-light: #F4E4A6;
+            --gold-dark: #9C7A1D;
+            --gold-gradient: linear-gradient(135deg, #F6E7B4 0%, #D4AF37 45%, #9C7A1D 100%);
+            --red-gradient: linear-gradient(135deg, #FF4550 0%, #B3001B 60%, #5A0000 100%);
+            --white-gradient: linear-gradient(135deg, #FFFFFF 0%, #E9E9EC 100%);
+
+            /* Dark surfaces */
+            --white: #17171B;          
+            --off-white: #1E1E23;      
+            --gray-soft: #232328;      
+            --text-dark: #F3F1EA;      
+            --text-mid: #A9A6A0;       
+
+            --bg-black: #0A0A0B;
+            --bg-elev-1: #131316;
+            --bg-elev-2: #1B1B20;
+            --border-soft: rgba(255,255,255,0.08);
+            --border-gold: rgba(212,175,55,0.35);
+
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.35);
+            --shadow-md: 0 6px 26px rgba(0,0,0,0.45);
+            --shadow-lg: 0 10px 48px rgba(0,0,0,0.55);
             --radius: 16px;
             
             /* Target Harian Variables */
-            --th-primary: #3b82f6;
-            --th-bg: #f1f5f9;
-            --th-card-bg: #ffffff;
-            --th-text-main: #1e293b;
-            --th-text-muted: #64748b;
+            --th-primary: #E11D2E;
+            --th-bg: transparent;
+            --th-card-bg: #1b1b20;
+            --th-card-border: rgba(255,255,255,0.08);
+            --th-elev: #232328;
+            --th-text-main: #F3F1EA;
+            --th-text-muted: #A9A6A0;
             --th-accent-red: #ef4444;
             --th-accent-green: #10b981;
             --th-accent-orange: #f59e0b;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { font-family: 'Montserrat', sans-serif; background: var(--white); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+        html, body {
+            font-family: 'Montserrat', sans-serif;
+            background:
+                radial-gradient(circle at 12% 8%, rgba(212,175,55,0.08) 0%, transparent 45%),
+                radial-gradient(circle at 88% 18%, rgba(225,29,46,0.10) 0%, transparent 40%),
+                linear-gradient(180deg, #0A0A0B 0%, #141418 45%, #1B1B20 100%);
+            background-attachment: fixed;
+            color: var(--text-dark); min-height: 100vh; overflow-x: hidden;
+        }
 
         [x-cloak] { display: none !important; }
 
         /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: #0f0f11; }
+        ::-webkit-scrollbar-thumb { background: var(--gold-gradient); border-radius: 3px; }
+
+        /* ===== MODERN MONOCHROME SVG ICON TREATMENT ===== */
+        .icon-svg { display: inline-block; vertical-align: middle; }
 
         /* ===== LOGIN PAGE ===== */
         #loginPage {
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d0000 40%, #8b0000 70%, #CC0000 100%);
+            background: linear-gradient(160deg,
+                #14090a 0%,
+                #2a0405 18%,
+                #4a0007 36%,
+                #6e0910 54%,
+                #9c1420 70%,
+                #c2202f 86%,
+                #e13140 100%);
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
         }
         #loginPage::before {
             content: '';
             position: absolute; inset: 0;
-            background: repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(212,175,55,0.03) 30px, rgba(212,175,55,0.03) 60px);
+            background: radial-gradient(ellipse 90% 60% at 50% -10%, rgba(255,255,255,0.06) 0%, transparent 60%),
+                        radial-gradient(ellipse 80% 60% at 50% 110%, rgba(0,0,0,0.35) 0%, transparent 60%);
         }
         #loginPage::after {
             content: '';
             position: absolute;
             top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(212,175,55,0.08) 0%, transparent 60%),
-                        radial-gradient(circle at 70% 50%, rgba(204,0,0,0.15) 0%, transparent 60%);
+            background: radial-gradient(circle at 30% 50%, rgba(212,175,55,0.09) 0%, transparent 55%),
+                        radial-gradient(circle at 70% 45%, rgba(204,0,0,0.14) 0%, transparent 55%);
         }
         .login-card {
             position: relative; z-index: 1;
-            background: rgba(255,255,255,0.97);
+            background: linear-gradient(165deg, rgba(30,30,35,0.92) 0%, rgba(15,15,17,0.96) 100%);
             border-radius: 24px;
             padding: 48px 40px;
             width: 100%; max-width: 420px;
             margin: 20px;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(212,175,55,0.2);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(212,175,55,0.28);
             backdrop-filter: blur(20px);
             animation: loginFadeIn 0.6s ease-out;
         }
@@ -98,11 +131,13 @@
         .login-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-mid); margin-bottom: 8px; }
         .login-field input {
             width: 100%; padding: 14px 18px;
-            border: 2px solid #e5e5e5; border-radius: 12px;
+            border: 2px solid #e4e4e7; border-radius: 12px;
             font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500;
-            outline: none; transition: all 0.2s; background: #fafafa; color: var(--text-dark);
+            outline: none; transition: all 0.2s; background: #FFFFFF; color: #1A1A1D;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
-        .login-field input:focus { border-color: var(--red); background: white; box-shadow: 0 0 0 4px rgba(204,0,0,0.08); }
+        .login-field input::placeholder { color: #9a9a9e; }
+        .login-field input:focus { border-color: var(--gold); background: #FFFFFF; box-shadow: 0 0 0 4px rgba(212,175,55,0.18); }
         .login-btn {
             width: 100%; padding: 15px;
             background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
@@ -110,35 +145,38 @@
             font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
             cursor: pointer; transition: all 0.2s; margin-top: 8px;
             letter-spacing: 0.5px;
+            box-shadow: 0 4px 18px rgba(225,29,46,0.25), 0 0 0 1px rgba(212,175,55,0.25) inset;
         }
-        .login-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(204,0,0,0.4); }
+        .login-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(225,29,46,0.45), 0 0 0 1px rgba(212,175,55,0.4) inset; }
         .login-btn:active { transform: translateY(0); }
         .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         .login-error {
-            background: #fef2f2; border: 1px solid #fca5a5;
-            color: #dc2626; border-radius: 10px; padding: 12px 16px;
+            background: rgba(225,29,46,0.10); border: 1px solid rgba(225,29,46,0.35);
+            color: #ff8b8f; border-radius: 10px; padding: 12px 16px;
             font-size: 13px; font-weight: 600; text-align: center; margin-top: 14px;
         }
-        .login-footer { text-align: center; margin-top: 24px; font-size: 11px; color: #aaa; font-weight: 500; }
+        .login-footer { text-align: center; margin-top: 24px; font-size: 11px; color: #6b6a68; font-weight: 500; letter-spacing: 0.5px; }
 
         /* ===== STICKY HEADER ===== */
         #mainHeader {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: white;
-            border-bottom: 3px solid var(--red);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+            background: linear-gradient(115deg, #4a0007 0%, var(--red-dark) 30%, var(--red) 65%, #6e0d16 100%);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            border-image: linear-gradient(90deg, var(--gold) 0%, var(--red-light) 50%, var(--gold) 100%) 1;
+            box-shadow: 0 2px 24px rgba(90,0,0,0.45);
             height: 64px; display: flex; align-items: center; justify-content: space-between;
             padding: 0 20px;
         }
         .header-logo { height: 36px; width: auto; object-fit: contain; cursor: pointer; }
         .hamburger-btn {
             width: 44px; height: 44px; border-radius: 12px;
-            background: var(--gray-soft); border: none; cursor: pointer;
+            background: rgba(255,255,255,0.06); border: 1px solid var(--border-soft); cursor: pointer;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
-        .hamburger-btn:hover { background: #ffe5e5; }
-        .hamburger-btn span { display: block; width: 20px; height: 2px; background: var(--text-dark); border-radius: 2px; transition: all 0.3s; }
+        .hamburger-btn:hover { background: rgba(212,175,55,0.12); border-color: var(--border-gold); }
+        .hamburger-btn span { display: block; width: 20px; height: 2px; background: var(--gold-light); border-radius: 2px; transition: all 0.3s; }
         .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: translateX(-8px); }
         .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -146,8 +184,9 @@
         /* ===== DROPDOWN MENU ===== */
         .user-dropdown {
             position: fixed; top: 72px; right: 16px; z-index: 999;
-            background: white; border-radius: 16px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06);
+            background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%);
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.2);
             min-width: 220px; overflow: hidden;
             animation: dropdownIn 0.2s ease-out;
         }
@@ -155,39 +194,42 @@
             from { opacity: 0; transform: translateY(-8px) scale(0.97); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .dropdown-user-info { padding: 16px 18px 14px; border-bottom: 1px solid #f0f0f0; }
+        .dropdown-user-info { padding: 16px 18px 14px; border-bottom: 1px solid var(--border-soft); background: linear-gradient(90deg, rgba(212,175,55,0.08), transparent); }
         .dropdown-user-name { font-size: 14px; font-weight: 700; color: var(--text-dark); }
-        .dropdown-user-role { font-size: 11px; color: var(--text-mid); font-weight: 500; margin-top: 2px; }
+        .dropdown-user-role { font-size: 11px; color: var(--gold-light); font-weight: 600; margin-top: 2px; letter-spacing: 0.5px; text-transform: uppercase; }
         .dropdown-item {
             display: flex; align-items: center; gap: 12px;
             padding: 13px 18px; cursor: pointer;
             font-size: 13px; font-weight: 600; color: var(--text-dark);
-            transition: background 0.15s; border-bottom: 1px solid #f9f9f9;
+            transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.04);
         }
-        .dropdown-item:hover { background: #fafafa; }
-        .dropdown-item.danger { color: var(--red); }
-        .dropdown-item.danger:hover { background: #fff0f0; }
-        .dropdown-item .icon { font-size: 16px; }
+        .dropdown-item:hover { background: rgba(212,175,55,0.08); }
+        .dropdown-item.danger { color: var(--red-light); }
+        .dropdown-item.danger:hover { background: rgba(225,29,46,0.12); }
+        .dropdown-item .icon { display: inline-flex; color: var(--gold-light); }
+        .dropdown-item.danger .icon { color: var(--red-light); }
 
         /* ===== MAIN CONTENT ===== */
-        #mainContent { padding-top: 64px; min-height: 100vh; background: var(--white); }
+        #mainContent { padding-top: 64px; min-height: 100vh; background: transparent; }
         .content-wrap { max-width: 1200px; margin: 0 auto; padding: 28px 20px 48px; }
 
         /* ===== WELCOME BANNER ===== */
         .welcome-banner {
-            background: linear-gradient(135deg, var(--red) 0%, #8b0000 60%, #1a1a1a 100%);
+            background: linear-gradient(120deg, #1a0000 0%, #4a0007 35%, var(--red) 65%, #1a1a1a 100%);
             border-radius: 20px; padding: 28px 32px; margin-bottom: 28px; position: relative; overflow: hidden;
+            border: 1px solid var(--border-gold);
+            box-shadow: var(--shadow-md);
         }
         .welcome-banner::before {
             content: ''; position: absolute; top: -40px; right: -40px;
             width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(212,175,55,0.25) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(212,175,55,0.30) 0%, transparent 70%);
             border-radius: 50%;
         }
         .welcome-banner::after {
             content: ''; position: absolute; bottom: -30px; left: 20%;
             width: 150px; height: 150px;
-            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%);
             border-radius: 50%;
         }
         .welcome-title { font-size: 22px; font-weight: 800; color: white; position: relative; z-index: 1; line-height: 1.2; }
@@ -216,62 +258,64 @@
             border-radius: 2px;
         }
 
-        /* ===== GRID MENU CARDS ===== */
+        /* ===== GRID MENU CARDS (Updated to 6 Cols) ===== */
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 32px; }
         @media (min-width: 768px) { .menu-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 1024px) { .menu-grid { grid-template-columns: repeat(6, 1fr); } }
 
         .menu-card {
-            background: white; border-radius: 18px; padding: 22px 16px;
+            background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
+            border-radius: 18px; padding: 22px 16px;
             box-shadow: var(--shadow-sm); cursor: pointer;
-            border: 1.5px solid #f0f0f0;
+            border: 1.5px solid var(--border-soft);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center; user-select: none; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .menu-card::after {
             content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold));
+            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), rgba(255,255,255,0.9));
             transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
         }
-        .menu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: transparent; }
+        .menu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-gold); }
         .menu-card:hover::after { transform: scaleX(1); }
-        .menu-card.active { border-color: var(--red); box-shadow: 0 4px 20px rgba(204,0,0,0.15); }
+        .menu-card.active { border-color: var(--gold); box-shadow: 0 4px 24px rgba(212,175,55,0.18); }
         .menu-card.active::after { transform: scaleX(1); }
 
         .menu-icon {
             width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 12px;
             display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+            background: linear-gradient(155deg, rgba(212,175,55,0.22) 0%, rgba(212,175,55,0.06) 100%);
+            border: 1px solid var(--border-gold);
+            color: var(--gold-light);
         }
-        .menu-icon.red    { background: linear-gradient(135deg, #fff0f0, #ffe5e5); }
-        .menu-icon.gold   { background: linear-gradient(135deg, #fffbf0, #fff3cc); }
-        .menu-icon.blue   { background: linear-gradient(135deg, #f0f4ff, #e5eeff); }
-        .menu-icon.green  { background: linear-gradient(135deg, #f0fff8, #d1fae5); }
+        .menu-icon svg { width: 24px; height: 24px; }
         .menu-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); line-height: 1.3; margin: 0; }
         
         /* ===== WIDE MENU UNTUK CETAK STIKER ===== */
         .menu-card-wide {
-            background: white; border-radius: 18px; padding: 14px 20px;
+            background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
+            border-radius: 18px; padding: 14px 20px;
             box-shadow: var(--shadow-sm); cursor: pointer;
-            border: 1.5px solid #f0f0f0; 
+            border: 1.5px solid var(--border-soft); 
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative; overflow: hidden;
             display: flex; align-items: center; justify-content: center; gap: 12px;
             grid-column: 1 / -1; width: 100%;
         }
-        .menu-card-wide:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: transparent; }
+        .menu-card-wide:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-gold); }
         .menu-card-wide::after {
             content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold));
+            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), rgba(255,255,255,0.9));
             transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
         }
         .menu-card-wide:hover::after { transform: scaleX(1); }
-        .menu-card-wide .menu-icon { margin: 0; width: 44px; height: 44px; flex-shrink: 0; font-size: 20px; }
+        .menu-card-wide .menu-icon { margin: 0; width: 44px; height: 44px; flex-shrink: 0; font-size: 20px; background: linear-gradient(155deg, rgba(212,175,55,0.22) 0%, rgba(212,175,55,0.06) 100%); border: 1px solid var(--border-gold); color: var(--gold-light); display: flex; align-items: center; justify-content: center; border-radius: 12px;}
+        .menu-card-wide .menu-icon svg { width: 20px; height: 20px; }
         .menu-card-wide .menu-label { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); }
-        .menu-card-wide .arrow-icon { position: absolute; right: 20px; color: #ccc; font-weight: bold; font-size: 16px; transition: transform 0.2s, color 0.2s; }
-        .menu-card-wide:hover .arrow-icon { transform: translateX(4px); color: var(--red); }
+        .menu-card-wide .arrow-icon { position: absolute; right: 20px; color: var(--gold-light); font-weight: bold; font-size: 16px; transition: transform 0.2s, color 0.2s; }
+        .menu-card-wide:hover .arrow-icon { transform: translateX(4px); color: var(--gold); }
 
-        /* ===== POPUP MODAL MENU ===== */
         /* ===== POPUP MODAL MENU ===== */
         .popup-overlay {
             position: fixed; inset: 0; z-index: 3000;
@@ -285,12 +329,14 @@
             to   { opacity: 1; }
         }
         .popup-sheet {
-            background: white; width: 100%; max-width: 900px;
+            background: linear-gradient(180deg, #18181c 0%, #0e0e10 100%);
+            border: 1px solid var(--border-gold);
+            width: 100%; max-width: 900px;
             border-radius: 24px 24px 0 0;
             max-height: 88vh; display: flex; flex-direction: column;
-            box-shadow: 0 -8px 60px rgba(0,0,0,0.25);
+            box-shadow: 0 -8px 60px rgba(0,0,0,0.5);
             animation: popupSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden; /* KUNCI 1: Mencegah konten bocor di HP */
+            overflow: hidden; /* Mencegah konten bocor di HP */
         }
         @media (min-width: 700px) {
             .popup-overlay { align-items: center; padding: 20px; }
@@ -301,29 +347,32 @@
             to   { transform: translateY(0); opacity: 1; }
         }
         .popup-header {
-            padding: 20px 24px 16px; border-bottom: 1.5px solid #f0f0f0;
+            padding: 20px 24px 16px; border-bottom: 1.5px solid var(--border-soft);
+            background: linear-gradient(90deg, rgba(212,175,55,0.07), transparent 60%);
             display: flex; align-items: center; justify-content: space-between;
             flex-shrink: 0;
         }
         .popup-drag-handle {
-            width: 40px; height: 4px; background: #e0e0e0; border-radius: 2px;
-            margin: 10px auto 0; flex-shrink: 0;
+            width: 40px; height: 4px; background: var(--gold-gradient); border-radius: 2px;
+            margin: 10px auto 0; flex-shrink: 0; opacity: 0.6;
         }
         @media (min-width: 700px) { .popup-drag-handle { display: none; } }
         .popup-title-wrap { display: flex; align-items: center; gap: 10px; }
+        .popup-title-icon { color: var(--gold-light); display: flex; align-items: center; }
         .popup-title { font-size: 15px; font-weight: 800; color: var(--text-dark); }
         .popup-close-btn {
             width: 36px; height: 36px; border-radius: 10px;
-            background: #f5f5f5; border: none; cursor: pointer;
-            font-size: 18px; display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s; flex-shrink: 0;
+            background: rgba(255,255,255,0.06); border: 1px solid var(--border-soft); cursor: pointer;
+            font-size: 18px; color: var(--text-dark);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; flex-shrink: 0;
         }
-        .popup-close-btn:hover { background: #ffe5e5; color: var(--red); }
+        .popup-close-btn:hover { background: rgba(225,29,46,0.15); border-color: var(--red); color: var(--red-light); }
         .popup-body {
-            flex: 1 1 auto; /* KUNCI 2: Memaksa tinggi flex menyesuaikan sisa ruang */
+            flex: 1 1 auto; 
             overflow-y: auto; padding: 20px 24px 32px;
-            -webkit-overflow-scrolling: touch; /* KUNCI 3: Scroll mulus di iOS/iPhone */
-            min-height: 0; /* KUNCI 4: Mencegah flexbox macet di mobile */
+            -webkit-overflow-scrolling: touch;
+            min-height: 0; 
         }
 
         /* ===== MODAL USER SETTINGS ===== */
@@ -333,8 +382,10 @@
             display: flex; align-items: center; justify-content: center; padding: 20px;
         }
         .modal-box {
-            background: white; border-radius: 24px; padding: 36px 32px; width: 100%; max-width: 420px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.25); animation: modalIn 0.25s ease-out;
+            background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%);
+            border: 1px solid var(--border-gold);
+            border-radius: 24px; padding: 36px 32px; width: 100%; max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.55); animation: modalIn 0.25s ease-out;
         }
         @keyframes modalIn {
             from { opacity: 0; transform: scale(0.95) translateY(10px); }
@@ -345,35 +396,37 @@
         .modal-field { margin-bottom: 18px; }
         .modal-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-mid); margin-bottom: 8px; }
         .modal-field input {
-            width: 100%; padding: 13px 16px; border: 2px solid #e5e5e5; border-radius: 10px;
+            width: 100%; padding: 13px 16px; border: 2px solid rgba(255,255,255,0.1); border-radius: 10px;
             font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500;
-            outline: none; transition: all 0.2s;
+            outline: none; transition: all 0.2s; background: rgba(255,255,255,0.04); color: var(--text-dark);
         }
-        .modal-field input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(204,0,0,0.08); }
+        .modal-field input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,0.12); }
         .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
         .btn-cancel {
-            flex: 1; padding: 13px; border: 2px solid #e5e5e5; border-radius: 10px;
-            background: white; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
+            flex: 1; padding: 13px; border: 2px solid rgba(255,255,255,0.1); border-radius: 10px;
+            background: rgba(255,255,255,0.03); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
             color: var(--text-mid); cursor: pointer; transition: all 0.2s;
         }
-        .btn-cancel:hover { background: #f5f5f5; }
+        .btn-cancel:hover { background: rgba(255,255,255,0.07); }
         .btn-save {
             flex: 2; padding: 13px; border: none; border-radius: 10px;
             background: linear-gradient(135deg, var(--red), var(--red-dark));
             font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
             color: white; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;
         }
-        .btn-save:hover { box-shadow: 0 4px 16px rgba(204,0,0,0.35); transform: translateY(-1px); }
+        .btn-save:hover { box-shadow: 0 4px 16px rgba(225,29,46,0.4), 0 0 0 1px rgba(212,175,55,0.4) inset; transform: translateY(-1px); }
         .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         /* ===== UPLOAD ZONE ===== */
         .upload-zone {
-            border: 2px dashed #d1d5db; border-radius: 8px;
-            padding: 10px; text-align: center; background: #fafafa;
+            border: 2px dashed rgba(255,255,255,0.16) !important; border-radius: 8px;
+            padding: 10px; text-align: center; background: rgba(255,255,255,0.03) !important;
             transition: border-color 0.2s, background 0.2s; cursor: pointer;
         }
-        .upload-zone:hover { border-color: #cc0000; background: #fff5f5; }
-        .upload-zone.has-file { border-color: #16a34a; background: #f0fdf4; }
+        .upload-zone:hover { border-color: var(--gold) !important; background: rgba(212,175,55,0.07) !important; }
+        .upload-zone.has-file { border-color: #34d399 !important; background: rgba(16,185,129,0.08) !important; }
+        .upload-zone p { color: var(--text-mid) !important; }
         .upload-zone input[type="file"] { display: none; }
 
         /* ===== TOAST ===== */
@@ -394,7 +447,7 @@
         }
         .toast.success { background: linear-gradient(135deg, #059669, #10b981); }
         .toast.error   { background: linear-gradient(135deg, var(--red-dark), var(--red)); }
-        .toast.info    { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+        .toast.info    { background: linear-gradient(135deg, #7a5c00, var(--gold-dark)); }
 
         /* ===== IFRAME CONTAINER ===== */
         .iframe-wrap { width: 100%; border: none; display: block; background: #f9f9f9; }
@@ -403,26 +456,33 @@
 
         /* ===== EMBED PANELS ===== */
         .embed-panel {
-            background: white; border-radius: 20px; overflow: hidden;
-            box-shadow: var(--shadow-sm); border: 1.5px solid #f0f0f0; margin-bottom: 28px;
+            background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
+            border-radius: 20px; overflow: hidden;
+            box-shadow: var(--shadow-sm); border: 1.5px solid var(--border-soft); margin-bottom: 28px;
         }
         .embed-header {
             padding: 16px 22px; display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 2px solid var(--red); background: white;
+            border-bottom: 1px solid transparent;
+            border-image: linear-gradient(90deg, var(--red), var(--gold), rgba(255,255,255,0.6)) 1;
+            background: linear-gradient(90deg, rgba(212,175,55,0.06), transparent 70%);
         }
         .embed-title-wrap { display: flex; align-items: center; gap: 10px; }
-        .embed-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .embed-icon.red  { background: #fff0f0; }
-        .embed-icon.gold { background: #fffbf0; }
+        .embed-icon {
+            width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+            background: linear-gradient(155deg, rgba(212,175,55,0.22) 0%, rgba(212,175,55,0.06) 100%);
+            border: 1px solid var(--border-gold);
+            color: var(--gold-light);
+        }
+        .embed-icon svg { width: 18px; height: 18px; }
         .embed-title { font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .embed-sub   { font-size: 11px; color: var(--text-mid); margin-top: 2px; }
         .embed-toggle {
-            padding: 7px 14px; border-radius: 8px; border: 1.5px solid #e5e5e5;
-            background: white; font-family: 'Montserrat', sans-serif;
+            padding: 7px 14px; border-radius: 8px; border: 1.5px solid var(--border-soft);
+            background: rgba(255,255,255,0.04); font-family: 'Montserrat', sans-serif;
             font-size: 11px; font-weight: 700; color: var(--text-mid); cursor: pointer;
             transition: all 0.2s; display: flex; align-items: center; gap: 6px;
         }
-        .embed-toggle:hover { background: #f5f5f5; border-color: var(--red); color: var(--red); }
+        .embed-toggle:hover { background: rgba(212,175,55,0.1); border-color: var(--border-gold); color: var(--gold-light); }
         .embed-body { overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .embed-body.collapsed { max-height: 0; }
         .embed-body.expanded { max-height: 600px; }
@@ -431,7 +491,7 @@
             font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
             cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
         }
-        .btn-ext.primary { background: var(--red); color: white; }
+        .btn-ext.primary { background: linear-gradient(135deg, var(--red), var(--red-dark)); color: white; box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset; }
 
         /* =========================================================
            TARGET HARIAN SCOPED CSS
@@ -439,7 +499,8 @@
         .th-container { font-family: 'Inter', sans-serif; width: 100%; background: transparent; animation: th_fadeIn 0.8s ease-out; }
         
         .th-header-card {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #4a0007 0%, var(--red) 60%, var(--gold-dark) 130%);
+            border: 1px solid var(--border-gold);
             padding: 30px 24px; color: white; text-align: center;
             border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 20px;
         }
@@ -468,7 +529,7 @@
         .th-item-list { list-style: none; margin: 0; padding: 0; }
         .th-item-card {
             background: var(--th-card-bg); padding: 20px; border-radius: 16px;
-            margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0;
+            margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border);
             transition: transform .2s ease, box-shadow .2s ease;
         }
         .th-item-card:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(0,0,0,.1); }
@@ -483,15 +544,15 @@
         .th-status-success { background-color: #d1fae5; color: var(--th-accent-green); border: 1px solid rgba(16,185,129,.3); }
         .th-status-warning { background-color: #fef3c7; color: var(--th-accent-orange); border: 1px solid rgba(245,158,11,.3); }
         .th-status-danger  { background-color: #fee2e2; color: var(--th-accent-red);    border: 1px solid rgba(239,68,68,.3); }
-        .th-progress-container { width: 100%; height: 10px; background-color: #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+        .th-progress-container { width: 100%; height: 10px; background-color: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
         .th-progress-bar { height: 100%; border-radius: 10px; width: 0%; transition: width 1s cubic-bezier(.4,0,.2,1); }
-        .th-stats-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--th-text-muted); font-weight: 500; background: #f8fafc; padding: 10px 12px; border-radius: 10px; }
+        .th-stats-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--th-text-muted); font-weight: 500; background: var(--th-elev); padding: 10px 12px; border-radius: 10px; }
         .th-stat-val { font-weight: 700; color: var(--th-text-main); margin-left: 4px; }
         .th-val-green { color: var(--th-accent-green); }
         .th-val-red   { color: var(--th-accent-red); }
 
-        #th-loading, #th-error { text-align: center; padding: 40px; background: var(--th-card-bg); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-        .th-spinner { width: 40px; height: 40px; border: 4px solid #f1f5f9; border-top: 4px solid var(--th-primary); border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite; }
+        #th-loading, #th-error { text-align: center; padding: 40px; background: var(--th-card-bg); border: 1px solid var(--th-card-border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+        .th-spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--th-primary); border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite; }
         
         @keyframes th_fadeIn  { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes th_fadeOut { to { opacity: 0; transform: translateX(-50%) translateY(-10px); } }
@@ -509,11 +570,11 @@
         /* Rekap Section */
         .th-rekap-section {
             background: var(--th-card-bg); border-radius: var(--radius);
-            box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border);
             margin-bottom: 20px; overflow: hidden; animation: th_fadeIn .6s ease-out;
         }
         .th-rekap-header {
-            background: linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);
+            background: linear-gradient(135deg,#1a0000 0%, var(--red-dark) 100%);
             padding: 18px 22px; display: flex; justify-content: space-between;
             align-items: center; cursor: pointer; user-select: none;
         }
@@ -548,24 +609,24 @@
         .th-rekap-filter { display: flex; align-items: center; gap: 10px; padding: 8px 0 14px; flex-wrap: wrap; }
         .th-rekap-filter label { font-size: 12px; font-weight: 600; color: var(--th-text-muted); text-transform: uppercase; letter-spacing: .5px; }
         .th-rekap-filter select {
-            border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 7px 12px;
+            border: 1.5px solid var(--th-card-border); border-radius: 8px; padding: 7px 12px;
             font-size: 13px; font-weight: 600; color: var(--th-text-main);
-            background: #f8fafc; cursor: pointer; outline: none; transition: border-color .2s;
+            background: var(--th-elev); cursor: pointer; outline: none; transition: border-color .2s;
         }
-        .th-rekap-filter select:focus { border-color: var(--th-primary); }
+        .th-rekap-filter select:focus { border-color: var(--gold); }
 
         .th-rekap-empty { text-align: center; padding: 30px 20px; color: var(--th-text-muted); font-size: 13px; }
         .th-rekap-empty .th-empty-icon { font-size: 32px; margin-bottom: 8px; }
 
-        .th-rekap-month-card { border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+        .th-rekap-month-card { border: 1px solid var(--th-card-border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
         .th-rekap-month-header {
-            background: #f8fafc; padding: 12px 16px;
+            background: var(--th-elev); padding: 12px 16px;
             display: flex; justify-content: space-between; align-items: center;
             cursor: pointer; user-select: none; border-bottom: 1px solid transparent;
             transition: background .15s;
         }
-        .th-rekap-month-header:hover { background: #f1f5f9; }
-        .th-rekap-month-header.detail-open { border-bottom-color: #e2e8f0; }
+        .th-rekap-month-header:hover { background: rgba(212,175,55,0.08); }
+        .th-rekap-month-header.detail-open { border-bottom-color: var(--th-card-border); }
         .th-rekap-month-title { font-size: 14px; font-weight: 800; color: var(--th-text-main); display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
         .th-rekap-month-meta  { font-size: 11px; color: var(--th-text-muted); margin-top: 3px; }
         .th-rekap-month-right { display: flex; align-items: center; gap: 8px; flex-shrink:0; }
@@ -583,7 +644,7 @@
 
         .th-rekap-grand-row {
             display: flex; justify-content: space-between; align-items: center;
-            background: linear-gradient(135deg,#1e3a8a,#3b82f6);
+            background: linear-gradient(135deg, var(--red-dark), var(--red));
             border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; color: white;
             gap: 8px; flex-wrap: wrap;
         }
@@ -592,18 +653,18 @@
         .th-rg-pcs   { font-size: 12px; font-weight: 400; opacity: .75; }
 
         .th-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--th-text-muted); margin: 10px 0 7px; }
-        .th-prod-table-wrap { border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; }
+        .th-prod-table-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--th-card-border); }
         .th-prod-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        .th-prod-table thead tr { background: #f1f5f9; }
+        .th-prod-table thead tr { background: var(--th-elev); }
         .th-prod-table thead th {
             padding: 8px 10px; font-size: 10px; font-weight: 700;
             text-transform: uppercase; letter-spacing: .5px;
-            color: var(--th-text-muted); border-bottom: 1px solid #e2e8f0; text-align:left;
+            color: var(--th-text-muted); border-bottom: 1px solid var(--th-card-border); text-align:left;
         }
         .th-prod-table thead th:not(:first-child) { text-align: right; }
-        .th-prod-table tbody tr { border-bottom: 1px solid #f1f5f9; }
+        .th-prod-table tbody tr { border-bottom: 1px solid var(--th-card-border); }
         .th-prod-table tbody tr:last-child { border-bottom: none; }
-        .th-prod-table tbody tr:hover { background: #f8fafc; }
+        .th-prod-table tbody tr:hover { background: rgba(212,175,55,0.06); }
         .th-prod-table tbody td { padding: 9px 10px; font-weight: 500; color: var(--th-text-main); }
         .th-prod-table tbody td:not(:first-child) { text-align: right; }
         .th-prod-terjual { color: var(--th-accent-green); font-weight: 700; }
@@ -613,7 +674,7 @@
         .th-mini-bar      { height: 100%; border-radius: 6px; }
 
         .th-rekap-grand-summary {
-            background: linear-gradient(135deg,#0f172a,#1e3a8a);
+            background: linear-gradient(135deg,#2a0000,var(--red-dark));
             border-radius: 14px; padding: 16px 18px; color: white;
             display: flex; justify-content: space-between; align-items: center;
             margin-top: 4px; gap: 10px;
@@ -623,10 +684,79 @@
         .th-rgs-sub   { font-size: 12px; opacity: .7; }
 
         .th-rekap-save-notif { display: none; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 600; margin-top: 4px; text-align: center; }
-        .th-auto-info-badge { display: inline-flex; align-items: center; gap: 6px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; margin: 12px 0 4px; }
-        .th-auto-tag { font-size: 10px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 6px; padding: 2px 7px; font-weight: 700; }
+        .th-auto-info-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(212,175,55,0.12); color: var(--gold-light); border: 1px solid var(--border-gold); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; margin: 12px 0 4px; }
+        .th-auto-tag { font-size: 10px; background: rgba(212,175,55,0.12); color: var(--gold-light); border: 1px solid var(--border-gold); border-radius: 6px; padding: 2px 7px; font-weight: 700; }
         .th-chevron { font-size: 12px; color: var(--th-text-muted); transition: transform .2s; }
         .th-chevron.open { transform: rotate(180deg); }
+
+        /* =========================================================
+           POPUP CONTENT THEME OVERRIDE & MODIFICATIONS
+        ========================================================= */
+        .popup-body .bg-white { background-color: #1b1b20 !important; }
+        .popup-body .bg-gray-50 { background-color: #202024 !important; }
+        .popup-body .bg-gray-100 { background-color: rgba(255,255,255,0.07) !important; }
+        .popup-body .bg-red-50 { background-color: rgba(225,29,46,0.10) !important; }
+        .popup-body .border-red-100 { border-color: rgba(225,29,46,0.22) !important; }
+        .popup-body .border-red-200 { border-color: rgba(225,29,46,0.3) !important; }
+        .popup-body .text-red-700 { color: var(--red-light) !important; }
+        
+        /* Pewarnaan default untuk text */
+        .popup-body .text-gray-600,
+        .popup-body .text-gray-500 { color: var(--text-mid) !important; }
+        .popup-body .text-gray-400 { color: #8a8985 !important; }
+        .popup-body .text-gray-300 { color: #55555a !important; }
+        
+        .popup-body .border-gray-100,
+        .popup-body .border-gray-200,
+        .popup-body .border-gray-300,
+        .popup-body .border { border-color: rgba(255,255,255,0.10) !important; }
+        
+        /* Ini hanya akan berlaku di elemen yang tetap menggunakan CSS class tailwind ini */
+        .popup-body h3.text-gray-900 { color: var(--text-dark) !important; }
+        .popup-body button.text-gray-900 { color: #1a1a1a !important; }
+        .popup-body .text-blue-600 { color: var(--gold-light) !important; }
+        .popup-body .hover\:text-blue-800:hover { color: var(--gold) !important; }
+        
+        /* Overrides Input, Select & Textarea */
+        .popup-body input[type="text"],
+        .popup-body input[type="date"],
+        .popup-body input[type="password"],
+        .popup-body select,
+        .popup-body textarea {
+            background-color: rgba(255,255,255,0.04) !important;
+            border-color: rgba(255,255,255,0.14) !important;
+            color: var(--text-dark) !important;
+        }
+        .popup-body input::placeholder { color: #8a8985 !important; }
+        .popup-body input:focus,
+        .popup-body select:focus,
+        .popup-body textarea:focus {
+            --tw-ring-color: var(--gold) !important;
+            border-color: var(--gold) !important;
+        }
+        .popup-body option { background: #1b1b20; color: var(--text-dark); }
+        .popup-body ::placeholder { opacity: 1; }
+
+        /* Checkbox Override (Tema Gelap dan Merah) */
+        .popup-body input[type="checkbox"] {
+            background-color: rgba(255,255,255,0.04) !important;
+            border-color: rgba(255,255,255,0.2) !important;
+            appearance: none;
+            -webkit-appearance: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .popup-body input[type="checkbox"]:checked {
+            background-color: var(--red) !important;
+            border-color: var(--red) !important;
+        }
+        .popup-body input[type="checkbox"]:checked::before {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
@@ -642,9 +772,10 @@
 
 <div id="toastContainer"></div>
 
+<!-- ================== LOGIN PAGE ================== -->
 <div id="loginPage" x-show="!isLoggedIn" x-cloak>
     <div class="login-card">
-        <img src="https://yanoshijapan.github.io/asetonline/logohitam.png" alt="Yanoshi" class="login-logo">
+        <img src="https://yanoshijapan.github.io/asetonline/logoputih.png" alt="Yanoshi" class="login-logo">
         <div class="login-title">
             <h1>Selamat Datang</h1>
             <p>Masuk ke Yanoshi Dashboard</p>
@@ -675,28 +806,30 @@
 
 <div x-show="isLoggedIn" x-cloak>
 
+    <!-- ================== HEADER ================== -->
     <header id="mainHeader">
-        <img src="https://yanoshijapan.github.io/asetonline/logohitam.png" alt="Yanoshi" class="header-logo"
-             @click="activePanel = null">
+        <img src="https://yanoshijapan.github.io/asetonline/logoputih.png" alt="Yanoshi" class="header-logo" @click="activePanel = null">
 
         <button class="hamburger-btn" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen">
             <span></span><span></span><span></span>
         </button>
     </header>
 
+    <!-- ================== DROPDOWN MENU ================== -->
     <div class="user-dropdown" x-show="menuOpen" @click.outside="menuOpen = false" x-cloak>
         <div class="dropdown-user-info">
             <div class="dropdown-user-name" x-text="currentUser"></div>
             <div class="dropdown-user-role">Administrator</div>
         </div>
         <div class="dropdown-item" @click="openEditUser()">
-            <span class="icon">⚙️</span> Ubah Username & Password
+            <span class="icon"><svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span> Ubah Username & Password
         </div>
         <div class="dropdown-item danger" @click="doLogout()">
-            <span class="icon">🚪</span> Keluar
+            <span class="icon"><svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></span> Keluar
         </div>
     </div>
 
+    <!-- ================== MAIN CONTENT ================== -->
     <main id="mainContent">
         <div class="content-wrap">
 
@@ -712,56 +845,66 @@
             <div class="section-title">Menu Utama</div>
             <div class="menu-grid">
                 <div class="menu-card" :class="{ active: popupPanel === 'pencapaian' }" @click="togglePanel('pencapaian')">
-                    <div class="menu-icon red">🎯</div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                     <div class="menu-label">Pencapaian</div>
                 </div>
                 <div class="menu-card" :class="{ active: popupPanel === 'pesanan' }" @click="togglePanel('pesanan')">
-                    <div class="menu-icon gold">📦</div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
                     <div class="menu-label">Pesanan Online</div>
                 </div>
                 <div class="menu-card" :class="{ active: popupPanel === 'status_customer' }" @click="togglePanel('status_customer')">
-                    <div class="menu-icon" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff);">📊</div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
                     <div class="menu-label">Status Customer</div>
                 </div>
-                <!-- MENU BARU: ADMIN SALES -->
+                <!-- MENU ADMIN SALES -->
                 <div class="menu-card" :class="{ active: popupPanel === 'admin_sales' }" @click="togglePanel('admin_sales')">
-                    <div class="menu-icon" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">💼</div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
                     <div class="menu-label">Status Packing</div>
                 </div>
+                
+                <!-- MENU BUKU TAMU -->
+                <div class="menu-card" :class="{ active: popupPanel === 'buku_tamu' }" @click="togglePanel('buku_tamu')">
+                    <div class="menu-icon">
+                        <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    </div>
+                    <div class="menu-label">Buku Tamu</div>
+                </div>
+
                 <div class="menu-card" @click="openExternal('https://yanoshistore.netlify.app/')">
-                    <div class="menu-icon blue">🛒</div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
                     <div class="menu-label">Webstore</div>
                 </div>
-                <!-- CETAK STIKER (Kotak Sejajar) -->
-                <div class="menu-card" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
-                    <div class="menu-icon green">🖨️</div>
+                <!-- CETAK STIKER WIDE -->
+                <div class="menu-card-wide" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
                     <div class="menu-label">Cetak Stiker</div>
+                    <div class="arrow-icon">➔</div>
                 </div>
             </div>
 
+            <!-- ================== EMBED PANELS ================== -->
             <div class="embed-panel">
                 <div class="embed-header">
                     <div class="embed-title-wrap">
-                        <div class="embed-icon red">📮</div>
+                        <div class="embed-icon red"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
                         <div>
                             <div class="embed-title">Lacak Resi Pos Indonesia</div>
                             <div class="embed-sub">Cek status pengiriman paket</div>
                         </div>
                     </div>
                     <button class="embed-toggle" @click="resiOpen = !resiOpen">
-                        <span x-text="resiOpen ? '▲ Tutup' : '▼ Buka'"></span>
+                        <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" :style="{transform: resiOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition:'transform .2s'}"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <span x-text="resiOpen ? 'Tutup' : 'Buka'"></span>
                     </button>
                 </div>
                 <div class="embed-body" :class="{ expanded: resiOpen, collapsed: !resiOpen }">
-                    
                     <div class="iframe-wrap">
-                        <iframe src="https://www.posindonesia.co.id/id/tracking" class="iframe-height-lg"
-                                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                                loading="lazy" title="Lacak Resi Pos Indonesia"></iframe>
+                        <iframe src="https://www.posindonesia.co.id/id/tracking" class="iframe-height-lg" sandbox="allow-same-origin allow-scripts allow-forms allow-popups" loading="lazy" title="Lacak Resi Pos Indonesia"></iframe>
                     </div>
-                    <div style="padding:12px 16px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;">
+                    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:flex-end;">
                         <button class="btn-ext primary" @click="openExternal('https://www.posindonesia.co.id/id/tracking')">
-                            🔗 Buka di Tab Baru
+                            <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            Buka di Tab Baru
                         </button>
                     </div>
                 </div>
@@ -770,26 +913,25 @@
             <div class="embed-panel">
                 <div class="embed-header">
                     <div class="embed-title-wrap">
-                        <div class="embed-icon gold">💰</div>
+                        <div class="embed-icon gold"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
                         <div>
                             <div class="embed-title">Cek Ongkos Kirim</div>
                             <div class="embed-sub">Cek tarif pengiriman antar kota</div>
                         </div>
                     </div>
                     <button class="embed-toggle" @click="ongkirOpen = !ongkirOpen">
-                        <span x-text="ongkirOpen ? '▲ Tutup' : '▼ Buka'"></span>
+                        <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" :style="{transform: ongkirOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition:'transform .2s'}"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <span x-text="ongkirOpen ? 'Tutup' : 'Buka'"></span>
                     </button>
                 </div>
                 <div class="embed-body" :class="{ expanded: ongkirOpen, collapsed: !ongkirOpen }">
-                    
                     <div class="iframe-wrap">
-                        <iframe src="https://www.posindonesia.co.id/id/check-tarif" class="iframe-height-lg"
-                                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                                loading="lazy" title="Cek Ongkir Pos"></iframe>
+                        <iframe src="https://www.posindonesia.co.id/id/check-tarif" class="iframe-height-lg" sandbox="allow-same-origin allow-scripts allow-forms allow-popups" loading="lazy" title="Cek Ongkir Pos"></iframe>
                     </div>
-                    <div style="padding:12px 16px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;">
+                    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:flex-end;">
                         <button class="btn-ext primary" @click="openExternal('https://www.posindonesia.co.id/id/check-tarif')">
-                            🔗 Buka di Tab Baru
+                            <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            Buka di Tab Baru
                         </button>
                     </div>
                 </div>
@@ -798,53 +940,61 @@
             <div class="embed-panel">
                 <div class="embed-header">
                     <div class="embed-title-wrap">
-                        <div class="embed-icon blue">💴</div>
+                        <div class="embed-icon blue"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l6 8 6-8"></path><path d="M12 12v8"></path><path d="M8 15h8"></path><path d="M8 18h8"></path></svg></div>
                         <div>
                             <div class="embed-title">Kurs Brastel Remit</div>
                             <div class="embed-sub">Cek nilai tukar JPY ke IDR hari ini</div>
                         </div>
                     </div>
                     <button class="embed-toggle" @click="brastelOpen = !brastelOpen">
-                        <span x-text="brastelOpen ? '▲ Tutup' : '▼ Buka'"></span>
+                        <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" :style="{transform: brastelOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition:'transform .2s'}"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <span x-text="brastelOpen ? 'Tutup' : 'Buka'"></span>
                     </button>
                 </div>
                 <div class="embed-body" :class="{ expanded: brastelOpen, collapsed: !brastelOpen }">
                     <div class="iframe-wrap">
-                        <iframe src="https://brastelremit.jp/ind/rates" class="iframe-height-lg"
-                                sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                                loading="lazy" title="Kurs Brastel Remit"></iframe>
+                        <iframe src="https://brastelremit.jp/ind/rates" class="iframe-height-lg" sandbox="allow-same-origin allow-scripts allow-forms allow-popups" loading="lazy" title="Kurs Brastel Remit"></iframe>
                     </div>
-                    <div style="padding:12px 16px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;">
+                    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:flex-end;">
                         <button class="btn-ext primary" @click="openExternal('https://brastelremit.jp/ind/rates')">
-                            🔗 Buka di Tab Baru
+                            <svg class="icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            Buka di Tab Baru
                         </button>
                     </div>
                 </div>
             </div>
 
             <div style="text-align:center;padding:20px 0 8px;font-size:11px;color:#aaa;font-weight:600;letter-spacing:0.5px;">
-                YANOSHI JAPAN &copy; 2026 &mdash; DASHBOARD ADMIN
+                YANOSHI JAPAN &copy; 2026 &mdash; ADMIN DASHBOARD
             </div>
         </div>
     </main>
 </div>
 
 <!-- ========================================================= -->
-<!-- SINGLE POPUP MASTER CONTAINER (HANYA ADA 1 DI SELURUH KODE) -->
+<!-- SINGLE POPUP MASTER CONTAINER -->
 <!-- ========================================================= -->
 <div class="popup-overlay" x-show="popupOpen" @click.self="closePopup()" x-cloak>
     <div class="popup-sheet">
         <div class="popup-drag-handle"></div>
         <div class="popup-header">
             <div class="popup-title-wrap">
-                <span style="font-size:20px;" x-text="popupPanel === 'pencapaian' ? '🎯' : (popupPanel === 'pesanan' ? '📦' : (popupPanel === 'status_customer' ? '📊' : (popupPanel === 'admin_sales' ? '💼' : '')))"></span>
+                <span class="popup-title-icon">
+                    <svg x-show="popupPanel === 'pencapaian'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                    <svg x-show="popupPanel === 'pesanan'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <svg x-show="popupPanel === 'status_customer'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <svg x-show="popupPanel === 'admin_sales'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    <svg x-show="popupPanel === 'buku_tamu'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                </span>
                 <div>
-                    <div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Dashboard Admin Sales' : '')))"></div>
+                    <div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Status Packing (Ops)' : (popupPanel === 'buku_tamu' ? 'Buku Tamu' : ''))))"></div>
                 </div>
             </div>
-            <button class="popup-close-btn" @click="closePopup()">✕</button>
+            <button class="popup-close-btn" @click="closePopup()">
+                <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         </div>
-        <div class="popup-body relative">
+        <div class="popup-body relative flex flex-col h-full">
 
             <!-- 1. PENCAPAIAN (TARGET HARIAN) -->
             <div x-show="popupPanel === 'pencapaian'">
@@ -872,7 +1022,7 @@
                     <div class="th-rekap-section" id="th_rekapSection" style="display:none;">
                         <div class="th-rekap-header" onclick="th_toggleRekap()">
                             <div class="th-rekap-header-left">
-                                <span class="th-rekap-icon">📊</span>
+                                <span class="th-rekap-icon"><svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span>
                                 <div>
                                     <div class="th-rekap-title">Rekap Akhir Bulan</div>
                                     <div class="th-rekap-subtitle">Histori pencapaian + detail produk per bulan</div>
@@ -906,11 +1056,11 @@
             <!-- 2. PESANAN ONLINE -->
             <div x-show="popupPanel === 'pesanan'" x-data="pesananApp()" x-init="initPesanan()" class="w-full" x-cloak>
                 
-                <div class="sticky top-0 z-10 bg-white pb-4 border-b-2 border-gray-100 mb-6 pt-1">
+                <div class="sticky top-0 z-10 pb-4 mb-6 pt-1" style="background: linear-gradient(180deg, #18181c 60%, transparent 100%); border-bottom: 1px solid var(--border-soft);">
                     <div class="flex flex-col sm:flex-row gap-3">
                         <input type="text" x-model="searchQuery" placeholder="Cari nama customer..."
                                class="w-full sm:flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 outline-none transition text-sm font-medium">
-                        <select x-model="statusFilter" class="px-4 py-2 border rounded-lg text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600 bg-white cursor-pointer">
+                        <select x-model="statusFilter" class="px-4 py-2 border rounded-lg text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600 cursor-pointer">
                             <option value="">Semua Status</option>
                             <template x-for="st in statusOptions">
                                 <option :value="st" x-text="st"></option>
@@ -925,18 +1075,18 @@
 
                 <div class="grid grid-cols-1 gap-6" x-show="!loading">
                     <template x-for="item in filteredData" :key="item.row">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 border-l-8 border-l-red-600 hover:shadow-md transition p-5 relative break-words">
+                        <div class="rounded-xl shadow-sm border border-l-8 border-l-red-600 hover:shadow-md transition p-5 relative break-words" style="background:#1b1b20; border-color:rgba(255,255,255,0.08);">
 
-                            <div class="flex justify-between items-start mb-4 border-b pb-4 gap-4">
+                            <div class="flex justify-between items-start mb-4 border-b pb-4 gap-4" style="border-color: rgba(255,255,255,0.08);">
                                 <div>
                                     <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider" x-text="'ID: ' + item.orderId"></span>
-                                    <h2 class="text-lg font-extrabold text-gray-800 leading-tight mt-0.5" x-text="item.customer"></h2>
-                                    <p class="text-xs text-gray-500 font-medium mt-1" x-text="pFormatDate(item.tglOrder)"></p>
+                                    <h2 class="text-lg font-extrabold leading-tight mt-0.5" style="color:var(--text-dark);" x-text="item.customer"></h2>
+                                    <p class="text-xs font-medium mt-1" style="color:var(--text-mid);" x-text="pFormatDate(item.tglOrder)"></p>
                                 </div>
                                 <div class="text-right flex flex-col items-end gap-2 shrink-0">
                                     <button @click="pDeleteData(item.row, item.customer)"
-                                            class="text-[10px] bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-md font-bold transition">
-                                        🗑️ HAPUS
+                                            class="text-[10px] hover:bg-red-900 px-3 py-1.5 rounded-md font-bold transition" style="background: rgba(225,29,46,0.15); color: var(--red-light);">
+                                        <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> HAPUS
                                     </button>
                                     <select @change="pUpdateStatus(item.row, $event.target.value)"
                                             :class="pGetStatusColor(item.status)"
@@ -951,32 +1101,32 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
 
                                 <div class="space-y-3">
-                                    <div class="flex items-center text-green-600 font-semibold text-[13px]">
-                                        <span class="mr-2">📞</span> <span x-text="item.whatsapp"></span>
+                                    <div class="flex items-center font-semibold text-[13px]" style="color:#10b981;">
+                                        <span class="mr-2"><svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span> <span x-text="item.whatsapp"></span>
                                     </div>
-                                    <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-100">
+                                    <div class="p-3.5 rounded-xl border" style="background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08);">
                                         <div class="flex justify-between items-center cursor-pointer" @click="item.showItems = !item.showItems">
-                                            <span class="font-bold text-[11px] uppercase text-gray-500 tracking-wide">List Pesanan</span>
-                                            <span x-text="item.showItems ? '▲' : '▼'" class="text-[10px] text-gray-400"></span>
+                                            <span class="font-bold text-[11px] uppercase tracking-wide" style="color:var(--text-mid);">List Pesanan</span>
+                                            <svg class="icon-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:#8a8985;" :style="{transform: item.showItems ? 'rotate(180deg)' : 'rotate(0deg)', transition:'transform .2s'}"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                         </div>
-                                        <div x-show="item.showItems" x-cloak class="mt-3 text-[13px] leading-relaxed break-all whitespace-pre-wrap text-gray-700" x-html="item.listPesanan"></div>
+                                        <div x-show="item.showItems" x-cloak class="mt-3 text-[13px] leading-relaxed break-all whitespace-pre-wrap" style="color:var(--text-dark);" x-html="item.listPesanan"></div>
                                     </div>
                                 </div>
 
                                 <div class="space-y-3">
-                                    <button @click="pCopyFormat(item)" class="w-full py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-bold text-xs transition shadow-sm">
+                                    <button @click="pCopyFormat(item)" class="w-full py-2.5 hover:bg-yellow-600 text-white rounded-lg font-bold text-xs transition shadow-sm" style="background-color: var(--gold-dark); color: #fff;">
                                         📋 COPY FORMAT ORDER
                                     </button>
 
-                                    <div class="border border-gray-200 rounded-xl p-3.5 space-y-3 bg-white">
+                                    <div class="border rounded-xl p-3.5 space-y-3" style="background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.08);">
                                         <div class="flex justify-between items-center">
-                                            <span class="text-[11px] font-bold text-gray-500 tracking-wide">📄 INVOICE</span>
+                                            <span class="text-[11px] font-bold tracking-wide" style="color:var(--text-mid);">📄 INVOICE</span>
                                             <div class="flex items-center gap-2">
                                                 <template x-if="item.invoice">
-                                                    <a :href="item.invoice" target="_blank" class="text-blue-600 hover:text-blue-800 underline text-[11px] font-semibold">Buka Link ↗</a>
+                                                    <a :href="item.invoice" target="_blank" class="hover:text-yellow-400 underline text-[11px] font-semibold" style="color:var(--gold-light);">Buka Link ↗</a>
                                                 </template>
                                                 <button @click="pOpenModal(item.row, 15, 'Input Link Invoice')"
-                                                        class="text-[10px] bg-red-50 hover:bg-red-100 text-red-600 px-2.5 py-1 rounded-md font-bold transition">
+                                                        class="text-[10px] px-2.5 py-1 rounded-md font-bold transition" style="background: rgba(225,29,46,0.15); color: var(--red-light);">
                                                     LINK
                                                 </button>
                                             </div>
@@ -987,62 +1137,63 @@
                                              @click="document.getElementById('inv_' + item.row).click()">
                                             <input type="file" :id="'inv_' + item.row" accept=".pdf,image/*" @change="pHandleFileSelect($event, item, 'invoice')">
                                             <template x-if="!item._invoiceFile">
-                                                <p class="text-[11px] text-gray-400 leading-tight">🔼 Klik / Drop File Invoice<br><span class="text-[10px] opacity-75">(PDF atau Gambar)</span></p>
+                                                <p class="text-[11px] leading-tight" style="color:var(--text-mid);">🔼 Klik / Drop File Invoice<br><span class="text-[10px] opacity-75">(PDF atau Gambar)</span></p>
                                             </template>
                                             <template x-if="item._invoiceFile">
-                                                <div class="text-[11px] text-green-700 font-semibold truncate px-2" x-text="'✅ ' + item._invoiceFile.name"></div>
+                                                <div class="text-[11px] font-semibold truncate px-2" style="color:#10b981;" x-text="'✅ ' + item._invoiceFile.name"></div>
                                             </template>
                                         </div>
                                         <button @click="pUploadFile(item, 'invoice')"
                                                 :disabled="!item._invoiceFile || item._uploadingInvoice"
-                                                :class="item._invoiceFile ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm' : 'bg-gray-100 text-gray-400 cursor-not-allowed'"
-                                                class="w-full py-2 rounded-lg text-[11px] font-bold transition">
+                                                :class="item._invoiceFile ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm' : 'cursor-not-allowed'"
+                                                class="w-full py-2 rounded-lg text-[11px] font-bold transition"
+                                                :style="item._invoiceFile ? 'background:var(--gold-dark);color:#fff;' : 'background:rgba(255,255,255,0.1);color:#8a8985;'">
                                             <span x-text="item._uploadingInvoice ? '⏳ Mengupload...' : '📤 Upload Invoice ke Drive'"></span>
                                         </button>
                                     </div>
 
-                                    <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                                        <span class="text-[11px] font-bold text-gray-500 tracking-wide">💳 BUKTI BAYAR</span>
+                                    <div class="flex justify-between items-center border-b pb-2" style="border-color: rgba(255,255,255,0.08);">
+                                        <span class="text-[11px] font-bold tracking-wide" style="color:var(--text-mid);">💳 BUKTI BAYAR</span>
                                         <div class="flex items-center gap-2">
                                             <template x-if="item.buktiBayar">
-                                                <a :href="item.buktiBayar" target="_blank" class="text-blue-600 hover:text-blue-800 underline text-[11px] font-semibold">Buka Link ↗</a>
+                                                <a :href="item.buktiBayar" target="_blank" class="hover:text-yellow-400 underline text-[11px] font-semibold" style="color:var(--gold-light);">Buka Link ↗</a>
                                             </template>
                                             <button @click="pOpenModal(item.row, 16, 'Input Link Bukti Bayar')"
-                                                    class="text-[10px] bg-red-50 hover:bg-red-100 text-red-600 px-2.5 py-1 rounded-md font-bold transition">
+                                                    class="text-[10px] px-2.5 py-1 rounded-md font-bold transition" style="background: rgba(225,29,46,0.15); color: var(--red-light);">
                                                 INPUT
                                             </button>
                                         </div>
                                     </div>
 
                                     <div class="flex justify-between items-center pt-1 gap-3">
-                                        <span class="text-[11px] font-bold text-gray-500 tracking-wide whitespace-nowrap">📦 RESI</span>
-                                        <span x-text="item.resi || '-'" class="text-xs font-mono break-all text-right flex-1 text-gray-800"></span>
+                                        <span class="text-[11px] font-bold tracking-wide whitespace-nowrap" style="color:var(--text-mid);">📦 RESI</span>
+                                        <span x-text="item.resi || '-'" class="text-xs font-mono break-all text-right flex-1" style="color:var(--text-dark);"></span>
                                         <button @click="pOpenModal(item.row, 17, 'Input No Resi')"
-                                                class="text-[10px] bg-red-50 hover:bg-red-100 text-red-600 px-2.5 py-1 rounded-md font-bold whitespace-nowrap transition">
+                                                class="text-[10px] px-2.5 py-1 rounded-md font-bold whitespace-nowrap transition" style="background: rgba(225,29,46,0.15); color: var(--red-light);">
                                             INPUT
                                         </button>
                                     </div>
                                 </div>
 
-                                <div class="text-[13px] bg-red-50 p-4 rounded-xl border border-red-100 flex flex-col justify-between shadow-sm">
+                                <div class="text-[13px] p-4 rounded-xl border flex flex-col justify-between shadow-sm" style="background:rgba(225,29,46,0.05); border-color:rgba(225,29,46,0.2);">
                                     <div>
-                                        <p class="font-extrabold text-red-700 mb-2 text-[11px] tracking-wide">INFO PENGIRIMAN</p>
-                                        <p class="text-gray-900"><b x-text="item.penerima"></b> <span class="text-red-300 mx-1">|</span> <span x-text="item.noPenerima"></span></p>
-                                        <p class="mt-1.5 italic text-gray-600 leading-relaxed" x-text="item.alamat"></p>
-                                        <p class="mt-4 font-bold text-gray-800 text-xs">Tanggal Kirim: <span class="text-gray-900" x-text="pFormatDate(item.tglKirim)"></span></p>
+                                        <p class="font-extrabold mb-2 text-[11px] tracking-wide" style="color:var(--red-light);">INFO PENGIRIMAN</p>
+                                        <p style="color:var(--text-dark);"><b x-text="item.penerima"></b> <span style="color:var(--red-dark);" class="mx-1">|</span> <span x-text="item.noPenerima"></span></p>
+                                        <p class="mt-1.5 italic leading-relaxed" style="color:var(--text-mid);" x-text="item.alamat"></p>
+                                        <p class="mt-4 font-bold text-xs" style="color:var(--text-mid);">Tanggal Kirim: <span style="color:var(--text-dark);" x-text="pFormatDate(item.tglKirim)"></span></p>
                                     </div>
-                                    <div class="mt-4 pt-3 border-t border-red-200 flex justify-between items-center">
-                                        <span class="font-extrabold text-red-700 text-[11px] tracking-wide">ONGKOS KIRIM:</span>
+                                    <div class="mt-4 pt-3 border-t flex justify-between items-center" style="border-color:rgba(225,29,46,0.2);">
+                                        <span class="font-extrabold text-[11px] tracking-wide" style="color:var(--red-light);">ONGKOS KIRIM:</span>
                                         <template x-if="item.ongkir">
                                             <div class="flex items-center space-x-2">
-                                                <span x-text="pFormatRupiah(item.ongkir)" class="font-extrabold text-gray-900 text-[15px]"></span>
+                                                <span x-text="pFormatRupiah(item.ongkir)" class="font-extrabold text-[15px]" style="color:var(--text-dark);"></span>
                                                 <button @click="pOpenModal(item.row, 7, 'Edit Ongkos Kirim', item.ongkir)"
-                                                        class="text-[10px] text-blue-600 underline hover:text-blue-800 font-semibold">Edit</button>
+                                                        class="text-[10px] underline hover:text-yellow-400 font-semibold" style="color:var(--gold-light);">Edit</button>
                                             </div>
                                         </template>
                                         <template x-if="!item.ongkir">
                                             <button @click="pOpenModal(item.row, 7, 'Input Ongkos Kirim (Angka saja)')"
-                                                    class="text-[10px] bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md shadow-sm font-bold transition transform hover:-translate-y-0.5">
+                                                    class="text-[10px] hover:bg-red-700 text-white px-3 py-1.5 rounded-md shadow-sm font-bold transition transform hover:-translate-y-0.5" style="background:var(--red);">
                                                 INPUT ONGKIR
                                             </button>
                                         </template>
@@ -1054,18 +1205,18 @@
                     </template>
 
                     <div x-show="!loading && filteredData.length === 0" class="text-center py-16">
-                        <div class="text-5xl mb-4 text-gray-300">📭</div>
+                        <div class="mb-4 text-gray-300" style="display:flex;justify-content:center;"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8z"></path><path d="M3 8l9 6 9-6"></path></svg></div>
                         <div class="text-[15px] font-bold text-gray-400">Tidak ada data pesanan ditemukan</div>
                     </div>
                 </div>
 
                 <div x-show="pModalOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="pModalOpen = false">
-                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl transform transition-all scale-100">
-                        <h3 class="text-lg font-extrabold mb-5 text-gray-800" x-text="pModalTitle"></h3>
-                        <input type="text" x-model="pModalValue" class="w-full px-4 py-3 border border-gray-300 rounded-xl mb-6 outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 transition text-sm font-medium">
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl transform transition-all scale-100" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-gold);">
+                        <h3 class="text-lg font-extrabold mb-5" style="color:var(--text-dark);" x-text="pModalTitle"></h3>
+                        <input type="text" x-model="pModalValue" class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium" style="background:rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); color:var(--text-dark);">
                         <div class="flex justify-end space-x-3">
-                            <button @click="pModalOpen = false" class="px-5 py-2.5 text-gray-500 font-bold text-sm hover:bg-gray-50 rounded-xl transition">BATAL</button>
-                            <button @click="pSubmitModal()" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 text-sm">SUBMIT</button>
+                            <button @click="pModalOpen = false" class="px-5 py-2.5 font-bold text-sm rounded-xl transition" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:var(--text-mid);">BATAL</button>
+                            <button @click="pSubmitModal()" class="px-6 py-2.5 text-white rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">SUBMIT</button>
                         </div>
                     </div>
                 </div>
@@ -1077,25 +1228,25 @@
                 
                 <div class="w-full">
                     <!-- Sticky Header Filter -->
-                    <div class="sticky top-0 bg-white pb-4 border-b-2 border-gray-100 mb-6 pt-1 z-10">
+                    <div class="sticky top-0 z-10 pb-4 mb-6 pt-1" style="background: linear-gradient(180deg, #18181c 60%, transparent 100%); border-bottom: 1px solid var(--border-soft);">
                         <div class="flex flex-col xl:flex-row justify-between xl:items-center gap-4">
-                            <h2 class="text-lg font-extrabold text-gray-800 flex items-center gap-2">
-                                <span>📊</span> Data Keseluruhan Customer
+                            <h2 class="text-lg font-extrabold flex items-center gap-2" style="color:var(--text-dark);">
+                                <span><svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span> Data Keseluruhan Customer
                             </h2>
                             
                             <div class="flex flex-wrap gap-2 w-full xl:w-auto">
-                                <input type="text" x-model="scSearchNama" placeholder="Cari nama..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 flex-1 min-w-[120px] font-medium">
-                                <input type="text" x-model="scSearchTanggal" placeholder="Tgl kirim (ex: 17 Jul)..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 flex-1 min-w-[130px] font-medium">
+                                <input type="text" x-model="scSearchNama" placeholder="Cari nama..." class="px-3 py-2 border rounded-lg text-sm outline-none font-medium flex-1 min-w-[120px]">
+                                <input type="text" x-model="scSearchTanggal" placeholder="Tgl kirim (ex: 17 Jul)..." class="px-3 py-2 border rounded-lg text-sm outline-none font-medium flex-1 min-w-[130px]">
                                 
                                 <!-- FILTER BARU: BERDASARKAN SHEET -->
-                                <select x-model="scFilterSheet" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                                <select x-model="scFilterSheet" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium cursor-pointer">
                                     <option value="">Semua Sheet</option>
                                     <template x-for="sh in availableSheets" :key="sh">
                                         <option :value="sh" x-text="sh"></option>
                                     </template>
                                 </select>
                                 
-                                <select x-model="scFilterDari" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                                <select x-model="scFilterDari" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium cursor-pointer">
                                     <option value="">Semua Asal</option>
                                     <option value="exata">Exata</option><option value="jastip">Jastip</option><option value="LPK">LPK</option>
                                     <option value="senior">Senior</option><option value="Affiliate">Affiliate</option><option value="IG">IG</option>
@@ -1103,7 +1254,7 @@
                                 </select>
 
                                 <!-- FILTER BARU: BERDASARKAN STATUS WARNA -->
-                                <select x-model="scFilterStatus" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-extrabold bg-gray-50 cursor-pointer text-gray-700">
+                                <select x-model="scFilterStatus" class="px-3 py-2 border rounded-lg text-sm outline-none font-extrabold cursor-pointer">
                                     <option value="">Semua Status</option>
                                     <option value="sudah kirim">✅ Sudah Kirim</option>
                                     <option value="kirim hari ini">📦 Kirim Hari Ini</option>
@@ -1118,7 +1269,7 @@
 
                     <div x-show="statusAppLoading" class="flex flex-col justify-center items-center py-16">
                         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mb-4"></div>
-                        <p class="font-bold text-gray-500 animate-pulse text-sm">Menarik data dari seluruh sheet...</p>
+                        <p class="font-bold text-sm" style="color:var(--text-mid);">Menarik data dari seluruh sheet...</p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-10" x-show="!statusAppLoading">
@@ -1127,13 +1278,19 @@
                             <div :class="getCardColor(c.statusCustomer)" 
                                  class="rounded-xl shadow-sm border p-5 flex flex-col gap-3 relative break-words transition-all hover:shadow-md">
                                 
-                                <div class="flex justify-between items-start border-b border-black/10 pb-2 mb-1">
-                                    <span class="text-[10px] font-extrabold uppercase tracking-widest opacity-60" x-text="'SHEET: ' + c.sheetName"></span>
-                                    <span class="text-[10px] font-extrabold uppercase px-2 py-1 bg-white/50 rounded-md shadow-sm" x-text="c.statusCustomer"></span>
+                                <div class="flex justify-between items-start border-b pb-2 mb-1" style="border-color: rgba(0,0,0,0.1);">
+                                    <span class="text-[10px] font-extrabold uppercase tracking-widest opacity-70" 
+                                          :style="c.statusCustomer === 'belum bayar' ? 'color: rgba(255,255,255,0.7);' : 'color: rgba(0,0,0,0.6);'"
+                                          x-text="'SHEET: ' + c.sheetName"></span>
+                                    <span class="text-[10px] font-extrabold uppercase px-2 py-1 rounded-md shadow-sm" 
+                                          :style="c.statusCustomer === 'belum bayar' ? 'background: rgba(255,255,255,0.1); color: white;' : 'background: rgba(255,255,255,0.5); color: #1a1a1a;'"
+                                          x-text="c.statusCustomer"></span>
                                 </div>
 
                                 <div>
-                                    <h3 class="font-extrabold text-gray-900 text-lg uppercase leading-tight" x-text="c.nama || 'Tanpa Nama'"></h3>
+                                    <h3 class="font-extrabold text-lg uppercase leading-tight" 
+                                        :style="c.statusCustomer === 'belum bayar' ? 'color: white;' : 'color: #1a1a1a;'"
+                                        x-text="c.nama || 'Tanpa Nama'"></h3>
                                     <div class="flex flex-wrap gap-1.5 mt-2">
                                         <template x-for="d in c.dari">
                                             <span :class="getPillColor(d)" class="px-2.5 py-0.5 rounded-md text-[10px] font-bold text-white uppercase tracking-wider shadow-sm" x-text="d"></span>
@@ -1141,15 +1298,17 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-auto pt-4 border-t border-black/10 flex justify-between items-center">
-                                    <div class="text-[10px] text-gray-800 font-bold flex flex-col uppercase tracking-wide">
-                                        <span class="opacity-70">Tgl Kirim:</span>
-                                        <span class="text-xs font-extrabold" x-text="c.tglKirim || '-'"></span>
+                                <div class="mt-auto pt-4 border-t flex justify-between items-center" style="border-color: rgba(0,0,0,0.1);">
+                                    <div class="text-[10px] font-bold flex flex-col uppercase tracking-wide">
+                                        <span :style="c.statusCustomer === 'belum bayar' ? 'color: rgba(255,255,255,0.7);' : 'color: rgba(0,0,0,0.7);'">Tgl Kirim:</span>
+                                        <span class="text-xs font-extrabold" 
+                                              :style="c.statusCustomer === 'belum bayar' ? 'color: white;' : 'color: #1a1a1a;'"
+                                              x-text="c.tglKirim || '-'"></span>
                                     </div>
                                     <!-- TOMBOL SIAPKAN -->
                                     <div class="flex items-center gap-2">
-                                        <button @click="bukaModalSiapkan(c.nama)" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm">
-                                            📦 Siapkan
+                                        <button @click="bukaModalSiapkan(c.nama)" class="text-white px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark));">
+                                            <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> Siapkan
                                         </button>
                                     </div>
                                 </div>
@@ -1157,7 +1316,7 @@
                         </template>
                         
                         <div x-show="filteredStatusData.length === 0" class="col-span-full text-center py-12">
-                            <div class="text-4xl mb-3 text-gray-300">🔍</div>
+                            <div class="mb-3 text-gray-300" style="display:flex;justify-content:center;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                             <div class="text-sm font-bold text-gray-400">Data tidak ditemukan</div>
                         </div>
                     </div>
@@ -1165,40 +1324,40 @@
                 
                 <!-- MODAL SIAPKAN -->
                 <div x-show="modalSiapkanOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalSiapkan()">
-                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl">
-                        <h3 class="text-lg font-extrabold mb-2 text-gray-800">Verifikasi Packing</h3>
-                        <p class="text-sm text-gray-600 mb-6 font-medium">Siapkan packingan untuk <strong x-text="namaYangDisiapkan" class="text-red-600"></strong>?</p>
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-gold);">
+                        <h3 class="text-lg font-extrabold mb-2" style="color:var(--text-dark);">Verifikasi Packing</h3>
+                        <p class="text-sm mb-6 font-medium" style="color:var(--text-mid);">Siapkan packingan untuk <strong x-text="namaYangDisiapkan" style="color:var(--red-light);"></strong>?</p>
                         <div class="flex justify-around gap-3">
-                            <button @click="tutupModalSiapkan()" class="flex-1 py-2.5 border-2 border-red-600 text-red-600 font-bold rounded-xl hover:bg-red-50 transition text-sm">Tidak</button>
-                            <button @click="konfirmasiSiapkan()" class="flex-1 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition shadow-lg text-sm">Ya, Siapkan</button>
+                            <button @click="tutupModalSiapkan()" class="flex-1 py-2.5 font-bold rounded-xl transition text-sm" style="border: 2px solid var(--red-light); color: var(--red-light); background:rgba(225,29,46,0.05);">Tidak</button>
+                            <button @click="konfirmasiSiapkan()" class="flex-1 py-2.5 text-white font-bold rounded-xl shadow-lg text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">Ya, Siapkan</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. ADMIN SALES (FITUR PACKING / OPS) -->
+            <!-- 4. ADMIN SALES (FITUR PACKING / OPS) DENGAN FITUR MULTI-DELETE & MULTI-KIRIM -->
             <div x-show="popupPanel === 'admin_sales'" x-data="adminSalesApp()" x-init="initSales()" @tambah-ke-sales.window="tambahDariStatus($event.detail.nama)" class="w-full" x-cloak>
                 
                 <!-- Sticky Header Filter -->
-                <div class="sticky top-0 z-10 bg-white pb-4 border-b-2 border-gray-100 mb-6 pt-1">
+                <div class="sticky top-0 z-10 pb-4 mb-6 pt-1" style="background: linear-gradient(180deg, #18181c 60%, transparent 100%); border-bottom: 1px solid var(--border-soft);">
                     <div class="flex flex-col gap-4">
                         <!-- Input Nama Bar -->
                         <div class="flex gap-2">
                             <input type="text" x-model="inputNama" placeholder="Masukkan Nama Pelanggan..." @keydown.enter="tambahData()"
-                                   class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 outline-none transition text-sm font-medium">
-                            <button @click="tambahData()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg transition shadow-sm text-sm">Submit</button>
+                                   class="flex-1 px-4 py-2 border rounded-lg outline-none transition text-sm font-medium">
+                            <button @click="tambahData()" class="text-white font-bold px-6 py-2 rounded-lg transition shadow-sm text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark));">Submit</button>
                         </div>
                         <!-- Filter Bar -->
                         <div class="flex flex-wrap sm:flex-nowrap gap-2">
-                            <input type="date" x-model="fTgl" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium">
-                            <input type="text" x-model="fNama" placeholder="Cari Nama..." class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium flex-1">
-                            <select x-model="fPack" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                            <input type="date" x-model="fTgl" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium">
+                            <input type="text" x-model="fNama" placeholder="Cari Nama..." class="px-3 py-2 border rounded-lg text-sm outline-none font-medium flex-1">
+                            <select x-model="fPack" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium cursor-pointer">
                                 <option value="">Semua Packing</option>
                                 <option value="Menunggu">Menunggu</option>
                                 <option value="Sudah di Packing">Sudah di Packing</option>
                                 <option value="Belum Lengkap">Belum Lengkap</option>
                             </select>
-                            <select x-model="fKirim" class="px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-600 font-medium bg-white cursor-pointer">
+                            <select x-model="fKirim" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium cursor-pointer">
                                 <option value="">Semua Kirim</option>
                                 <option value="true">Sudah Kirim</option>
                                 <option value="false">Belum Kirim</option>
@@ -1211,48 +1370,162 @@
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
                 </div>
 
+                <!-- Action Bar Multi-Delete & Multi-Kirim (Muncul saat ada checkbox yg dicentang) -->
+                <div x-show="selectedIds.length > 0" x-transition class="border-2 rounded-xl p-3 mb-4 flex flex-col sm:flex-row justify-between items-center shadow-sm gap-3" style="background:rgba(225,29,46,0.08); border-color:rgba(225,29,46,0.3);">
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <input type="checkbox" class="w-5 h-5 rounded cursor-pointer"
+                               @change="$event.target.checked ? selectedIds = filteredData.map(d => d.id) : selectedIds = []"
+                               :checked="filteredData.length > 0 && selectedIds.length === filteredData.length">
+                        <span class="text-sm font-extrabold" style="color:var(--red-light);" x-text="selectedIds.length + ' Data Terpilih'"></span>
+                    </div>
+                    <div class="flex w-full sm:w-auto gap-2">
+                        <!-- Tombol Multi-Kirim -->
+                        <button @click="kirimMultiData()" class="flex-1 sm:flex-none text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md transition transform hover:-translate-y-0.5" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1a1a1a;">
+                            <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Tandai Dikirim
+                        </button>
+                        <!-- Tombol Multi-Delete -->
+                        <button @click="hapusMultiData()" class="flex-1 sm:flex-none text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md transition transform hover:-translate-y-0.5" style="background: linear-gradient(135deg, var(--red), var(--red-dark));">
+                            <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> Hapus
+                        </button>
+                    </div>
+                </div>
+
                 <!-- List Item Container -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-10" x-show="!loading">
                     <template x-for="item in filteredData" :key="item.id">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-red-600 p-5 flex flex-col gap-3 transition-transform hover:-translate-y-1 hover:shadow-md">
+                        <div class="rounded-xl shadow-sm border border-l-4 p-5 flex flex-col gap-3 transition-transform hover:-translate-y-1 hover:shadow-md"
+                             :class="selectedIds.includes(item.id) ? 'border-l-red-600' : 'border-l-red-600'"
+                             :style="selectedIds.includes(item.id) ? 'background:rgba(225,29,46,0.08); border-color:rgba(225,29,46,0.3); border-left-color:var(--red);' : 'background:#1b1b20; border-color:rgba(255,255,255,0.08); border-left-color:var(--red);'">
+                            
                             <div class="flex justify-between items-start">
-                                <div>
-                                    <h3 class="font-extrabold text-gray-800 text-lg break-words" x-text="item.nama"></h3>
-                                    <p class="text-xs text-gray-500 font-medium mt-1">Diinput: <span x-text="formatTanggal(item.tanggal)"></span></p>
+                                <div class="flex items-start gap-3">
+                                    <!-- Kotak Centang -->
+                                    <input type="checkbox" :value="item.id" x-model="selectedIds" class="mt-1 w-5 h-5 rounded cursor-pointer transition">
+                                    <div>
+                                        <h3 class="font-extrabold text-lg break-words" style="color:var(--text-dark);" x-text="item.nama"></h3>
+                                        <p class="text-xs font-medium mt-1" style="color:var(--text-mid);">Diinput: <span x-text="formatTanggal(item.tanggal)"></span></p>
+                                    </div>
                                 </div>
-                                <button @click="hapusData(item.id)" class="bg-red-50 text-red-600 px-3 py-1.5 text-xs font-bold rounded hover:bg-red-100 transition shrink-0 ml-3">Hapus</button>
+                                <!-- Tombol Hapus Satuan -->
+                                <button @click="hapusData(item.id)" class="px-3 py-1.5 text-xs font-bold rounded transition shrink-0 ml-3" style="background:rgba(225,29,46,0.15); color:var(--red-light);">Hapus</button>
                             </div>
+
                             <div class="flex gap-2 text-[11px] font-bold uppercase tracking-wide mt-2">
                                 <span :class="item.status_packing === 'Sudah di Packing' ? 'bg-yellow-100 text-yellow-700' : item.status_packing === 'Belum Lengkap' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'" class="px-2.5 py-1 rounded" x-text="'Packing: ' + item.status_packing"></span>
                                 <span :class="item.status_kirim ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'" class="px-2.5 py-1 rounded" x-text="'Kirim: ' + (item.status_kirim ? 'Sudah' : 'Belum')"></span>
                             </div>
-                            <div class="text-[12px] font-semibold text-red-600 bg-red-50 p-2 rounded-lg mt-1" x-show="item.note">
-                                Note Admin Packing: <span x-text="item.note" class="text-gray-800"></span>
+                            <div class="text-[12px] font-semibold p-2 rounded-lg mt-1" style="background:rgba(225,29,46,0.05); color:var(--red-light);" x-show="item.note">
+                                Note Admin Packing: <span style="color:var(--text-dark);" x-text="item.note"></span>
                             </div>
                             
                             <!-- Tombol Kirim jika belum terkirim -->
-                            <button x-show="!item.status_kirim" @click="bukaModalKirim(item.id)" class="mt-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2.5 rounded-lg text-xs transition uppercase tracking-wide shadow-sm">
+                            <button x-show="!item.status_kirim" @click="bukaModalKirim(item.id)" class="mt-3 font-bold py-2.5 rounded-lg text-xs transition uppercase tracking-wide shadow-sm" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color:#1a1a1a;">
                                 Tandai Sudah Kirim
                             </button>
                         </div>
                     </template>
                     
                     <div x-show="filteredData.length === 0" class="col-span-full text-center py-12">
-                        <div class="text-4xl mb-3 text-gray-300">📋</div>
-                        <div class="text-sm font-bold text-gray-400">Belum ada data input sales.</div>
+                        <div class="mb-4 text-gray-300" style="display:flex;justify-content:center;"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8z"></path><path d="M3 8l9 6 9-6"></path></svg></div>
+                        <div class="text-[15px] font-bold text-gray-400">Belum ada data input sales.</div>
                     </div>
                 </div>
 
                 <!-- Modal Konfirmasi Kirim (Admin Sales) -->
                 <div x-show="modalKirimId !== null" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalKirim()">
-                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl">
-                        <h3 class="text-lg font-extrabold mb-2 text-gray-800">Konfirmasi Pengiriman</h3>
-                        <p class="text-sm text-gray-600 mb-6 font-medium">Apakah barang ini sudah di kirim?</p>
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-gold);">
+                        <h3 class="text-lg font-extrabold mb-2" style="color:var(--text-dark);">Konfirmasi Pengiriman</h3>
+                        <p class="text-sm mb-6 font-medium" style="color:var(--text-mid);">Apakah barang ini sudah di kirim?</p>
                         <div class="flex justify-around gap-3">
-                            <button @click="tutupModalKirim()" class="flex-1 py-2.5 border-2 border-red-600 text-red-600 font-bold rounded-xl hover:bg-red-50 transition text-sm">Tidak</button>
-                            <button @click="confirmKirim()" class="flex-1 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition shadow-lg text-sm">Ya, Sudah</button>
+                            <button @click="tutupModalKirim()" class="flex-1 py-2.5 font-bold rounded-xl transition text-sm" style="border: 2px solid var(--red-light); color: var(--red-light); background:rgba(225,29,46,0.05);">Tidak</button>
+                            <button @click="confirmKirim()" class="flex-1 py-2.5 text-white font-bold rounded-xl shadow-lg text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">Ya, Sudah</button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- 5. MENU BARU: BUKU TAMU -->
+            <div x-show="popupPanel === 'buku_tamu'" x-data="bukuTamuApp()" x-init="initBT()" class="w-full flex flex-col h-full relative" x-cloak>
+                
+                <!-- Sticky Header: Pilih Sheet -->
+                <div class="sticky top-0 z-10 pb-4 mb-6 pt-1" style="background: linear-gradient(180deg, #18181c 60%, transparent 100%); border-bottom: 1px solid var(--border-soft);">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-bold uppercase tracking-wider" style="color:var(--text-mid);">Pilih Sheet Tujuan:</label>
+                        <select x-model="selectedSheet" class="w-full px-4 py-2 border rounded-lg outline-none transition text-sm font-bold cursor-pointer">
+                            <option value="">-- Pilih Sheet Aktif --</option>
+                            <template x-for="sh in availableSheets" :key="sh">
+                                <option :value="sh" x-text="sh"></option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+
+                <div x-show="loading" class="absolute inset-0 z-50 flex flex-col justify-center items-center" style="background: rgba(14,14,16,0.8); backdrop-filter: blur(4px);">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mb-4"></div>
+                    <p class="font-bold text-sm" style="color:var(--text-mid);">Mengirim data...</p>
+                </div>
+
+                <!-- List Dynamic Inputs -->
+                <div class="flex-1 pb-32">
+                    <template x-for="(item, index) in entries" :key="item.id">
+                        <div class="p-5 rounded-xl border mb-5 transition-all shadow-sm" style="background: #1b1b20; border-color: var(--border-soft);">
+                            <div class="flex justify-between items-center mb-4 pb-3 border-b" style="border-color: rgba(255,255,255,0.06);">
+                                <span class="font-extrabold text-sm" style="color:var(--gold-light);">Pelanggan #<span x-text="index + 1"></span></span>
+                                <button @click="removeEntry(item.id)" class="px-2 py-1 rounded text-xs font-bold transition" style="color: var(--red-light); background: rgba(225,29,46,0.1);">
+                                    ✕ Hapus
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Nama Pelanggan</label>
+                                    <input type="text" x-model="item.nama" placeholder="Ketik nama..." class="w-full px-4 py-2.5 rounded-lg text-sm font-medium">
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Sumber</label>
+                                        <select x-model="item.sumber" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium cursor-pointer">
+                                            <option value="">-- Pilih Sumber --</option>
+                                            <option value="IG">IG</option>
+                                            <option value="FB">FB</option>
+                                            <option value="TikTok">TikTok</option>
+                                            <option value="Chatbot">Chatbot</option>
+                                            <option value="Web">Web</option>
+                                            <option value="EXATA">EXATA</option>
+                                            <option value="Jastip">Jastip</option>
+                                            <option value="LPK">LPK</option>
+                                            <option value="Senior/Teman">Senior/Teman</option>
+                                            <option value="Leads Exata">Leads Exata</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Tanggal Kirim</label>
+                                        <input type="date" x-model="item.tglKirim" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium">
+                                    </div>
+                                </div>
+
+                                <div class="mt-2 flex items-center">
+                                    <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border w-full transition" :style="item.isJepang ? 'background:rgba(212,175,55,0.1); border-color:var(--border-gold);' : 'background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08);'">
+                                        <input type="checkbox" x-model="item.isJepang" class="w-5 h-5 rounded cursor-pointer transition">
+                                        <span class="text-sm font-bold" :style="item.isJepang ? 'color:var(--gold-light);' : 'color:var(--text-dark);'">Kirim ke Jepang 🇯🇵</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <button @click="addEntry()" class="w-full py-3 rounded-xl border-2 border-dashed font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-white/5" style="border-color: rgba(255,255,255,0.15); color: var(--text-mid);">
+                        <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Tambah Inputan Baru
+                    </button>
+                </div>
+
+                <!-- Sticky Footer -->
+                <div class="absolute bottom-0 left-0 right-0 p-4 border-t" style="background: #0e0e10; border-color: var(--border-soft); margin-left:-24px; margin-right:-24px; margin-bottom:-32px;">
+                    <button @click="submitData()" :disabled="loading" class="w-full py-3.5 text-white font-extrabold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">
+                        <span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
+                    </button>
                 </div>
             </div>
 
@@ -1263,7 +1536,10 @@
 <!-- ================== MODAL EDIT USER ================== -->
 <div class="modal-overlay" x-show="editUserModal" @click.self="editUserModal = false" x-cloak>
     <div class="modal-box">
-        <div class="modal-title">⚙️ Ubah Akun</div>
+        <div class="modal-title" style="display:flex;align-items:center;gap:8px;">
+            <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            Ubah Akun
+        </div>
         <div class="modal-sub">Perbarui username dan / atau password Anda</div>
         <div class="modal-field">
             <label>Username Baru</label>
@@ -1289,7 +1565,7 @@
 
 <script>
 // ─────────────────────────────────────────────────────────────
-//  CONFIG — URL APPS SCRIPT (SUDAH DIPISAHKAN SESUAI INSTRUKSI)
+//  CONFIG — URL APPS SCRIPT (SUDAH DIPISAHKAN SECARA SPESIFIK)
 // ─────────────────────────────────────────────────────────────
 
 // 1. URL Login & Edit Password
@@ -1298,15 +1574,15 @@ const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0O
 // 2. URL Pencapaian (Target Harian)
 const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbzzWyRgZ2fk5NLCPyAViYHF6qyliNfi86ZsbqVHOsAIv3PcKFOK9-eq-4RrjVTkIw0I/exec';
 
-// 3. URL Pesanan Online & Status Customer
+// 3. URL Pesanan Online & Status Customer (DAN BUKU TAMU)
 const PESANAN_STATUS_API_URL = 'https://script.google.com/macros/s/AKfycbz3V7oaXEBuQAATvcrZsDtGFIXAKTl_h3drbgjksBkJEbFZhjJP2WUSTrPv9mxHm35M/exec';
-const P_API_UPLOAD = 'https://script.google.com/macros/s/AKfycbx7w2FXv0ayhq61Le63K7zJsb-znvXq6cjLcLO6shrECvOwN-lF3vBO3-pn1dRCX6dH/exec'; // Upload Bawaan Pesanan
+const P_API_UPLOAD = 'https://script.google.com/macros/s/AKfycbx7w2FXv0ayhq61Le63K7zJsb-znvXq6cjLcLO6shrECvOwN-lF3vBO3-pn1dRCX6dH/exec'; 
 
 // 4. URL Admin Sales (Packing)
 const ADMIN_SALES_API_URL = 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec';
 
 // ─────────────────────────────────────────────────────────────
-//  ALPINE STATE UTAMA (Login, Menu, Popup)
+//  ALPINE STATE UTAMA
 // ─────────────────────────────────────────────────────────────
 function appState() {
     return {
@@ -1316,7 +1592,7 @@ function appState() {
         loginLoading: false, loginError: '',
         editForm: { username: '', newPassword: '', confirmPassword: '' },
         editError: '', editSaving: false,
-        pencapaianLoaded: false, pesananLoaded: false, adminSalesLoaded: false,
+        pencapaianLoaded: false,
 
         init() {
             const saved = localStorage.getItem('yanoshi_user') || sessionStorage.getItem('yanoshi_user');
@@ -1440,7 +1716,7 @@ function th_updateDateAndDeadline() {
     const remaining = lastDay - now.getDate();
     const el = document.getElementById('th_closingCountdown');
     if (remaining > 0) el.innerText = `Tinggal ${remaining} hari menuju closing!`;
-    else if (remaining === 0) { el.innerText = 'Hari ini adalah tanggal closing! 🚀'; el.style.backgroundColor='rgba(239,68,68,.4)'; }
+    else if (remaining === 0) { el.innerText = 'Hari ini adalah tanggal closing! 🚀'; el.style.backgroundColor='rgba(225,29,46,0.3)'; }
     else el.style.display = 'none';
 }
 
@@ -1479,16 +1755,16 @@ function th_renderList(items) {
         gTarget += target; gTercapai += terjualAsli;
         th_currentItems.push({ label: th_capFirst(item.label), target, tercapai: terjualAsli, kekurangan: kekuranganTampil, persentase: Math.round(pct) });
 
-        let barColor = 'linear-gradient(90deg,#3b82f6,#2563eb)';
+        let barColor = 'linear-gradient(90deg,#D4AF37,#9C7A1D)';
         let stClass  = 'th-status-warning', stText = 'On Progress', percCls = 'th-perc-warning';
         if (pct >= 50 || kekuranganTampil === 0) {
             barColor = 'linear-gradient(90deg,#10b981,#059669)'; stClass  = 'th-status-success';
             stText   = (pct >= 100 || kekuranganTampil === 0) ? 'Tercapai ✓' : 'Progress Baik'; percCls  = 'th-perc-success';
         } else if (pct < 30) {
-            barColor = 'linear-gradient(90deg,#ef4444,#dc2626)'; stClass  = 'th-status-danger'; stText = 'Perlu Dikejar'; percCls = 'th-perc-danger';
+            barColor = 'linear-gradient(90deg,#FF4550,#B3001B)'; stClass  = 'th-status-danger'; stText = 'Perlu Dikejar'; percCls = 'th-perc-danger';
         }
 
-        const terjualLabel = terjualAsli > target ? `${terjualAsli} <span style="font-size:10px;color:#059669;font-weight:700;">+${terjualAsli-target}</span>` : `${terjualAsli}`;
+        const terjualLabel = terjualAsli > target ? `${terjualAsli} <span style="font-size:10px;color:#10b981;font-weight:700;">+${terjualAsli-target}</span>` : `${terjualAsli}`;
         const li = document.createElement('li'); li.className = 'th-item-card';
         li.innerHTML = `
             <div class="th-item-header">
@@ -1508,10 +1784,10 @@ function th_renderList(items) {
     const gPctDisplay = gTarget > 0 ? Math.round((gTercapai/gTarget)*100) : 0;
     const badge = document.getElementById('th_grandPercentage');
     badge.innerText = gPctDisplay + '%';
-    if (gPctDisplay >= 100){ badge.style.backgroundColor='rgba(16,185,129,.5)'; badge.style.borderColor='rgba(16,185,129,.8)'; badge.style.color='#d1fae5'; }
-    else if (gPctDisplay >= 50) { badge.style.backgroundColor='rgba(16,185,129,.4)'; badge.style.borderColor='rgba(16,185,129,.6)'; }
-    else if (gPctDisplay  < 30) { badge.style.backgroundColor='rgba(239,68,68,.4)';  badge.style.borderColor='rgba(239,68,68,.6)'; }
-    else { badge.style.backgroundColor='rgba(255,255,255,.2)'; badge.style.borderColor='rgba(255,255,255,.3)'; }
+    if (gPctDisplay >= 100){ badge.style.backgroundColor='rgba(16,185,129,.15)'; badge.style.borderColor='rgba(16,185,129,.4)'; badge.style.color='#10b981'; }
+    else if (gPctDisplay >= 50) { badge.style.backgroundColor='rgba(16,185,129,.1)'; badge.style.borderColor='rgba(16,185,129,.2)'; }
+    else if (gPctDisplay  < 30) { badge.style.backgroundColor='rgba(225,29,46,.15)';  badge.style.borderColor='rgba(225,29,46,.3)'; }
+    else { badge.style.backgroundColor='rgba(255,255,255,.05)'; badge.style.borderColor='rgba(255,255,255,.1)'; }
 
     document.getElementById('th_grandTercapai').innerText = gTercapai;
     document.getElementById('th_grandTarget').innerText   = gTarget;
@@ -1587,8 +1863,8 @@ function th_renderListRekap() {
         let prodRows = '';
         if (r.detail && r.detail.length) {
             prodRows = r.detail.map(d => {
-                const col = d.persentase>=50 ? '#10b981' : d.persentase<30 ? '#ef4444' : '#f59e0b';
-                return `<tr><td style="font-weight:600">${d.label}</td><td>${d.target}</td><td class="th-prod-terjual">${d.tercapai > d.target ? `${d.tercapai} <span style="font-size:10px;color:#059669;font-weight:700;">+${d.tercapai-d.target}</span>` : d.tercapai}</td><td class="${d.kekurangan>0?'th-prod-kurang':'th-val-green'}">${d.kekurangan}</td><td><div style="display:flex;align-items:center;justify-content:flex-end;gap:4px;"><div class="th-mini-bar-wrap"><div class="th-mini-bar" style="width:${Math.min(d.persentase,100)}%;background:${col}"></div></div><span style="font-weight:800;color:${col};font-size:12px;min-width:35px;text-align:right;">${d.persentase}%</span></div></td></tr>`;
+                const col = d.persentase>=50 ? '#10b981' : d.persentase<30 ? '#FF4550' : '#D4AF37';
+                return `<tr><td style="font-weight:600">${d.label}</td><td>${d.target}</td><td class="th-prod-terjual">${d.tercapai > d.target ? `${d.tercapai} <span style="font-size:10px;color:#10b981;font-weight:700;">+${d.tercapai-d.target}</span>` : d.tercapai}</td><td class="${d.kekurangan>0?'th-prod-kurang':'th-val-green'}">${d.kekurangan}</td><td><div style="display:flex;align-items:center;justify-content:flex-end;gap:4px;"><div class="th-mini-bar-wrap"><div class="th-mini-bar" style="width:${Math.min(d.persentase,100)}%;background:${col}"></div></div><span style="font-weight:800;color:${col};font-size:12px;min-width:35px;text-align:right;">${d.persentase}%</span></div></td></tr>`;
             }).join('');
         } else { prodRows = `<tr><td colspan="5" style="text-align:center;color:var(--th-text-muted);padding:12px;">Tidak ada detail produk</td></tr>`; }
 
@@ -1598,13 +1874,13 @@ function th_renderListRekap() {
                 <div class="th-rekap-month-right"><span class="th-rekap-perc-badge ${bc}">${r.persentase}%</span><span class="th-chevron" id="th_chv-${r.bulanKey}">▾</span><button class="th-btn-del-month" onclick="event.stopPropagation();th_hapusRekap('${r.bulanKey}')" title="Hapus">✕</button></div>
             </div>
             <div class="th-rekap-detail" id="${detailId}">
-                <div class="th-rekap-grand-row"><div><div class="th-rg-label">Total Terjual</div><div class="th-rg-val">${r.tercapai.toLocaleString('id-ID')} <span class="th-rg-pcs">pcs</span></div></div><div><div class="th-rg-label">Target Bulan</div><div class="th-rg-val">${r.target.toLocaleString('id-ID')} <span class="th-rg-pcs">pcs</span></div></div><div><span class="th-rekap-perc-badge" style="background:rgba(255,255,255,.2);color:#fff;font-size:20px;padding:6px 14px;">${r.persentase}%</span></div></div>
+                <div class="th-rekap-grand-row"><div><div class="th-rg-label">Total Terjual</div><div class="th-rg-val">${r.tercapai.toLocaleString('id-ID')} <span class="th-rg-pcs">pcs</span></div></div><div><div class="th-rg-label">Target Bulan</div><div class="th-rg-val">${r.target.toLocaleString('id-ID')} <span class="th-rg-pcs">pcs</span></div></div><div><span class="th-rekap-perc-badge" style="background:rgba(255,255,255,.1);color:var(--text-dark);font-size:20px;padding:6px 14px;border:1px solid rgba(255,255,255,0.2)">${r.persentase}%</span></div></div>
                 <div class="th-section-label">Detail Per Produk</div>
                 <div class="th-prod-table-wrap"><table class="th-prod-table"><thead><tr><th>Produk</th><th style="text-align:right">Target</th><th style="text-align:right">Terjual</th><th style="text-align:right">Kurang</th><th style="text-align:right">Capaian</th></tr></thead><tbody>${prodRows}</tbody></table></div>
             </div></div>`;
     }).join('');
 
-    html += `<div class="th-rekap-grand-summary"><div><div class="th-rgs-label">📌 Total Keseluruhan (${filtered.length} bulan)</div><div class="th-rgs-val">${sumTercapai.toLocaleString('id-ID')} pcs</div><div class="th-rgs-sub">dari target ${sumTarget.toLocaleString('id-ID')} pcs</div></div><span class="th-rekap-perc-badge" style="background:rgba(255,255,255,.15);color:#fff;font-size:22px;padding:8px 16px;border:1.5px solid rgba(255,255,255,.3);">${sumPct}%</span></div>`;
+    html += `<div class="th-rekap-grand-summary"><div><div class="th-rgs-label">📌 Total Keseluruhan (${filtered.length} bulan)</div><div class="th-rgs-val">${sumTercapai.toLocaleString('id-ID')} pcs</div><div class="th-rgs-sub">dari target ${sumTarget.toLocaleString('id-ID')} pcs</div></div><span class="th-rekap-perc-badge" style="background:rgba(255,255,255,.1);color:var(--text-dark);font-size:22px;padding:8px 16px;border:1px solid rgba(255,255,255,.2);">${sumPct}%</span></div>`;
     cont.innerHTML = html;
 }
 
@@ -1621,7 +1897,7 @@ function th_toggleRekap() {
 
 function th_tampilNotif(pesan, type) {
     const el = document.getElementById('th_rekapNotif'); el.textContent = pesan; el.style.display = 'block';
-    el.style.background = type==='ok' ? '#d1fae5' : '#fef3c7'; el.style.color = type==='ok' ? '#065f46' : '#92400e'; el.style.border = type==='ok' ? '1px solid #6ee7b7' : '1px solid #fcd34d';
+    el.style.background = type==='ok' ? 'rgba(16,185,129,0.15)' : 'rgba(212,175,55,0.15)'; el.style.color = type==='ok' ? '#10b981' : 'var(--gold-light)'; el.style.border = type==='ok' ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(212,175,55,0.3)';
     clearTimeout(el._t); el._t = setTimeout(() => el.style.display='none', 3500);
 }
 function th_showAutoToast(msg) {
@@ -1877,7 +2153,7 @@ function statusCustomerApp() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  ADMIN SALES LOGIC
+//  ADMIN SALES LOGIC (FULL WITH MULTI-DELETE & MULTI-KIRIM)
 // ─────────────────────────────────────────────────────────────
 function adminSalesApp() {
     return {
@@ -1887,6 +2163,8 @@ function adminSalesApp() {
         inputNama: '',
         fTgl: '', fNama: '', fPack: '', fKirim: '',
         modalKirimId: null,
+        
+        selectedIds: [],
         
         formatTanggal(dateStr) {
             if (!dateStr) return '-';
@@ -1964,6 +2242,72 @@ function adminSalesApp() {
             }
         },
 
+        async hapusMultiData() {
+            if (this.selectedIds.length === 0) return;
+            if (!confirm(`PERINGATAN!\nYakin ingin menghapus ${this.selectedIds.length} data terpilih secara permanen?`)) return;
+
+            this.loading = true;
+            const idsToDelete = [...this.selectedIds];
+            this.selectedIds = []; 
+            
+            this.localData = this.localData.filter(d => !idsToDelete.includes(d.id));
+            localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
+
+            if (this.apiUrl && this.apiUrl.startsWith('http')) {
+                try {
+                    for (let id of idsToDelete) {
+                        await fetch(this.apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'text/plain' },
+                            body: JSON.stringify({ action: 'hapus', data: { id: id } })
+                        });
+                    }
+                    await this.fetchData(true); 
+                    showToast(`${idsToDelete.length} data berhasil dihapus.`, 'info');
+                } catch (error) {
+                    showToast('Gagal menghapus beberapa data di server.', 'error');
+                }
+            }
+            this.loading = false;
+        },
+
+        async kirimMultiData() {
+            if (this.selectedIds.length === 0) return;
+            if (!confirm(`Tandai ${this.selectedIds.length} data terpilih sebagai SUDAH DIKIRIM?`)) return;
+
+            this.loading = true;
+            const idsToUpdate = [...this.selectedIds];
+            this.selectedIds = []; 
+            
+            this.localData = this.localData.map(d => {
+                if (idsToUpdate.includes(d.id)) {
+                    return { ...d, status_kirim: true };
+                }
+                return d;
+            });
+            localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
+
+            if (this.apiUrl && this.apiUrl.startsWith('http')) {
+                try {
+                    for (let id of idsToUpdate) {
+                        let item = this.localData.find(d => d.id === id);
+                        if(item) {
+                            await fetch(this.apiUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'text/plain' },
+                                body: JSON.stringify({ action: 'update', data: item })
+                            });
+                        }
+                    }
+                    await this.fetchData(true); 
+                    showToast(`${idsToUpdate.length} pesanan berhasil ditandai terkirim.`, 'success');
+                } catch (error) {
+                    showToast('Gagal mengupdate beberapa data di server.', 'error');
+                }
+            }
+            this.loading = false;
+        },
+
         bukaModalKirim(id) { this.modalKirimId = id; },
         tutupModalKirim() { this.modalKirimId = null; },
         
@@ -2004,6 +2348,82 @@ function adminSalesApp() {
             return data.sort((a, b) => b.id - a.id);
         }
     };
+}
+
+// ─────────────────────────────────────────────────────────────
+//  BUKU TAMU APP LOGIC (BARU)
+// ─────────────────────────────────────────────────────────────
+function bukuTamuApp() {
+    return {
+        apiUrl: PESANAN_STATUS_API_URL, 
+        availableSheets: [],
+        selectedSheet: '',
+        loading: false,
+        entries: [],
+        
+        initBT() {
+            this.addEntry();
+            this.fetchSheets();
+        },
+        
+        async fetchSheets() {
+            try {
+                const response = await fetch(`${this.apiUrl}?action=getSheets`);
+                const result = await response.json();
+                this.availableSheets = result.sheets || [];
+            } catch(e) { console.error("Gagal load sheet BT", e); }
+        },
+        
+        addEntry() {
+            this.entries.push({
+                id: Date.now() + Math.random(),
+                nama: '',
+                sumber: '',
+                tglKirim: '',
+                isJepang: false
+            });
+        },
+        
+        removeEntry(id) {
+            this.entries = this.entries.filter(e => e.id !== id);
+            if (this.entries.length === 0) this.addEntry();
+        },
+        
+        async submitData() {
+            if (!this.selectedSheet) return showToast('Pilih Sheet Tujuan di bagian atas!', 'error');
+            
+            const validData = this.entries.filter(e => e.nama.trim() !== '');
+            if (validData.length === 0) return showToast('Isi minimal 1 Nama Pelanggan!', 'error');
+
+            this.loading = true;
+            try {
+                const payload = {
+                    action: 'submitBukuTamu',
+                    spreadsheetId: '1meU6mZxLck7gvymuaOsRgy0jZBUyVK2auqG5s8TSk8w',
+                    sheetName: this.selectedSheet,
+                    data: validData
+                };
+
+                const response = await fetch(this.apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showToast('Data Buku Tamu berhasil diinput! ✅', 'success');
+                    this.entries = [];
+                    this.addEntry();
+                } else {
+                    showToast('Gagal: ' + (result.message || 'Server Error'), 'error');
+                }
+            } catch (e) {
+                showToast('Gagal terhubung ke server.', 'error');
+            }
+            this.loading = false;
+        }
+    }
 }
 
 function pFileToBase64(file) {
