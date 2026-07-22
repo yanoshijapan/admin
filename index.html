@@ -6,22 +6,29 @@
     <title>Yanoshi Dashboard</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0A0A0B">
+    <meta name="theme-color" content="#050505">
     <link rel="apple-touch-icon" href="https://yanoshijapan.github.io/asetonline/logoappyanoshi.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
+            /* ===== TEMA MONOCHROME BARU ===== */
+            --theme-black: #050505;
+            --theme-dark: #121212;
+            --theme-gray: #333333;
+            --theme-light: #A0A0A0;
+            --theme-silver: #E0E0E0;
+            --theme-white: #FFFFFF;
+
+            --grad-black: linear-gradient(135deg, #2b2b2b 0%, #121212 50%, #000000 100%);
+            --grad-gray: linear-gradient(135deg, #5c5c5c 0%, #2e2e2e 100%);
+            --grad-white: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%);
+
+            /* Warna Khusus yang dipertahankan untuk Logika Kotak Status Customer & Admin Sales */
             --red: #E11D2E;
             --red-dark: #7A0000;
             --red-light: #FF4550;
-            --gold: #D4AF37;
-            --gold-light: #F4E4A6;
-            --gold-dark: #9C7A1D;
-            --gold-gradient: linear-gradient(135deg, #F6E7B4 0%, #D4AF37 45%, #9C7A1D 100%);
-            --red-gradient: linear-gradient(135deg, #FF4550 0%, #B3001B 60%, #5A0000 100%);
-            --white-gradient: linear-gradient(135deg, #FFFFFF 0%, #E9E9EC 100%);
 
             /* Dark surfaces */
             --white: #17171B;          
@@ -34,7 +41,7 @@
             --bg-elev-1: #131316;
             --bg-elev-2: #1B1B20;
             --border-soft: rgba(255,255,255,0.08);
-            --border-gold: rgba(212,175,55,0.35);
+            --border-theme: rgba(255,255,255,0.25);
 
             --shadow-sm: 0 2px 10px rgba(0,0,0,0.35);
             --shadow-md: 0 6px 26px rgba(0,0,0,0.45);
@@ -42,7 +49,7 @@
             --radius: 16px;
             
             /* Target Harian Variables */
-            --th-primary: #E11D2E;
+            --th-primary: #FFFFFF;
             --th-bg: transparent;
             --th-card-bg: #1b1b20;
             --th-card-border: rgba(255,255,255,0.08);
@@ -58,8 +65,8 @@
         html, body {
             font-family: 'Montserrat', sans-serif;
             background:
-                radial-gradient(circle at 12% 8%, rgba(212,175,55,0.08) 0%, transparent 45%),
-                radial-gradient(circle at 88% 18%, rgba(225,29,46,0.10) 0%, transparent 40%),
+                radial-gradient(circle at 12% 8%, rgba(255,255,255,0.05) 0%, transparent 45%),
+                radial-gradient(circle at 88% 18%, rgba(255,255,255,0.04) 0%, transparent 40%),
                 linear-gradient(180deg, #0A0A0B 0%, #141418 45%, #1B1B20 100%);
             background-attachment: fixed;
             color: var(--text-dark); min-height: 100vh; overflow-x: hidden;
@@ -70,7 +77,7 @@
         /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0f0f11; }
-        ::-webkit-scrollbar-thumb { background: var(--gold-gradient); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: var(--grad-white); border-radius: 3px; }
 
         /* ===== MODERN MONOCHROME SVG ICON TREATMENT ===== */
         .icon-svg { display: inline-block; vertical-align: middle; }
@@ -78,39 +85,26 @@
         /* ===== LOGIN PAGE ===== */
         #loginPage {
             min-height: 100vh;
-            background: linear-gradient(160deg,
-                #14090a 0%,
-                #2a0405 18%,
-                #4a0007 36%,
-                #6e0910 54%,
-                #9c1420 70%,
-                #c2202f 86%,
-                #e13140 100%);
+            /* Gradasi Latar Putih ke Abu-abu */
+            background: linear-gradient(160deg, #ffffff 0%, #f4f4f5 30%, #d4d4d8 70%, #a1a1aa 100%);
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
         }
         #loginPage::before {
             content: '';
             position: absolute; inset: 0;
-            background: radial-gradient(ellipse 90% 60% at 50% -10%, rgba(255,255,255,0.06) 0%, transparent 60%),
-                        radial-gradient(ellipse 80% 60% at 50% 110%, rgba(0,0,0,0.35) 0%, transparent 60%);
-        }
-        #loginPage::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(212,175,55,0.09) 0%, transparent 55%),
-                        radial-gradient(circle at 70% 45%, rgba(204,0,0,0.14) 0%, transparent 55%);
+            background: radial-gradient(ellipse 90% 60% at 50% -10%, rgba(255,255,255,0.6) 0%, transparent 60%),
+                        radial-gradient(ellipse 80% 60% at 50% 110%, rgba(0,0,0,0.1) 0%, transparent 60%);
         }
         .login-card {
             position: relative; z-index: 1;
-            background: linear-gradient(165deg, rgba(30,30,35,0.92) 0%, rgba(15,15,17,0.96) 100%);
+            /* Background gelap agar logo logoputih.png tetap terlihat jelas */
+            background: linear-gradient(165deg, rgba(30,30,35,0.95) 0%, rgba(15,15,17,0.98) 100%);
             border-radius: 24px;
             padding: 48px 40px;
             width: 100%; max-width: 420px;
             margin: 20px;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(212,175,55,0.28);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.15);
             backdrop-filter: blur(20px);
             animation: loginFadeIn 0.6s ease-out;
         }
@@ -120,38 +114,38 @@
         }
         .login-logo { display: block; max-height: 56px; margin: 0 auto 28px; }
         .login-title { text-align: center; margin-bottom: 8px; }
-        .login-title h1 { font-size: 22px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
-        .login-title p  { font-size: 13px; color: var(--text-mid); font-weight: 500; margin-top: 4px; }
+        .login-title h1 { font-size: 22px; font-weight: 800; color: var(--theme-white); letter-spacing: -0.5px; }
+        .login-title p  { font-size: 13px; color: var(--theme-light); font-weight: 500; margin-top: 4px; }
         .login-divider  {
             height: 3px; width: 40px;
-            background: linear-gradient(90deg, var(--red), var(--gold));
+            background: var(--grad-white);
             border-radius: 2px; margin: 16px auto 28px;
         }
         .login-field { margin-bottom: 18px; }
-        .login-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-mid); margin-bottom: 8px; }
+        .login-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--theme-light); margin-bottom: 8px; }
         .login-field input {
             width: 100%; padding: 14px 18px;
-            border: 2px solid #e4e4e7; border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
             font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500;
-            outline: none; transition: all 0.2s; background: #FFFFFF; color: #1A1A1D;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            outline: none; transition: all 0.2s; background: rgba(255,255,255,0.05); color: var(--theme-white);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-        .login-field input::placeholder { color: #9a9a9e; }
-        .login-field input:focus { border-color: var(--gold); background: #FFFFFF; box-shadow: 0 0 0 4px rgba(212,175,55,0.18); }
+        .login-field input::placeholder { color: #666; }
+        .login-field input:focus { border-color: var(--theme-silver); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 4px rgba(255,255,255,0.1); }
         .login-btn {
             width: 100%; padding: 15px;
-            background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-            color: white; border: none; border-radius: 12px;
-            font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
+            background: var(--grad-white);
+            color: var(--theme-black); border: none; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800;
             cursor: pointer; transition: all 0.2s; margin-top: 8px;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 18px rgba(225,29,46,0.25), 0 0 0 1px rgba(212,175,55,0.25) inset;
+            box-shadow: 0 4px 18px rgba(255,255,255,0.15), 0 0 0 1px rgba(255,255,255,0.4) inset;
         }
-        .login-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(225,29,46,0.45), 0 0 0 1px rgba(212,175,55,0.4) inset; }
+        .login-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,255,255,0.25), 0 0 0 1px rgba(255,255,255,0.6) inset; }
         .login-btn:active { transform: translateY(0); }
         .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         .login-error {
-            background: rgba(225,29,46,0.10); border: 1px solid rgba(225,29,46,0.35);
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
             color: #ff8b8f; border-radius: 10px; padding: 12px 16px;
             font-size: 13px; font-weight: 600; text-align: center; margin-top: 14px;
         }
@@ -160,11 +154,11 @@
         /* ===== STICKY HEADER ===== */
         #mainHeader {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: linear-gradient(115deg, #4a0007 0%, var(--red-dark) 30%, var(--red) 65%, #6e0d16 100%);
+            background: var(--grad-black);
             backdrop-filter: blur(14px);
             border-bottom: 1px solid transparent;
-            border-image: linear-gradient(90deg, var(--gold) 0%, var(--red-light) 50%, var(--gold) 100%) 1;
-            box-shadow: 0 2px 24px rgba(90,0,0,0.45);
+            border-image: linear-gradient(90deg, #333 0%, #fff 50%, #333 100%) 1;
+            box-shadow: 0 2px 24px rgba(0,0,0,0.8);
             height: 64px; display: flex; align-items: center; justify-content: space-between;
             padding: 0 20px;
         }
@@ -175,8 +169,8 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
             transition: all 0.2s;
         }
-        .hamburger-btn:hover { background: rgba(212,175,55,0.12); border-color: var(--border-gold); }
-        .hamburger-btn span { display: block; width: 20px; height: 2px; background: var(--gold-light); border-radius: 2px; transition: all 0.3s; }
+        .hamburger-btn:hover { background: rgba(255,255,255,0.12); border-color: var(--border-theme); }
+        .hamburger-btn span { display: block; width: 20px; height: 2px; background: var(--theme-white); border-radius: 2px; transition: all 0.3s; }
         .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: translateX(-8px); }
         .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -186,7 +180,7 @@
             position: fixed; top: 72px; right: 16px; z-index: 999;
             background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%);
             border-radius: 16px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.2);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15);
             min-width: 220px; overflow: hidden;
             animation: dropdownIn 0.2s ease-out;
         }
@@ -194,68 +188,74 @@
             from { opacity: 0; transform: translateY(-8px) scale(0.97); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .dropdown-user-info { padding: 16px 18px 14px; border-bottom: 1px solid var(--border-soft); background: linear-gradient(90deg, rgba(212,175,55,0.08), transparent); }
+        .dropdown-user-info { padding: 16px 18px 14px; border-bottom: 1px solid var(--border-soft); background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); }
         .dropdown-user-name { font-size: 14px; font-weight: 700; color: var(--text-dark); }
-        .dropdown-user-role { font-size: 11px; color: var(--gold-light); font-weight: 600; margin-top: 2px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .dropdown-user-role { font-size: 11px; color: var(--theme-silver); font-weight: 600; margin-top: 2px; letter-spacing: 0.5px; text-transform: uppercase; }
         .dropdown-item {
             display: flex; align-items: center; gap: 12px;
             padding: 13px 18px; cursor: pointer;
             font-size: 13px; font-weight: 600; color: var(--text-dark);
             transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.04);
         }
-        .dropdown-item:hover { background: rgba(212,175,55,0.08); }
-        .dropdown-item.danger { color: var(--red-light); }
-        .dropdown-item.danger:hover { background: rgba(225,29,46,0.12); }
-        .dropdown-item .icon { display: inline-flex; color: var(--gold-light); }
-        .dropdown-item.danger .icon { color: var(--red-light); }
+        .dropdown-item:hover { background: rgba(255,255,255,0.08); }
+        .dropdown-item.danger { color: #ff8b8f; }
+        .dropdown-item.danger:hover { background: rgba(255,255,255,0.12); }
+        .dropdown-item .icon { display: inline-flex; color: var(--theme-white); }
+        .dropdown-item.danger .icon { color: #ff8b8f; }
 
         /* ===== MAIN CONTENT ===== */
         #mainContent { padding-top: 64px; min-height: 100vh; background: transparent; }
         .content-wrap { max-width: 1200px; margin: 0 auto; padding: 28px 20px 48px; }
 
-        /* ===== WELCOME BANNER DENGAN NOTIFIKASI SUMMARY KOMPAK ===== */
+        /* ===== WELCOME BANNER (ABU ABU GRADASI PUTIH) ===== */
         .welcome-banner {
-            background: linear-gradient(135deg, #2b0004 0%, #6e0d16 50%, #9c1420 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 50%, #d4d4d8 100%);
             border-radius: 20px; 
             padding: 32px 36px; 
             margin-bottom: 28px; 
             position: relative; 
             overflow: hidden;
-            border: 1px solid var(--border-gold);
-            box-shadow: var(--shadow-md), 0 0 20px rgba(225,29,46,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-md);
         }
         .welcome-banner::before {
             content: ''; position: absolute; inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 120 120'%3E%3Cpath fill='%23ffffff' fill-opacity='0.07' d='M60 120A60 60 0 0 0 0 60a60 60 0 0 0-60 60h120zm-20 0A40 40 0 0 0 0 80a40 40 0 0 0-40 40h80zm-20 0A20 20 0 0 0 0 100a20 20 0 0 0-20 20h40zm40-120A60 60 0 0 0 0-60a60 60 0 0 0-60 60h120V0zm-20 0A40 40 0 0 0 0-40a40 40 0 0 0-40 40h80V0zm-20 0A20 20 0 0 0 0-20a20 20 0 0 0-20 20h40V0zM120 60a60 60 0 0 0-60-60 60 60 0 0 0-60 60h120zm-20 0a40 40 0 0 0-40-40 40 40 0 0 0-40 40h80zm-20 0a20 20 0 0 0-20-20 20 20 0 0 0-20 20h40z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 120 120'%3E%3Cpath fill='%23000000' fill-opacity='0.03' d='M60 120A60 60 0 0 0 0 60a60 60 0 0 0-60 60h120zm-20 0A40 40 0 0 0 0 80a40 40 0 0 0-40 40h80zm-20 0A20 20 0 0 0 0 100a20 20 0 0 0-20 20h40zm40-120A60 60 0 0 0 0-60a60 60 0 0 0-60 60h120V0zm-20 0A40 40 0 0 0 0-40a40 40 0 0 0-40 40h80V0zm-20 0A20 20 0 0 0 0-20a20 20 0 0 0-20 20h40V0zM120 60a60 60 0 0 0-60-60 60 60 0 0 0-60 60h120zm-20 0a40 40 0 0 0-40-40 40 40 0 0 0-40 40h80zm-20 0a20 20 0 0 0-20-20 20 20 0 0 0-20 20h40z'/%3E%3C/svg%3E");
             background-position: center center;
-            opacity: 0.9; mix-blend-mode: overlay; z-index: 0;
+            opacity: 1; mix-blend-mode: normal; z-index: 0;
         }
         .welcome-banner::after {
             content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%);
+            background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
             z-index: 1;
         }
         .welcome-title, .welcome-subtitle, .welcome-clock, .welcome-clock-label {
-            position: relative; z-index: 2; text-shadow: 0 2px 5px rgba(0,0,0,0.6); 
+            position: relative; z-index: 2; 
         }
-        .welcome-title { font-size: 24px; font-weight: 800; color: #ffffff; line-height: 1.2; }
-        .welcome-subtitle { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; margin-top: 6px; }
+        .welcome-title { font-size: 24px; font-weight: 800; color: #1a1a1a; line-height: 1.2; text-shadow: none; }
+        .welcome-subtitle { font-size: 13px; color: #444; font-weight: 600; margin-top: 6px; text-shadow: none; }
         .welcome-gold { 
-            background: var(--gold-gradient); -webkit-background-clip: text;
+            background: linear-gradient(135deg, #B8941C 0%, #D4AF37 50%, #9C7A1D 100%); 
+            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent; text-shadow: none; display: inline-block;
         }
-        .welcome-clock { font-size: 24px; font-weight: 900; color: #ffffff; letter-spacing: 2px; margin-top: 14px; font-variant-numeric: tabular-nums; }
-        .welcome-clock-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2.5px; color: var(--gold-light); margin-top: 2px; }
+        .welcome-clock { font-size: 24px; font-weight: 900; color: #1a1a1a; letter-spacing: 2px; margin-top: 14px; font-variant-numeric: tabular-nums; text-shadow: none; }
+        .welcome-clock-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2.5px; color: #666; margin-top: 2px; text-shadow: none; }
+
+        /* SUMMARY NOTIFICATION BADGES DI BANNER */
+        .summary-badge-container {
+            background: rgba(0,0,0,0.7); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+        }
 
         /* ===== SECTION TITLE ===== */
         .section-title {
             font-size: 12px; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 2px; color: var(--text-mid); margin-bottom: 16px;
+            letter-spacing: 2px; color: var(--theme-light); margin-bottom: 16px;
             display: flex; align-items: center; gap: 8px;
         }
         .section-title::before {
             content: ''; display: block; width: 4px; height: 16px;
-            background: linear-gradient(180deg, var(--red), var(--gold));
+            background: var(--grad-white);
             border-radius: 2px;
         }
 
@@ -268,59 +268,59 @@
             background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
             border-radius: 18px; padding: 22px 16px;
             box-shadow: var(--shadow-sm); cursor: pointer;
-            border: 1.5px solid var(--border-soft);
+            border: 1px solid var(--border-soft);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center; user-select: none; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .menu-card::after {
             content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), rgba(255,255,255,0.9));
+            height: 3px; background: var(--grad-white);
             transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
         }
-        .menu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-gold); }
+        .menu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-theme); }
         .menu-card:hover::after { transform: scaleX(1); }
-        .menu-card.active { border-color: var(--gold); box-shadow: 0 4px 24px rgba(212,175,55,0.18); }
+        .menu-card.active { border-color: var(--theme-white); box-shadow: 0 4px 24px rgba(255,255,255,0.15); }
         .menu-card.active::after { transform: scaleX(1); }
 
         .menu-icon {
             width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 12px;
             display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
-            background: linear-gradient(155deg, rgba(212,175,55,0.22) 0%, rgba(212,175,55,0.06) 100%);
-            border: 1px solid var(--border-gold);
-            color: var(--gold-light);
+            background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid var(--border-theme);
+            color: var(--theme-white);
         }
         .menu-icon svg { width: 24px; height: 24px; }
-        .menu-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); line-height: 1.3; margin: 0; }
+        .menu-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--theme-silver); line-height: 1.3; margin: 0; }
         
         /* ===== WIDE MENU UNTUK CETAK STIKER ===== */
         .menu-card-wide {
             background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
             border-radius: 18px; padding: 14px 20px;
             box-shadow: var(--shadow-sm); cursor: pointer;
-            border: 1.5px solid var(--border-soft); 
+            border: 1px solid var(--border-soft); 
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative; overflow: hidden;
             display: flex; align-items: center; justify-content: center; gap: 12px;
             grid-column: 1 / -1; width: 100%;
         }
-        .menu-card-wide:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-gold); }
+        .menu-card-wide:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-theme); }
         .menu-card-wide::after {
             content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), rgba(255,255,255,0.9));
+            height: 3px; background: var(--grad-white);
             transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
         }
         .menu-card-wide:hover::after { transform: scaleX(1); }
-        .menu-card-wide .menu-icon { margin: 0; width: 44px; height: 44px; flex-shrink: 0; font-size: 20px; background: linear-gradient(155deg, rgba(212,175,55,0.22) 0%, rgba(212,175,55,0.06) 100%); border: 1px solid var(--border-gold); color: var(--gold-light); display: flex; align-items: center; justify-content: center; border-radius: 12px;}
+        .menu-card-wide .menu-icon { margin: 0; width: 44px; height: 44px; flex-shrink: 0; font-size: 20px; background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid var(--border-theme); color: var(--theme-white); display: flex; align-items: center; justify-content: center; border-radius: 12px;}
         .menu-card-wide .menu-icon svg { width: 20px; height: 20px; }
-        .menu-card-wide .menu-label { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dark); }
-        .menu-card-wide .arrow-icon { position: absolute; right: 20px; color: var(--gold-light); font-weight: bold; font-size: 16px; transition: transform 0.2s, color 0.2s; }
-        .menu-card-wide:hover .arrow-icon { transform: translateX(4px); color: var(--gold); }
+        .menu-card-wide .menu-label { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--theme-silver); }
+        .menu-card-wide .arrow-icon { position: absolute; right: 20px; color: var(--theme-white); font-weight: bold; font-size: 16px; transition: transform 0.2s, color 0.2s; }
+        .menu-card-wide:hover .arrow-icon { transform: translateX(4px); color: var(--theme-white); }
 
         /* ===== POPUP MODAL MENU ===== */
         .popup-overlay {
             position: fixed; inset: 0; z-index: 3000;
-            background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
             display: flex; align-items: flex-end; justify-content: center;
             padding: 0;
             animation: popupFadeIn 0.2s ease-out;
@@ -331,11 +331,11 @@
         }
         .popup-sheet {
             background: linear-gradient(180deg, #18181c 0%, #0e0e10 100%);
-            border: 1px solid var(--border-gold);
+            border: 1px solid var(--border-theme);
             width: 100%; max-width: 900px;
             border-radius: 24px 24px 0 0;
             max-height: 88vh; display: flex; flex-direction: column;
-            box-shadow: 0 -8px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 -8px 60px rgba(0,0,0,0.8);
             animation: popupSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
         }
@@ -348,18 +348,18 @@
             to   { transform: translateY(0); opacity: 1; }
         }
         .popup-header {
-            padding: 20px 24px 16px; border-bottom: 1.5px solid var(--border-soft);
-            background: linear-gradient(90deg, rgba(212,175,55,0.07), transparent 60%);
+            padding: 20px 24px 16px; border-bottom: 1px solid var(--border-soft);
+            background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent 60%);
             display: flex; align-items: center; justify-content: space-between;
             flex-shrink: 0;
         }
         .popup-drag-handle {
-            width: 40px; height: 4px; background: var(--gold-gradient); border-radius: 2px;
+            width: 40px; height: 4px; background: var(--grad-white); border-radius: 2px;
             margin: 10px auto 0; flex-shrink: 0; opacity: 0.6;
         }
         @media (min-width: 700px) { .popup-drag-handle { display: none; } }
         .popup-title-wrap { display: flex; align-items: center; gap: 10px; }
-        .popup-title-icon { color: var(--gold-light); display: flex; align-items: center; }
+        .popup-title-icon { color: var(--theme-white); display: flex; align-items: center; }
         .popup-title { font-size: 15px; font-weight: 800; color: var(--text-dark); }
         .popup-close-btn {
             width: 36px; height: 36px; border-radius: 10px;
@@ -368,7 +368,7 @@
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s; flex-shrink: 0;
         }
-        .popup-close-btn:hover { background: rgba(225,29,46,0.15); border-color: var(--red); color: var(--red-light); }
+        .popup-close-btn:hover { background: rgba(255,255,255,0.15); border-color: #fff; color: #fff; }
         .popup-body {
             flex: 1 1 auto; 
             overflow-y: auto; padding: 20px 24px 32px;
@@ -379,14 +379,14 @@
         /* ===== MODAL USER SETTINGS ===== */
         .modal-overlay {
             position: fixed; inset: 0; z-index: 2000;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
             display: flex; align-items: center; justify-content: center; padding: 20px;
         }
         .modal-box {
             background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%);
-            border: 1px solid var(--border-gold);
+            border: 1px solid var(--border-theme);
             border-radius: 24px; padding: 36px 32px; width: 100%; max-width: 420px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.55); animation: modalIn 0.25s ease-out;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8); animation: modalIn 0.25s ease-out;
         }
         @keyframes modalIn {
             from { opacity: 0; transform: scale(0.95) translateY(10px); }
@@ -397,37 +397,36 @@
         .modal-field { margin-bottom: 18px; }
         .modal-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-mid); margin-bottom: 8px; }
         .modal-field input {
-            width: 100%; padding: 13px 16px; border: 2px solid rgba(255,255,255,0.1); border-radius: 10px;
+            width: 100%; padding: 13px 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
             font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500;
             outline: none; transition: all 0.2s; background: rgba(255,255,255,0.04); color: var(--text-dark);
         }
-        .modal-field input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,0.12); }
+        .modal-field input:focus { border-color: var(--theme-white); box-shadow: 0 0 0 3px rgba(255,255,255,0.1); }
         .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
         .btn-cancel {
-            flex: 1; padding: 13px; border: 2px solid rgba(255,255,255,0.1); border-radius: 10px;
-            background: rgba(255,255,255,0.03); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
+            flex: 1; padding: 13px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+            background: rgba(255,255,255,0.05); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
             color: var(--text-mid); cursor: pointer; transition: all 0.2s;
         }
-        .btn-cancel:hover { background: rgba(255,255,255,0.07); }
+        .btn-cancel:hover { background: rgba(255,255,255,0.1); color: #fff;}
         .btn-save {
             flex: 2; padding: 13px; border: none; border-radius: 10px;
-            background: linear-gradient(135deg, var(--red), var(--red-dark));
-            font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
-            color: white; cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;
+            background: var(--grad-white);
+            font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 800;
+            color: #000; cursor: pointer; transition: all 0.2s;
         }
-        .btn-save:hover { box-shadow: 0 4px 16px rgba(225,29,46,0.4), 0 0 0 1px rgba(212,175,55,0.4) inset; transform: translateY(-1px); }
+        .btn-save:hover { box-shadow: 0 4px 16px rgba(255,255,255,0.3); transform: translateY(-1px); }
         .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         /* ===== UPLOAD ZONE ===== */
         .upload-zone {
-            border: 2px dashed rgba(255,255,255,0.16) !important; border-radius: 8px;
+            border: 2px dashed rgba(255,255,255,0.2) !important; border-radius: 8px;
             padding: 10px; text-align: center; background: rgba(255,255,255,0.03) !important;
             transition: border-color 0.2s, background 0.2s; cursor: pointer;
         }
-        .upload-zone:hover { border-color: var(--gold) !important; background: rgba(212,175,55,0.07) !important; }
+        .upload-zone:hover { border-color: var(--theme-white) !important; background: rgba(255,255,255,0.08) !important; }
         .upload-zone.has-file { border-color: #34d399 !important; background: rgba(16,185,129,0.08) !important; }
-        .upload-zone p { color: var(--text-mid) !important; }
+        .upload-zone p { color: var(--theme-light) !important; }
         .upload-zone input[type="file"] { display: none; }
 
         /* ===== TOAST ===== */
@@ -438,7 +437,7 @@
         .toast {
             padding: 12px 18px; border-radius: 12px; color: white;
             font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2); pointer-events: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5); pointer-events: auto;
             animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             max-width: 300px;
         }
@@ -447,11 +446,11 @@
             to   { opacity: 1; transform: translateX(0); }
         }
         .toast.success { background: linear-gradient(135deg, #059669, #10b981); }
-        .toast.error   { background: linear-gradient(135deg, var(--red-dark), var(--red)); }
-        .toast.info    { background: linear-gradient(135deg, #7a5c00, var(--gold-dark)); }
+        .toast.error   { background: linear-gradient(135deg, #5c0000, #990000); }
+        .toast.info    { background: linear-gradient(135deg, #333333, #1a1a1a); }
 
         /* ===== IFRAME CONTAINER ===== */
-        .iframe-wrap { width: 100%; border: none; display: block; background: #f9f9f9; }
+        .iframe-wrap { width: 100%; border: none; display: block; background: #000; }
         .iframe-wrap iframe { width: 100%; border: none; display: block; }
         .iframe-height-lg { height: 600px; }
 
@@ -459,31 +458,31 @@
         .embed-panel {
             background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
             border-radius: 20px; overflow: hidden;
-            box-shadow: var(--shadow-sm); border: 1.5px solid var(--border-soft); margin-bottom: 28px;
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); margin-bottom: 28px;
         }
         .embed-header {
             padding: 16px 22px; display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid transparent;
-            border-image: linear-gradient(90deg, var(--red), var(--gold), rgba(255,255,255,0.6)) 1;
-            background: linear-gradient(90deg, rgba(212,175,55,0.06), transparent 70%);
+            border-image: linear-gradient(90deg, #555, #fff, rgba(255,255,255,0.6)) 1;
+            background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent 70%);
         }
         .embed-title-wrap { display: flex; align-items: center; gap: 10px; }
         .embed-icon {
             width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;
-            background: linear-gradient(155deg, rgba(212,175,55,0.22) 0%, rgba(212,175,55,0.06) 100%);
-            border: 1px solid var(--border-gold);
-            color: var(--gold-light);
+            background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid var(--border-theme);
+            color: var(--theme-white);
         }
         .embed-icon svg { width: 18px; height: 18px; }
         .embed-title { font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .embed-sub   { font-size: 11px; color: var(--text-mid); margin-top: 2px; }
         .embed-toggle {
-            padding: 7px 14px; border-radius: 8px; border: 1.5px solid var(--border-soft);
+            padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border-theme);
             background: rgba(255,255,255,0.04); font-family: 'Montserrat', sans-serif;
             font-size: 11px; font-weight: 700; color: var(--text-mid); cursor: pointer;
             transition: all 0.2s; display: flex; align-items: center; gap: 6px;
         }
-        .embed-toggle:hover { background: rgba(212,175,55,0.1); border-color: var(--border-gold); color: var(--gold-light); }
+        .embed-toggle:hover { background: rgba(255,255,255,0.1); border-color: #fff; color: #fff; }
         .embed-body { overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .embed-body.collapsed { max-height: 0; }
         .embed-body.expanded { max-height: 600px; }
@@ -492,39 +491,39 @@
             font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
             cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
         }
-        .btn-ext.primary { background: linear-gradient(135deg, var(--red), var(--red-dark)); color: white; box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset; }
+        .btn-ext.primary { background: var(--grad-white); color: #000; box-shadow: 0 0 0 1px rgba(255,255,255,0.25) inset; }
 
         /* =========================================================
-           TARGET HARIAN SCOPED CSS
+           TARGET HARIAN SCOPED CSS (PENCAPAIAN)
         ========================================================= */
         .th-container { font-family: 'Inter', sans-serif; width: 100%; background: transparent; animation: th_fadeIn 0.8s ease-out; }
         
         .th-header-card {
-            background: linear-gradient(135deg, #4a0007 0%, var(--red) 60%, var(--gold-dark) 130%);
-            border: 1px solid var(--border-gold);
+            background: var(--grad-black);
+            border: 1px solid var(--border-theme);
             padding: 30px 24px; color: white; text-align: center;
             border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 20px;
         }
         .th-header-card h1 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; opacity: .9; margin-bottom: 8px; font-weight: 600; }
         .th-header-card .th-date { font-size: 26px; font-weight: 700; margin-bottom: 15px; }
         .th-deadline-badge {
-            display: inline-block; background-color: rgba(255,255,255,.2); padding: 8px 16px;
+            display: inline-block; background-color: rgba(255,255,255,.1); padding: 8px 16px;
             border-radius: 30px; font-size: 13px; font-weight: 500; backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,.2); margin-bottom: 20px;
         }
         .th-total-summary {
-            background-color: rgba(0,0,0,.15); padding: 18px 20px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,.15); display: flex;
+            background-color: rgba(0,0,0,.3); padding: 18px 20px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,.1); display: flex;
             justify-content: space-between; align-items: center; text-align: left;
         }
         .th-total-info p { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: .85; margin-bottom: 5px; }
         .th-total-numbers { font-size: 18px; font-weight: 400; }
-        .th-total-numbers strong { font-size: 28px; font-weight: 700; color: #d1fae5; }
+        .th-total-numbers strong { font-size: 28px; font-weight: 700; color: #fff; }
         .th-total-percentage-badge {
-            background: rgba(255,255,255,.2); padding: 10px 16px; border-radius: 12px;
+            background: rgba(255,255,255,.1); padding: 10px 16px; border-radius: 12px;
             font-size: 22px; font-weight: 800; color: #fff;
             box-shadow: 0 4px 6px rgba(0,0,0,.1); backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,.3); transition: all .5s ease;
+            border: 1px solid rgba(255,255,255,.2); transition: all .5s ease;
         }
 
         .th-item-list { list-style: none; margin: 0; padding: 0; }
@@ -533,7 +532,7 @@
             margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border);
             transition: transform .2s ease, box-shadow .2s ease;
         }
-        .th-item-card:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(0,0,0,.1); }
+        .th-item-card:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(0,0,0,.5); }
         .th-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .th-title-wrap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .th-item-title { font-size: 16px; font-weight: 700; color: var(--th-text-main); }
@@ -542,9 +541,9 @@
         .th-perc-warning { color: var(--th-accent-orange); }
         .th-perc-danger  { color: var(--th-accent-red); }
         .th-status-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; }
-        .th-status-success { background-color: #d1fae5; color: var(--th-accent-green); border: 1px solid rgba(16,185,129,.3); }
-        .th-status-warning { background-color: #fef3c7; color: var(--th-accent-orange); border: 1px solid rgba(245,158,11,.3); }
-        .th-status-danger  { background-color: #fee2e2; color: var(--th-accent-red);    border: 1px solid rgba(239,68,68,.3); }
+        .th-status-success { background-color: rgba(16,185,129,0.1); color: var(--th-accent-green); border: 1px solid rgba(16,185,129,.3); }
+        .th-status-warning { background-color: rgba(245,158,11,0.1); color: var(--th-accent-orange); border: 1px solid rgba(245,158,11,.3); }
+        .th-status-danger  { background-color: rgba(239,68,68,0.1); color: var(--th-accent-red);    border: 1px solid rgba(239,68,68,.3); }
         .th-progress-container { width: 100%; height: 10px; background-color: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
         .th-progress-bar { height: 100%; border-radius: 10px; width: 0%; transition: width 1s cubic-bezier(.4,0,.2,1); }
         .th-stats-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--th-text-muted); font-weight: 500; background: var(--th-elev); padding: 10px 12px; border-radius: 10px; }
@@ -553,16 +552,16 @@
         .th-val-red   { color: var(--th-accent-red); }
 
         #th-loading, #th-error { text-align: center; padding: 40px; background: var(--th-card-bg); border: 1px solid var(--th-card-border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-        .th-spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--th-primary); border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite; }
+        .th-spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--theme-white); border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite; }
         
         @keyframes th_fadeIn  { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes th_fadeOut { to { opacity: 0; transform: translateX(-50%) translateY(-10px); } }
 
         .th-auto-rekap-toast {
             position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg,#059669,#10b981); color: #fff;
+            background: var(--grad-white); color: #000;
             padding: 12px 22px; border-radius: 14px; font-size: 13px; font-weight: 700;
-            box-shadow: 0 8px 20px rgba(0,0,0,.18); z-index: 9999;
+            box-shadow: 0 8px 20px rgba(0,0,0,.5); z-index: 9999;
             display: flex; align-items: center; gap: 8px; max-width: 90%;
             animation: th_fadeIn .4s ease;
         }
@@ -575,46 +574,46 @@
             margin-bottom: 20px; overflow: hidden; animation: th_fadeIn .6s ease-out;
         }
         .th-rekap-header {
-            background: linear-gradient(135deg,#1a0000 0%, var(--red-dark) 100%);
+            background: var(--grad-black);
             padding: 18px 22px; display: flex; justify-content: space-between;
             align-items: center; cursor: pointer; user-select: none;
         }
         .th-rekap-header-left { display: flex; align-items: center; gap: 10px; }
-        .th-rekap-icon { font-size: 20px; }
+        .th-rekap-icon { font-size: 20px; color: #fff;}
         .th-rekap-title { color: white; font-size: 14px; font-weight: 700; letter-spacing: .5px; }
         .th-rekap-subtitle { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 2px; }
         .th-rekap-toggle-btn {
-            background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
             color: white; border-radius: 8px; padding: 6px 12px; font-size: 12px;
             font-weight: 600; cursor: pointer; transition: background .2s; white-space: nowrap;
         }
-        .th-rekap-toggle-btn:hover { background: rgba(255,255,255,.25); }
+        .th-rekap-toggle-btn:hover { background: rgba(255,255,255,.2); }
         .th-rekap-body { padding: 0 22px 22px; display: none; }
         .th-rekap-body.open { display: block; }
 
         .th-rekap-actions { padding: 14px 0 8px; display: flex; gap: 10px; flex-wrap: wrap; }
         .th-btn-simpan-rekap {
-            background: linear-gradient(135deg,#10b981,#059669); color: white;
+            background: var(--grad-white); color: #000;
             border: none; border-radius: 10px; padding: 10px 16px; font-size: 13px;
             font-weight: 700; cursor: pointer; transition: opacity .2s, transform .1s;
             display: flex; align-items: center; gap: 6px;
         }
         .th-btn-simpan-rekap:hover { opacity: .9; transform: translateY(-1px); }
         .th-btn-hapus-semua {
-            background: #fff; color: var(--th-accent-red); border: 1.5px solid #fca5a5;
+            background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2);
             border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 700;
             cursor: pointer; transition: background .2s;
         }
-        .th-btn-hapus-semua:hover { background: #fee2e2; }
+        .th-btn-hapus-semua:hover { background: rgba(255,255,255,0.1); }
 
         .th-rekap-filter { display: flex; align-items: center; gap: 10px; padding: 8px 0 14px; flex-wrap: wrap; }
         .th-rekap-filter label { font-size: 12px; font-weight: 600; color: var(--th-text-muted); text-transform: uppercase; letter-spacing: .5px; }
         .th-rekap-filter select {
-            border: 1.5px solid var(--th-card-border); border-radius: 8px; padding: 7px 12px;
+            border: 1px solid var(--th-card-border); border-radius: 8px; padding: 7px 12px;
             font-size: 13px; font-weight: 600; color: var(--th-text-main);
             background: var(--th-elev); cursor: pointer; outline: none; transition: border-color .2s;
         }
-        .th-rekap-filter select:focus { border-color: var(--gold); }
+        .th-rekap-filter select:focus { border-color: #fff; }
 
         .th-rekap-empty { text-align: center; padding: 30px 20px; color: var(--th-text-muted); font-size: 13px; }
         .th-rekap-empty .th-empty-icon { font-size: 32px; margin-bottom: 8px; }
@@ -626,26 +625,27 @@
             cursor: pointer; user-select: none; border-bottom: 1px solid transparent;
             transition: background .15s;
         }
-        .th-rekap-month-header:hover { background: rgba(212,175,55,0.08); }
+        .th-rekap-month-header:hover { background: rgba(255,255,255,0.05); }
         .th-rekap-month-header.detail-open { border-bottom-color: var(--th-card-border); }
         .th-rekap-month-title { font-size: 14px; font-weight: 800; color: var(--th-text-main); display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
         .th-rekap-month-meta  { font-size: 11px; color: var(--th-text-muted); margin-top: 3px; }
         .th-rekap-month-right { display: flex; align-items: center; gap: 8px; flex-shrink:0; }
 
         .th-rekap-perc-badge { display: inline-block; padding: 4px 11px; border-radius: 20px; font-size: 13px; font-weight: 800; }
-        .th-rekap-perc-green  { background: #d1fae5; color: #059669; }
-        .th-rekap-perc-orange { background: #fef3c7; color: #d97706; }
-        .th-rekap-perc-red    { background: #fee2e2; color: #dc2626; }
+        .th-rekap-perc-green  { background: rgba(16,185,129,0.15); color: #10b981; }
+        .th-rekap-perc-orange { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .th-rekap-perc-red    { background: rgba(239,68,68,0.15); color: #ef4444; }
 
-        .th-btn-del-month { background: none; border: none; color: #fca5a5; cursor: pointer; font-size: 15px; padding: 2px 6px; border-radius: 6px; transition: color .2s; line-height: 1; }
-        .th-btn-del-month:hover { color: var(--th-accent-red); }
+        .th-btn-del-month { background: none; border: none; color: #888; cursor: pointer; font-size: 15px; padding: 2px 6px; border-radius: 6px; transition: color .2s; line-height: 1; }
+        .th-btn-del-month:hover { color: #fff; }
 
         .th-rekap-detail { display: none; padding: 14px 16px 16px; }
         .th-rekap-detail.open { display: block; }
 
         .th-rekap-grand-row {
             display: flex; justify-content: space-between; align-items: center;
-            background: linear-gradient(135deg, var(--red-dark), var(--red));
+            background: var(--grad-black);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; color: white;
             gap: 8px; flex-wrap: wrap;
         }
@@ -665,28 +665,29 @@
         .th-prod-table thead th:not(:first-child) { text-align: right; }
         .th-prod-table tbody tr { border-bottom: 1px solid var(--th-card-border); }
         .th-prod-table tbody tr:last-child { border-bottom: none; }
-        .th-prod-table tbody tr:hover { background: rgba(212,175,55,0.06); }
+        .th-prod-table tbody tr:hover { background: rgba(255,255,255,0.02); }
         .th-prod-table tbody td { padding: 9px 10px; font-weight: 500; color: var(--th-text-main); }
         .th-prod-table tbody td:not(:first-child) { text-align: right; }
         .th-prod-terjual { color: var(--th-accent-green); font-weight: 700; }
         .th-prod-kurang  { color: var(--th-accent-red);   font-weight: 700; }
 
-        .th-mini-bar-wrap { width: 52px; height: 6px; background: #e2e8f0; border-radius: 6px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 4px; }
+        .th-mini-bar-wrap { width: 52px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 4px; }
         .th-mini-bar      { height: 100%; border-radius: 6px; }
 
         .th-rekap-grand-summary {
-            background: linear-gradient(135deg,#2a0000,var(--red-dark));
+            background: var(--grad-black);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 14px; padding: 16px 18px; color: white;
             display: flex; justify-content: space-between; align-items: center;
             margin-top: 4px; gap: 10px;
         }
         .th-rgs-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: .8; margin-bottom: 4px; }
-        .th-rgs-val   { font-size: 22px; font-weight: 800; color: #d1fae5; }
+        .th-rgs-val   { font-size: 22px; font-weight: 800; color: #fff; }
         .th-rgs-sub   { font-size: 12px; opacity: .7; }
 
         .th-rekap-save-notif { display: none; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 600; margin-top: 4px; text-align: center; }
-        .th-auto-info-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(212,175,55,0.12); color: var(--gold-light); border: 1px solid var(--border-gold); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; margin: 12px 0 4px; }
-        .th-auto-tag { font-size: 10px; background: rgba(212,175,55,0.12); color: var(--gold-light); border: 1px solid var(--border-gold); border-radius: 6px; padding: 2px 7px; font-weight: 700; }
+        .th-auto-info-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; margin: 12px 0 4px; }
+        .th-auto-tag { font-size: 10px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 7px; font-weight: 700; }
         .th-chevron { font-size: 12px; color: var(--th-text-muted); transition: transform .2s; }
         .th-chevron.open { transform: rotate(180deg); }
 
@@ -696,10 +697,6 @@
         .popup-body .bg-white { background-color: #1b1b20 !important; }
         .popup-body .bg-gray-50 { background-color: #202024 !important; }
         .popup-body .bg-gray-100 { background-color: rgba(255,255,255,0.07) !important; }
-        .popup-body .bg-red-50 { background-color: rgba(225,29,46,0.10) !important; }
-        .popup-body .border-red-100 { border-color: rgba(225,29,46,0.22) !important; }
-        .popup-body .border-red-200 { border-color: rgba(225,29,46,0.3) !important; }
-        .popup-body .text-red-700 { color: var(--red-light) !important; }
         
         .popup-body .text-gray-600,
         .popup-body .text-gray-500 { color: var(--text-mid) !important; }
@@ -713,8 +710,8 @@
         
         .popup-body h3.text-gray-900 { color: var(--text-dark) !important; }
         .popup-body button.text-gray-900 { color: #1a1a1a !important; }
-        .popup-body .text-blue-600 { color: var(--gold-light) !important; }
-        .popup-body .hover\:text-blue-800:hover { color: var(--gold) !important; }
+        .popup-body .text-blue-600 { color: #fff !important; }
+        .popup-body .hover\:text-blue-800:hover { color: #ccc !important; }
         
         /* Overrides Input, Select & Textarea */
         .popup-body input[type="text"],
@@ -730,13 +727,13 @@
         .popup-body input:focus,
         .popup-body select:focus,
         .popup-body textarea:focus {
-            --tw-ring-color: var(--gold) !important;
-            border-color: var(--gold) !important;
+            --tw-ring-color: #fff !important;
+            border-color: #fff !important;
         }
         .popup-body option { background: #1b1b20; color: var(--text-dark); }
         .popup-body ::placeholder { opacity: 1; }
 
-        /* Checkbox Override (Tema Gelap dan Merah) */
+        /* Checkbox Override (Tema Hitam/Putih) */
         .popup-body input[type="checkbox"] {
             background-color: rgba(255,255,255,0.04) !important;
             border-color: rgba(255,255,255,0.2) !important;
@@ -747,12 +744,12 @@
             justify-content: center;
         }
         .popup-body input[type="checkbox"]:checked {
-            background-color: var(--red) !important;
-            border-color: var(--red) !important;
+            background-color: var(--theme-white) !important;
+            border-color: var(--theme-white) !important;
         }
         .popup-body input[type="checkbox"]:checked::before {
             content: '✓';
-            color: white;
+            color: #000;
             font-size: 14px;
             font-weight: bold;
         }
@@ -840,42 +837,44 @@
                     <div class="welcome-clock-label">Waktu Sekarang</div>
                 </div>
                 
-                <!-- SUMMARY NOTIFICATION BADGES KOMPAK -->
-                <div class="relative z-10 flex flex-col gap-2 w-full lg:w-auto mt-4 lg:mt-0 p-3.5 rounded-xl border shadow-lg" style="background: rgba(0,0,0,0.35); border-color: rgba(212,175,55,0.25); backdrop-filter: blur(10px);" x-show="summaryLoaded" x-cloak x-transition>
-                    <div class="flex items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-wider">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 6px rgba(212,175,55,0.8);"></div>
+                <!-- SUMMARY NOTIFICATION BADGES KOMPAK MONOCHROME / GOLD -->
+                <div class="relative z-10 flex flex-col gap-2.5 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);" x-show="summaryLoaded" x-cloak x-transition>
+                    
+                    <div class="flex items-center justify-between gap-8 text-[11px] font-bold uppercase tracking-wider">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 8px rgba(212,175,55,0.7);"></div>
                             <span style="color: rgba(255,255,255,0.9);">Kirim Hari Ini</span>
                         </div>
-                        <span style="color: var(--gold-light);" x-text="': ' + countKirimHariIni"></span>
+                        <span style="color: #fff;" x-text="': ' + countKirimHariIni"></span>
                     </div>
                     
-                    <div class="flex items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-wider">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 6px rgba(212,175,55,0.8);"></div>
+                    <div class="flex items-center justify-between gap-8 text-[11px] font-bold uppercase tracking-wider">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 8px rgba(212,175,55,0.7);"></div>
                             <span style="color: rgba(255,255,255,0.9);">Belum Bayar</span>
                         </div>
-                        <span style="color: var(--gold-light);" x-text="': ' + countBelumBayar"></span>
+                        <span style="color: #fff;" x-text="': ' + countBelumBayar"></span>
                     </div>
 
-                    <div class="flex items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-wider">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 6px rgba(212,175,55,0.8);"></div>
-                            <span style="color: rgba(255,255,255,0.9);">Sudah Bayar / Blm Kirim</span>
+                    <div class="flex items-center justify-between gap-8 text-[11px] font-bold uppercase tracking-wider">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 8px rgba(212,175,55,0.7);"></div>
+                            <span style="color: rgba(255,255,255,0.9);">Sdh Bayar / Blm Kirim</span>
                         </div>
-                        <span style="color: var(--gold-light);" x-text="': ' + countBelumKirim"></span>
+                        <span style="color: #fff;" x-text="': ' + countBelumKirim"></span>
                     </div>
+
                 </div>
             </div>
 
             <div class="section-title">Menu Utama</div>
             <div class="menu-grid">
                 <div class="menu-card" :class="{ active: popupPanel === 'pencapaian' }" @click="togglePanel('pencapaian')">
-                    <div class="menu-icon red"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                     <div class="menu-label">Pencapaian</div>
                 </div>
                 <div class="menu-card" :class="{ active: popupPanel === 'pesanan' }" @click="togglePanel('pesanan')">
-                    <div class="menu-icon gold"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
                     <div class="menu-label">Pesanan Online</div>
                 </div>
                 <div class="menu-card" :class="{ active: popupPanel === 'status_customer' }" @click="togglePanel('status_customer')">
@@ -897,13 +896,13 @@
                 </div>
 
                 <div class="menu-card" @click="openExternal('https://yanoshistore.netlify.app/')">
-                    <div class="menu-icon blue"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
                     <div class="menu-label">Webstore</div>
                 </div>
                 <!-- CETAK STIKER WIDE -->
                 <div class="menu-card-wide" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
-                    <div class="menu-icon green"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
-                    <div class="menu-label">Cetak Stiker Dashboard</div>
+                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
+                    <div class="menu-label">Cetak Stiker</div>
                     <div class="arrow-icon">➔</div>
                 </div>
             </div>
@@ -912,7 +911,7 @@
             <div class="embed-panel">
                 <div class="embed-header">
                     <div class="embed-title-wrap">
-                        <div class="embed-icon red"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                        <div class="embed-icon"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
                         <div>
                             <div class="embed-title">Lacak Resi Pos Indonesia</div>
                             <div class="embed-sub">Cek status pengiriman paket</div>
@@ -939,7 +938,7 @@
             <div class="embed-panel">
                 <div class="embed-header">
                     <div class="embed-title-wrap">
-                        <div class="embed-icon gold"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                        <div class="embed-icon"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
                         <div>
                             <div class="embed-title">Cek Ongkos Kirim</div>
                             <div class="embed-sub">Cek tarif pengiriman antar kota</div>
@@ -966,7 +965,7 @@
             <div class="embed-panel">
                 <div class="embed-header">
                     <div class="embed-title-wrap">
-                        <div class="embed-icon blue"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l6 8 6-8"></path><path d="M12 12v8"></path><path d="M8 15h8"></path><path d="M8 18h8"></path></svg></div>
+                        <div class="embed-icon"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l6 8 6-8"></path><path d="M12 12v8"></path><path d="M8 15h8"></path><path d="M8 18h8"></path></svg></div>
                         <div>
                             <div class="embed-title">Kurs Brastel Remit</div>
                             <div class="embed-sub">Cek nilai tukar JPY ke IDR hari ini</div>
@@ -990,7 +989,7 @@
                 </div>
             </div>
 
-            <div style="text-align:center;padding:20px 0 8px;font-size:11px;color:#aaa;font-weight:600;letter-spacing:0.5px;">
+            <div style="text-align:center;padding:20px 0 8px;font-size:11px;color:#888;font-weight:600;letter-spacing:0.5px;">
                 YANOSHI JAPAN &copy; 2026 &mdash; DASHBOARD ADMIN
             </div>
         </div>
@@ -1085,8 +1084,8 @@
                 <div class="sticky top-0 z-10 pb-4 mb-6 pt-1" style="background: linear-gradient(180deg, #18181c 60%, transparent 100%); border-bottom: 1px solid var(--border-soft);">
                     <div class="flex flex-col sm:flex-row gap-3">
                         <input type="text" x-model="searchQuery" placeholder="Cari nama customer..."
-                               class="w-full sm:flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 outline-none transition text-sm font-medium">
-                        <select x-model="statusFilter" class="px-4 py-2 border rounded-lg text-sm font-semibold outline-none focus:ring-2 focus:ring-red-600 cursor-pointer">
+                               class="w-full sm:flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-white outline-none transition text-sm font-medium">
+                        <select x-model="statusFilter" class="px-4 py-2 border rounded-lg text-sm font-semibold outline-none focus:ring-2 focus:ring-white cursor-pointer">
                             <option value="">Semua Status</option>
                             <template x-for="st in statusOptions">
                                 <option :value="st" x-text="st"></option>
@@ -1096,12 +1095,12 @@
                 </div>
 
                 <div x-show="loading" class="flex justify-center items-center py-16">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-6" x-show="!loading">
                     <template x-for="item in filteredData" :key="item.row">
-                        <div class="rounded-xl shadow-sm border border-l-8 border-l-red-600 hover:shadow-md transition p-5 relative break-words" style="background:#1b1b20; border-color:rgba(255,255,255,0.08);">
+                        <div class="rounded-xl shadow-sm border border-l-4 hover:shadow-md transition p-5 relative break-words" style="background:#1b1b20; border-color:rgba(255,255,255,0.08); border-left-color: var(--theme-silver);">
 
                             <div class="flex justify-between items-start mb-4 border-b pb-4 gap-4" style="border-color: rgba(255,255,255,0.08);">
                                 <div>
@@ -1111,12 +1110,12 @@
                                 </div>
                                 <div class="text-right flex flex-col items-end gap-2 shrink-0">
                                     <button @click="pDeleteData(item.row, item.customer)"
-                                            class="text-[10px] hover:bg-red-900 px-3 py-1.5 rounded-md font-bold transition" style="background: rgba(225,29,46,0.15); color: var(--red-light);">
+                                            class="text-[10px] px-3 py-1.5 rounded-md font-bold transition" style="background: rgba(255,255,255,0.05); color: #fff;">
                                         <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> HAPUS
                                     </button>
                                     <select @change="pUpdateStatus(item.row, $event.target.value)"
                                             :class="pGetStatusColor(item.status)"
-                                            class="text-xs font-bold px-4 py-1.5 rounded-full border-none cursor-pointer focus:ring-2 focus:ring-yellow-400 outline-none mt-1">
+                                            class="text-xs font-bold px-4 py-1.5 rounded-full border-none cursor-pointer focus:ring-2 focus:ring-white outline-none mt-1">
                                         <template x-for="st in statusOptions">
                                             <option :value="st" x-text="st" :selected="st === item.status"></option>
                                         </template>
@@ -1140,7 +1139,7 @@
                                 </div>
 
                                 <div class="space-y-3">
-                                    <button @click="pCopyFormat(item)" class="w-full py-2.5 hover:bg-yellow-600 text-white rounded-lg font-bold text-xs transition shadow-sm" style="background-color: var(--gold-dark); color: #fff;">
+                                    <button @click="pCopyFormat(item)" class="w-full py-2.5 text-black rounded-lg font-bold text-xs transition shadow-sm" style="background: var(--grad-white);">
                                         📋 COPY FORMAT ORDER
                                     </button>
 
@@ -1149,10 +1148,10 @@
                                             <span class="text-[11px] font-bold tracking-wide" style="color:var(--text-mid);">📄 INVOICE</span>
                                             <div class="flex items-center gap-2">
                                                 <template x-if="item.invoice">
-                                                    <a :href="item.invoice" target="_blank" class="hover:text-yellow-400 underline text-[11px] font-semibold" style="color:var(--gold-light);">Buka Link ↗</a>
+                                                    <a :href="item.invoice" target="_blank" class="hover:text-white underline text-[11px] font-semibold" style="color:var(--theme-silver);">Buka Link ↗</a>
                                                 </template>
                                                 <button @click="pOpenModal(item.row, 15, 'Input Link Invoice')"
-                                                        class="text-[10px] px-2.5 py-1 rounded-md font-bold transition" style="background: rgba(225,29,46,0.15); color: var(--red-light);">
+                                                        class="text-[10px] px-2.5 py-1 rounded-md font-bold transition" style="background: rgba(255,255,255,0.1); color: #fff;">
                                                     LINK
                                                 </button>
                                             </div>
@@ -1171,9 +1170,9 @@
                                         </div>
                                         <button @click="pUploadFile(item, 'invoice')"
                                                 :disabled="!item._invoiceFile || item._uploadingInvoice"
-                                                :class="item._invoiceFile ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm' : 'cursor-not-allowed'"
+                                                :class="item._invoiceFile ? 'shadow-sm' : 'cursor-not-allowed'"
                                                 class="w-full py-2 rounded-lg text-[11px] font-bold transition"
-                                                :style="item._invoiceFile ? 'background:var(--gold-dark);color:#fff;' : 'background:rgba(255,255,255,0.1);color:#8a8985;'">
+                                                :style="item._invoiceFile ? 'background:var(--grad-white);color:#000;' : 'background:rgba(255,255,255,0.1);color:#8a8985;'">
                                             <span x-text="item._uploadingInvoice ? '⏳ Mengupload...' : '📤 Upload Invoice ke Drive'"></span>
                                         </button>
                                     </div>
@@ -1182,10 +1181,10 @@
                                         <span class="text-[11px] font-bold tracking-wide" style="color:var(--text-mid);">💳 BUKTI BAYAR</span>
                                         <div class="flex items-center gap-2">
                                             <template x-if="item.buktiBayar">
-                                                <a :href="item.buktiBayar" target="_blank" class="hover:text-yellow-400 underline text-[11px] font-semibold" style="color:var(--gold-light);">Buka Link ↗</a>
+                                                <a :href="item.buktiBayar" target="_blank" class="hover:text-white underline text-[11px] font-semibold" style="color:var(--theme-silver);">Buka Link ↗</a>
                                             </template>
                                             <button @click="pOpenModal(item.row, 16, 'Input Link Bukti Bayar')"
-                                                    class="text-[10px] px-2.5 py-1 rounded-md font-bold transition" style="background: rgba(225,29,46,0.15); color: var(--red-light);">
+                                                    class="text-[10px] px-2.5 py-1 rounded-md font-bold transition" style="background: rgba(255,255,255,0.1); color: #fff;">
                                                 INPUT
                                             </button>
                                         </div>
@@ -1195,31 +1194,31 @@
                                         <span class="text-[11px] font-bold tracking-wide whitespace-nowrap" style="color:var(--text-mid);">📦 RESI</span>
                                         <span x-text="item.resi || '-'" class="text-xs font-mono break-all text-right flex-1" style="color:var(--text-dark);"></span>
                                         <button @click="pOpenModal(item.row, 17, 'Input No Resi')"
-                                                class="text-[10px] px-2.5 py-1 rounded-md font-bold whitespace-nowrap transition" style="background: rgba(225,29,46,0.15); color: var(--red-light);">
+                                                class="text-[10px] px-2.5 py-1 rounded-md font-bold whitespace-nowrap transition" style="background: rgba(255,255,255,0.1); color: #fff;">
                                             INPUT
                                         </button>
                                     </div>
                                 </div>
 
-                                <div class="text-[13px] p-4 rounded-xl border flex flex-col justify-between shadow-sm" style="background:rgba(225,29,46,0.05); border-color:rgba(225,29,46,0.2);">
+                                <div class="text-[13px] p-4 rounded-xl border flex flex-col justify-between shadow-sm" style="background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.1);">
                                     <div>
-                                        <p class="font-extrabold mb-2 text-[11px] tracking-wide" style="color:var(--red-light);">INFO PENGIRIMAN</p>
-                                        <p style="color:var(--text-dark);"><b x-text="item.penerima"></b> <span style="color:var(--red-dark);" class="mx-1">|</span> <span x-text="item.noPenerima"></span></p>
+                                        <p class="font-extrabold mb-2 text-[11px] tracking-wide" style="color:#fff;">INFO PENGIRIMAN</p>
+                                        <p style="color:var(--text-dark);"><b x-text="item.penerima"></b> <span style="color:#666;" class="mx-1">|</span> <span x-text="item.noPenerima"></span></p>
                                         <p class="mt-1.5 italic leading-relaxed" style="color:var(--text-mid);" x-text="item.alamat"></p>
                                         <p class="mt-4 font-bold text-xs" style="color:var(--text-mid);">Tanggal Kirim: <span style="color:var(--text-dark);" x-text="pFormatDate(item.tglKirim)"></span></p>
                                     </div>
-                                    <div class="mt-4 pt-3 border-t flex justify-between items-center" style="border-color:rgba(225,29,46,0.2);">
-                                        <span class="font-extrabold text-[11px] tracking-wide" style="color:var(--red-light);">ONGKOS KIRIM:</span>
+                                    <div class="mt-4 pt-3 border-t flex justify-between items-center" style="border-color:rgba(255,255,255,0.1);">
+                                        <span class="font-extrabold text-[11px] tracking-wide" style="color:#fff;">ONGKOS KIRIM:</span>
                                         <template x-if="item.ongkir">
                                             <div class="flex items-center space-x-2">
                                                 <span x-text="pFormatRupiah(item.ongkir)" class="font-extrabold text-[15px]" style="color:var(--text-dark);"></span>
                                                 <button @click="pOpenModal(item.row, 7, 'Edit Ongkos Kirim', item.ongkir)"
-                                                        class="text-[10px] underline hover:text-yellow-400 font-semibold" style="color:var(--gold-light);">Edit</button>
+                                                        class="text-[10px] underline hover:text-white font-semibold" style="color:var(--theme-silver);">Edit</button>
                                             </div>
                                         </template>
                                         <template x-if="!item.ongkir">
                                             <button @click="pOpenModal(item.row, 7, 'Input Ongkos Kirim (Angka saja)')"
-                                                    class="text-[10px] hover:bg-red-700 text-white px-3 py-1.5 rounded-md shadow-sm font-bold transition transform hover:-translate-y-0.5" style="background:var(--red);">
+                                                    class="text-[10px] hover:bg-gray-700 text-white px-3 py-1.5 rounded-md shadow-sm font-bold transition transform hover:-translate-y-0.5" style="background:var(--grad-gray);">
                                                 INPUT ONGKIR
                                             </button>
                                         </template>
@@ -1237,12 +1236,12 @@
                 </div>
 
                 <div x-show="pModalOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="pModalOpen = false">
-                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl transform transition-all scale-100" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-gold);">
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl transform transition-all scale-100" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-theme);">
                         <h3 class="text-lg font-extrabold mb-5" style="color:var(--text-dark);" x-text="pModalTitle"></h3>
                         <input type="text" x-model="pModalValue" class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium" style="background:rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); color:var(--text-dark);">
                         <div class="flex justify-end space-x-3">
                             <button @click="pModalOpen = false" class="px-5 py-2.5 font-bold text-sm rounded-xl transition" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:var(--text-mid);">BATAL</button>
-                            <button @click="pSubmitModal()" class="px-6 py-2.5 text-white rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">SUBMIT</button>
+                            <button @click="pSubmitModal()" class="px-6 py-2.5 text-white rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">SUBMIT</button>
                         </div>
                     </div>
                 </div>
@@ -1289,7 +1288,7 @@
                                 </select>
                                 
                                 <!-- FILTER BARU: BERDASARKAN PROGRESS -->
-                                <select x-model="scFilterProgress" class="px-3 py-2 border rounded-lg text-sm outline-none font-extrabold cursor-pointer" style="color:var(--gold-light); border-color:var(--border-gold);">
+                                <select x-model="scFilterProgress" class="px-3 py-2 border rounded-lg text-sm outline-none font-extrabold cursor-pointer" style="color:var(--theme-white); border-color:rgba(255,255,255,0.2);">
                                     <option value="">Semua Progress</option>
                                     <option value="greet">Greet</option>
                                     <option value="tertarik">Tertarik</option>
@@ -1306,13 +1305,13 @@
                     </div>
 
                     <div x-show="statusAppLoading" class="flex flex-col justify-center items-center py-16">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mb-4"></div>
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
                         <p class="font-bold text-sm" style="color:var(--text-mid);">Membaca seluruh data dari server...</p>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-10" x-show="!statusAppLoading">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-10" x-show="!statusAppLoading">
                         <template x-for="c in filteredStatusData" :key="c.nama + c.sheetName">
-                            <!-- KOTAK CUSTOMER DINAMIS -->
+                            <!-- KOTAK CUSTOMER DINAMIS (Warna Asli Dipertahankan) -->
                             <div :class="getCardColor(c.statusCustomer)" 
                                  class="rounded-xl shadow-sm border p-5 flex flex-col gap-3 relative break-words transition-all hover:shadow-md">
                                 
@@ -1354,7 +1353,7 @@
                                                 :style="c.statusCustomer === 'belum bayar' ? 'background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;' : 'background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1a1a1a;'">
                                             Update
                                         </button>
-                                        <button @click="bukaModalSiapkan(c.nama)" class="text-white px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark));">
+                                        <button @click="bukaModalSiapkan(c.nama)" class="px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm" style="background: var(--grad-black); color: white;">
                                             Siapkan
                                         </button>
                                     </div>
@@ -1371,11 +1370,11 @@
 
                 <!-- MODAL UPDATE STATUS PROGRESS -->
                 <div x-show="modalUpdateOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalUpdate()">
-                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-gold);">
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-theme);">
                         <h3 class="text-lg font-extrabold mb-1" style="color:var(--text-dark);">Update Progress</h3>
                         <p class="text-xs mb-5" style="color:var(--text-mid);">
-                            Pelanggan: <strong style="color:var(--gold-light);" x-text="activeCustomer?.nama"></strong><br>
-                            Progress saat ini: <strong style="color:var(--red-light);" class="uppercase" x-text="activeCustomer?.progress || '-'"></strong>
+                            Pelanggan: <strong style="color:#fff;" x-text="activeCustomer?.nama"></strong><br>
+                            Progress saat ini: <strong style="color:var(--theme-light);" class="uppercase" x-text="activeCustomer?.progress || '-'"></strong>
                         </p>
                         
                         <select x-model="selectedProgress" class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium cursor-pointer" style="background:rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); color:var(--text-dark);">
@@ -1392,19 +1391,19 @@
                         
                         <div class="flex justify-end space-x-3">
                             <button @click="tutupModalUpdate()" class="px-5 py-2.5 font-bold text-sm rounded-xl transition" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:var(--text-mid);">Batal</button>
-                            <button @click="simpanUpdateStatus()" :disabled="!selectedProgress" class="px-6 py-2.5 text-white rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">Simpan</button>
+                            <button @click="simpanUpdateStatus()" :disabled="!selectedProgress" class="px-6 py-2.5 text-white rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">Simpan</button>
                         </div>
                     </div>
                 </div>
                 
                 <!-- MODAL SIAPKAN -->
                 <div x-show="modalSiapkanOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalSiapkan()">
-                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-gold);">
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-theme);">
                         <h3 class="text-lg font-extrabold mb-2" style="color:var(--text-dark);">Verifikasi Packing</h3>
-                        <p class="text-sm mb-6 font-medium" style="color:var(--text-mid);">Siapkan packingan untuk <strong x-text="namaYangDisiapkan" style="color:var(--red-light);"></strong>?</p>
+                        <p class="text-sm mb-6 font-medium" style="color:var(--text-mid);">Siapkan packingan untuk <strong x-text="namaYangDisiapkan" style="color:#fff;"></strong>?</p>
                         <div class="flex justify-around gap-3">
-                            <button @click="tutupModalSiapkan()" class="flex-1 py-2.5 font-bold rounded-xl transition text-sm" style="border: 2px solid var(--red-light); color: var(--red-light); background:rgba(225,29,46,0.05);">Tidak</button>
-                            <button @click="konfirmasiSiapkan()" class="flex-1 py-2.5 text-white font-bold rounded-xl shadow-lg text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">Ya, Siapkan</button>
+                            <button @click="tutupModalSiapkan()" class="flex-1 py-2.5 font-bold rounded-xl transition text-sm" style="border: 1px solid rgba(255,255,255,0.2); color: var(--text-mid); background:rgba(255,255,255,0.05);">Tidak</button>
+                            <button @click="konfirmasiSiapkan()" class="flex-1 py-2.5 text-white font-bold rounded-xl shadow-lg text-sm" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">Ya, Siapkan</button>
                         </div>
                     </div>
                 </div>
@@ -1420,7 +1419,7 @@
                         <div class="flex gap-2">
                             <input type="text" x-model="inputNama" placeholder="Masukkan Nama Pelanggan..." @keydown.enter="tambahData()"
                                    class="flex-1 px-4 py-2 border rounded-lg outline-none transition text-sm font-medium">
-                            <button @click="tambahData()" class="text-white font-bold px-6 py-2 rounded-lg transition shadow-sm text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark));">Submit</button>
+                            <button @click="tambahData()" class="text-white font-bold px-6 py-2 rounded-lg transition shadow-sm text-sm" style="background: var(--grad-black);">Submit</button>
                         </div>
                         <!-- Filter Bar -->
                         <div class="flex flex-wrap sm:flex-nowrap gap-2">
@@ -1442,35 +1441,34 @@
                 </div>
 
                 <div x-show="loading" class="flex justify-center items-center py-16">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
                 </div>
 
                 <!-- Action Bar Multi-Delete & Multi-Kirim -->
-                <div x-show="selectedIds.length > 0" x-transition class="border-2 rounded-xl p-3 mb-4 flex flex-col sm:flex-row justify-between items-center shadow-sm gap-3" style="background:rgba(225,29,46,0.08); border-color:rgba(225,29,46,0.3);">
+                <div x-show="selectedIds.length > 0" x-transition class="border rounded-xl p-3 mb-4 flex flex-col sm:flex-row justify-between items-center shadow-sm gap-3" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1);">
                     <div class="flex items-center gap-3 w-full sm:w-auto">
                         <input type="checkbox" class="w-5 h-5 rounded cursor-pointer"
                                @change="$event.target.checked ? selectedIds = filteredData.map(d => d.id) : selectedIds = []"
                                :checked="filteredData.length > 0 && selectedIds.length === filteredData.length">
-                        <span class="text-sm font-extrabold" style="color:var(--red-light);" x-text="selectedIds.length + ' Data Terpilih'"></span>
+                        <span class="text-sm font-extrabold text-white" x-text="selectedIds.length + ' Data Terpilih'"></span>
                     </div>
                     <div class="flex w-full sm:w-auto gap-2">
                         <!-- Tombol Multi-Kirim -->
-                        <button @click="kirimMultiData()" class="flex-1 sm:flex-none text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md transition transform hover:-translate-y-0.5" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1a1a1a;">
+                        <button @click="kirimMultiData()" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold shadow-md transition transform hover:-translate-y-0.5" style="background: var(--grad-white); color: #000;">
                             <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Tandai Dikirim
                         </button>
                         <!-- Tombol Multi-Delete -->
-                        <button @click="hapusMultiData()" class="flex-1 sm:flex-none text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md transition transform hover:-translate-y-0.5" style="background: linear-gradient(135deg, var(--red), var(--red-dark));">
+                        <button @click="hapusMultiData()" class="flex-1 sm:flex-none text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md transition transform hover:-translate-y-0.5" style="background: var(--grad-gray);">
                             <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> Hapus
                         </button>
                     </div>
                 </div>
 
-                <!-- List Item Container -->
+                <!-- List Item Container (Warna Berubah Sesuai Status) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-10" x-show="!loading">
                     <template x-for="item in filteredData" :key="item.id">
                         <div class="rounded-xl shadow-sm border border-l-4 p-5 flex flex-col gap-3 transition-transform hover:-translate-y-1 hover:shadow-md"
-                             :class="selectedIds.includes(item.id) ? 'border-l-red-600' : 'border-l-red-600'"
-                             :style="selectedIds.includes(item.id) ? 'background:rgba(225,29,46,0.08); border-color:rgba(225,29,46,0.3); border-left-color:var(--red);' : 'background:#1b1b20; border-color:rgba(255,255,255,0.08); border-left-color:var(--red);'">
+                             :style="getCardStyle(item)">
                             
                             <div class="flex justify-between items-start">
                                 <div class="flex items-start gap-3">
@@ -1482,19 +1480,19 @@
                                     </div>
                                 </div>
                                 <!-- Tombol Hapus Satuan -->
-                                <button @click="hapusData(item.id)" class="px-3 py-1.5 text-xs font-bold rounded transition shrink-0 ml-3" style="background:rgba(225,29,46,0.15); color:var(--red-light);">Hapus</button>
+                                <button @click="hapusData(item.id)" class="px-3 py-1.5 text-xs font-bold rounded transition shrink-0 ml-3" style="background:rgba(255,255,255,0.05); color:var(--text-mid);">Hapus</button>
                             </div>
 
                             <div class="flex gap-2 text-[11px] font-bold uppercase tracking-wide mt-2">
                                 <span :class="item.status_packing === 'Sudah di Packing' ? 'bg-yellow-100 text-yellow-700' : item.status_packing === 'Belum Lengkap' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'" class="px-2.5 py-1 rounded" x-text="'Packing: ' + item.status_packing"></span>
                                 <span :class="item.status_kirim ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'" class="px-2.5 py-1 rounded" x-text="'Kirim: ' + (item.status_kirim ? 'Sudah' : 'Belum')"></span>
                             </div>
-                            <div class="text-[12px] font-semibold p-2 rounded-lg mt-1" style="background:rgba(225,29,46,0.05); color:var(--red-light);" x-show="item.note">
-                                Note Admin Packing: <span style="color:var(--text-dark);" x-text="item.note"></span>
+                            <div class="text-[12px] font-semibold p-2 rounded-lg mt-1" style="background:rgba(255,255,255,0.03); color:var(--theme-white);" x-show="item.note">
+                                Note Admin Packing: <span style="color:var(--text-mid);" x-text="item.note"></span>
                             </div>
                             
                             <!-- Tombol Kirim jika belum terkirim -->
-                            <button x-show="!item.status_kirim" @click="bukaModalKirim(item.id)" class="mt-3 font-bold py-2.5 rounded-lg text-xs transition uppercase tracking-wide shadow-sm" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color:#1a1a1a;">
+                            <button x-show="!item.status_kirim" @click="bukaModalKirim(item.id)" class="mt-3 font-bold py-2.5 rounded-lg text-xs transition uppercase tracking-wide shadow-sm" style="background: var(--grad-white); color:#000;">
                                 Tandai Sudah Kirim
                             </button>
                         </div>
@@ -1508,12 +1506,12 @@
 
                 <!-- Modal Konfirmasi Kirim (Admin Sales) -->
                 <div x-show="modalKirimId !== null" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalKirim()">
-                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-gold);">
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-theme);">
                         <h3 class="text-lg font-extrabold mb-2" style="color:var(--text-dark);">Konfirmasi Pengiriman</h3>
                         <p class="text-sm mb-6 font-medium" style="color:var(--text-mid);">Apakah barang ini sudah di kirim?</p>
                         <div class="flex justify-around gap-3">
-                            <button @click="tutupModalKirim()" class="flex-1 py-2.5 font-bold rounded-xl transition text-sm" style="border: 2px solid var(--red-light); color: var(--red-light); background:rgba(225,29,46,0.05);">Tidak</button>
-                            <button @click="confirmKirim()" class="flex-1 py-2.5 text-white font-bold rounded-xl shadow-lg text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">Ya, Sudah</button>
+                            <button @click="tutupModalKirim()" class="flex-1 py-2.5 font-bold rounded-xl transition text-sm" style="border: 1px solid rgba(255,255,255,0.2); color: var(--text-mid); background:rgba(255,255,255,0.05);">Tidak</button>
+                            <button @click="confirmKirim()" class="flex-1 py-2.5 text-white font-bold rounded-xl shadow-lg text-sm" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">Ya, Sudah</button>
                         </div>
                     </div>
                 </div>
@@ -1536,7 +1534,7 @@
                 </div>
 
                 <div x-show="loading" class="absolute inset-0 z-50 flex flex-col justify-center items-center" style="background: rgba(14,14,16,0.8); backdrop-filter: blur(4px);">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mb-4"></div>
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
                     <p class="font-bold text-sm" style="color:var(--text-mid);">Mengirim data...</p>
                 </div>
 
@@ -1545,8 +1543,8 @@
                     <template x-for="(item, index) in entries" :key="item.id">
                         <div class="p-5 rounded-xl border mb-5 transition-all shadow-sm" style="background: #1b1b20; border-color: var(--border-soft);">
                             <div class="flex justify-between items-center mb-4 pb-3 border-b" style="border-color: rgba(255,255,255,0.06);">
-                                <span class="font-extrabold text-sm" style="color:var(--gold-light);">Pelanggan #<span x-text="index + 1"></span></span>
-                                <button @click="removeEntry(item.id)" class="px-2 py-1 rounded text-xs font-bold transition" style="color: var(--red-light); background: rgba(225,29,46,0.1);">
+                                <span class="font-extrabold text-sm" style="color:var(--theme-white);">Pelanggan #<span x-text="index + 1"></span></span>
+                                <button @click="removeEntry(item.id)" class="px-2 py-1 rounded text-xs font-bold transition" style="color: var(--text-mid); background: rgba(255,255,255,0.05);">
                                     ✕ Hapus
                                 </button>
                             </div>
@@ -1581,9 +1579,9 @@
                                 </div>
 
                                 <div class="mt-2 flex items-center">
-                                    <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border w-full transition" :style="item.isJepang ? 'background:rgba(212,175,55,0.1); border-color:var(--border-gold);' : 'background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08);'">
+                                    <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border w-full transition" :style="item.isJepang ? 'background:rgba(255,255,255,0.05); border-color:#fff;' : 'background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08);'">
                                         <input type="checkbox" x-model="item.isJepang" class="w-5 h-5 rounded cursor-pointer transition">
-                                        <span class="text-sm font-bold" :style="item.isJepang ? 'color:var(--gold-light);' : 'color:var(--text-dark);'">Kirim ke Jepang 🇯🇵</span>
+                                        <span class="text-sm font-bold" :style="item.isJepang ? 'color:#fff;' : 'color:var(--text-dark);'">Kirim ke Jepang 🇯🇵</span>
                                     </label>
                                 </div>
                             </div>
@@ -1598,7 +1596,7 @@
 
                 <!-- Sticky Footer -->
                 <div class="absolute bottom-0 left-0 right-0 p-4 border-t" style="background: #0e0e10; border-color: var(--border-soft); margin-left:-24px; margin-right:-24px; margin-bottom:-32px;">
-                    <button @click="submitData()" :disabled="loading" class="w-full py-3.5 text-white font-extrabold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">
+                    <button @click="submitData()" :disabled="loading" class="w-full py-3.5 text-white font-extrabold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">
                         <span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
                     </button>
                 </div>
@@ -1612,7 +1610,7 @@
 <div class="modal-overlay" x-show="editUserModal" @click.self="editUserModal = false" x-cloak>
     <div class="modal-box">
         <div class="modal-title" style="display:flex;align-items:center;gap:8px;">
-            <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--theme-white)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
             Ubah Akun
         </div>
         <div class="modal-sub">Perbarui username dan / atau password Anda</div>
@@ -1811,7 +1809,7 @@ function th_updateDateAndDeadline() {
     const remaining = lastDay - now.getDate();
     const el = document.getElementById('th_closingCountdown');
     if (remaining > 0) el.innerText = `Tinggal ${remaining} hari menuju closing!`;
-    else if (remaining === 0) { el.innerText = 'Hari ini adalah tanggal closing! 🚀'; el.style.backgroundColor='rgba(225,29,46,0.3)'; }
+    else if (remaining === 0) { el.innerText = 'Hari ini adalah tanggal closing! 🚀'; el.style.backgroundColor='rgba(255,255,255,0.1)'; }
     else el.style.display = 'none';
 }
 
@@ -1850,6 +1848,7 @@ function th_renderList(items) {
         gTarget += target; gTercapai += terjualAsli;
         th_currentItems.push({ label: th_capFirst(item.label), target, tercapai: terjualAsli, kekurangan: kekuranganTampil, persentase: Math.round(pct) });
 
+        // WARNA PROGRESS BAR TETAP DIPERTAHANKAN
         let barColor = 'linear-gradient(90deg,#D4AF37,#9C7A1D)';
         let stClass  = 'th-status-warning', stText = 'On Progress', percCls = 'th-perc-warning';
         if (pct >= 50 || kekuranganTampil === 0) {
@@ -1992,7 +1991,7 @@ function th_toggleRekap() {
 
 function th_tampilNotif(pesan, type) {
     const el = document.getElementById('th_rekapNotif'); el.textContent = pesan; el.style.display = 'block';
-    el.style.background = type==='ok' ? 'rgba(16,185,129,0.15)' : 'rgba(212,175,55,0.15)'; el.style.color = type==='ok' ? '#10b981' : 'var(--gold-light)'; el.style.border = type==='ok' ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(212,175,55,0.3)';
+    el.style.background = type==='ok' ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.1)'; el.style.color = type==='ok' ? '#10b981' : '#fff'; el.style.border = type==='ok' ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(255,255,255,0.3)';
     clearTimeout(el._t); el._t = setTimeout(() => el.style.display='none', 3500);
 }
 function th_showAutoToast(msg) {
@@ -2214,6 +2213,7 @@ function statusCustomerApp() {
             });
         },
 
+        // PERTAHANKAN WARNA KOTAK STATUS CUSTOMER
         getCardColor(status) {
             if (status === 'sudah kirim') return 'bg-green-100 border-green-400 text-green-900';
             if (status === 'belum di kirim') return 'bg-blue-100 border-blue-400 text-blue-900';
@@ -2289,7 +2289,7 @@ function statusCustomerApp() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  ADMIN SALES LOGIC (FULL WITH MULTI-DELETE & MULTI-KIRIM)
+//  ADMIN SALES LOGIC
 // ─────────────────────────────────────────────────────────────
 function adminSalesApp() {
     return {
@@ -2466,6 +2466,20 @@ function adminSalesApp() {
                 note: ''
             };
             this.sendToSheet('tambah', newData); 
+        },
+
+        // LOGIKA WARNA ADMIN SALES (Dipertahankan dan Dimasukkan)
+        getCardStyle(item) {
+            if (this.selectedIds.includes(item.id)) {
+                return 'background:rgba(225,29,46,0.15); border-color:rgba(225,29,46,0.5); border-left-color:var(--theme-white);';
+            }
+            if (item.status_kirim === true) {
+                return 'background:#064e3b; border-color:rgba(16,185,129,0.3); border-left-color:#10b981;'; 
+            }
+            if (item.status_packing === 'Belum Lengkap') {
+                return 'background:#450a0a; border-color:rgba(239,68,68,0.3); border-left-color:#ef4444;'; 
+            }
+            return 'background:#1b1b20; border-color:rgba(255,255,255,0.08); border-left-color:var(--red);';
         },
 
         get filteredData() {
