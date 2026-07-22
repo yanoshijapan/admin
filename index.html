@@ -213,38 +213,39 @@
         #mainContent { padding-top: 64px; min-height: 100vh; background: transparent; }
         .content-wrap { max-width: 1200px; margin: 0 auto; padding: 28px 20px 48px; }
 
-        /* ===== WELCOME BANNER ===== */
+        /* ===== WELCOME BANNER DENGAN NOTIFIKASI SUMMARY KOMPAK ===== */
         .welcome-banner {
-            background: linear-gradient(120deg, #1a0000 0%, #4a0007 35%, var(--red) 65%, #1a1a1a 100%);
-            border-radius: 20px; padding: 28px 32px; margin-bottom: 28px; position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #2b0004 0%, #6e0d16 50%, #9c1420 100%);
+            border-radius: 20px; 
+            padding: 32px 36px; 
+            margin-bottom: 28px; 
+            position: relative; 
+            overflow: hidden;
             border: 1px solid var(--border-gold);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-md), 0 0 20px rgba(225,29,46,0.15);
         }
         .welcome-banner::before {
-            content: ''; position: absolute; top: -40px; right: -40px;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(212,175,55,0.30) 0%, transparent 70%);
-            border-radius: 50%;
+            content: ''; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 120 120'%3E%3Cpath fill='%23ffffff' fill-opacity='0.07' d='M60 120A60 60 0 0 0 0 60a60 60 0 0 0-60 60h120zm-20 0A40 40 0 0 0 0 80a40 40 0 0 0-40 40h80zm-20 0A20 20 0 0 0 0 100a20 20 0 0 0-20 20h40zm40-120A60 60 0 0 0 0-60a60 60 0 0 0-60 60h120V0zm-20 0A40 40 0 0 0 0-40a40 40 0 0 0-40 40h80V0zm-20 0A20 20 0 0 0 0-20a20 20 0 0 0-20 20h40V0zM120 60a60 60 0 0 0-60-60 60 60 0 0 0-60 60h120zm-20 0a40 40 0 0 0-40-40 40 40 0 0 0-40 40h80zm-20 0a20 20 0 0 0-20-20 20 20 0 0 0-20 20h40z'/%3E%3C/svg%3E");
+            background-position: center center;
+            opacity: 0.9; mix-blend-mode: overlay; z-index: 0;
         }
         .welcome-banner::after {
-            content: ''; position: absolute; bottom: -30px; left: 20%;
-            width: 150px; height: 150px;
-            background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%);
-            border-radius: 50%;
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%);
+            z-index: 1;
         }
-        .welcome-title { font-size: 22px; font-weight: 800; color: white; position: relative; z-index: 1; line-height: 1.2; }
-        .welcome-subtitle { font-size: 13px; color: rgba(255,255,255,0.75); font-weight: 500; margin-top: 6px; position: relative; z-index: 1; }
-        .welcome-gold { color: var(--gold-light); }
-        .welcome-clock {
-            font-size: 20px; font-weight: 900; color: white; position: relative; z-index: 1;
-            letter-spacing: 2px; margin-top: 8px; font-variant-numeric: tabular-nums;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.3);
-            display: inline-block;
+        .welcome-title, .welcome-subtitle, .welcome-clock, .welcome-clock-label {
+            position: relative; z-index: 2; text-shadow: 0 2px 5px rgba(0,0,0,0.6); 
         }
-        .welcome-clock-label {
-            font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
-            color: rgba(255,255,255,0.5); margin-top: 2px; position: relative; z-index: 1;
+        .welcome-title { font-size: 24px; font-weight: 800; color: #ffffff; line-height: 1.2; }
+        .welcome-subtitle { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; margin-top: 6px; }
+        .welcome-gold { 
+            background: var(--gold-gradient); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; text-shadow: none; display: inline-block;
         }
+        .welcome-clock { font-size: 24px; font-weight: 900; color: #ffffff; letter-spacing: 2px; margin-top: 14px; font-variant-numeric: tabular-nums; }
+        .welcome-clock-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2.5px; color: var(--gold-light); margin-top: 2px; }
 
         /* ===== SECTION TITLE ===== */
         .section-title {
@@ -258,7 +259,7 @@
             border-radius: 2px;
         }
 
-        /* ===== GRID MENU CARDS (Updated to 6 Cols) ===== */
+        /* ===== GRID MENU CARDS ===== */
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 32px; }
         @media (min-width: 768px) { .menu-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 1024px) { .menu-grid { grid-template-columns: repeat(6, 1fr); } }
@@ -336,7 +337,7 @@
             max-height: 88vh; display: flex; flex-direction: column;
             box-shadow: 0 -8px 60px rgba(0,0,0,0.5);
             animation: popupSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden; /* Mencegah konten bocor di HP */
+            overflow: hidden;
         }
         @media (min-width: 700px) {
             .popup-overlay { align-items: center; padding: 20px; }
@@ -700,7 +701,6 @@
         .popup-body .border-red-200 { border-color: rgba(225,29,46,0.3) !important; }
         .popup-body .text-red-700 { color: var(--red-light) !important; }
         
-        /* Pewarnaan default untuk text */
         .popup-body .text-gray-600,
         .popup-body .text-gray-500 { color: var(--text-mid) !important; }
         .popup-body .text-gray-400 { color: #8a8985 !important; }
@@ -711,7 +711,6 @@
         .popup-body .border-gray-300,
         .popup-body .border { border-color: rgba(255,255,255,0.10) !important; }
         
-        /* Ini hanya akan berlaku di elemen yang tetap menggunakan CSS class tailwind ini */
         .popup-body h3.text-gray-900 { color: var(--text-dark) !important; }
         .popup-body button.text-gray-900 { color: #1a1a1a !important; }
         .popup-body .text-blue-600 { color: var(--gold-light) !important; }
@@ -768,7 +767,7 @@
         }
     </style>
 </head>
-<body x-data="appState()" x-init="init()">
+<body x-data="appState()" x-init="init()" @reload-summary.window="loadSummary()">
 
 <div id="toastContainer"></div>
 
@@ -833,23 +832,50 @@
     <main id="mainContent">
         <div class="content-wrap">
 
-            <div class="welcome-banner">
-                <div class="welcome-title">
-                    Halo, <span class="welcome-gold" x-text="currentUser"></span> ! 👋
+            <div class="welcome-banner flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                <div class="relative z-10">
+                    <div class="welcome-title">Halo, <span class="welcome-gold" x-text="currentUser"></span> ! 👋</div>
+                    <div class="welcome-subtitle" x-text="getGreeting()"></div>
+                    <div class="welcome-clock" id="liveClock">--:--:--</div>
+                    <div class="welcome-clock-label">Waktu Sekarang</div>
                 </div>
-                <div class="welcome-subtitle" x-text="getGreeting()"></div>
-                <div class="welcome-clock" id="liveClock">--:--:--</div>
-                <div class="welcome-clock-label">Waktu Sekarang</div>
+                
+                <!-- SUMMARY NOTIFICATION BADGES KOMPAK -->
+                <div class="relative z-10 flex flex-col gap-2 w-full lg:w-auto mt-4 lg:mt-0 p-3.5 rounded-xl border shadow-lg" style="background: rgba(0,0,0,0.35); border-color: rgba(212,175,55,0.25); backdrop-filter: blur(10px);" x-show="summaryLoaded" x-cloak x-transition>
+                    <div class="flex items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-wider">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 6px rgba(212,175,55,0.8);"></div>
+                            <span style="color: rgba(255,255,255,0.9);">Kirim Hari Ini</span>
+                        </div>
+                        <span style="color: var(--gold-light);" x-text="': ' + countKirimHariIni"></span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-wider">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 6px rgba(212,175,55,0.8);"></div>
+                            <span style="color: rgba(255,255,255,0.9);">Belum Bayar</span>
+                        </div>
+                        <span style="color: var(--gold-light);" x-text="': ' + countBelumBayar"></span>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-wider">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-2 h-2 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 6px rgba(212,175,55,0.8);"></div>
+                            <span style="color: rgba(255,255,255,0.9);">Sudah Bayar / Blm Kirim</span>
+                        </div>
+                        <span style="color: var(--gold-light);" x-text="': ' + countBelumKirim"></span>
+                    </div>
+                </div>
             </div>
 
             <div class="section-title">Menu Utama</div>
             <div class="menu-grid">
                 <div class="menu-card" :class="{ active: popupPanel === 'pencapaian' }" @click="togglePanel('pencapaian')">
-                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
+                    <div class="menu-icon red"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                     <div class="menu-label">Pencapaian</div>
                 </div>
                 <div class="menu-card" :class="{ active: popupPanel === 'pesanan' }" @click="togglePanel('pesanan')">
-                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
+                    <div class="menu-icon gold"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
                     <div class="menu-label">Pesanan Online</div>
                 </div>
                 <div class="menu-card" :class="{ active: popupPanel === 'status_customer' }" @click="togglePanel('status_customer')">
@@ -871,13 +897,13 @@
                 </div>
 
                 <div class="menu-card" @click="openExternal('https://yanoshistore.netlify.app/')">
-                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+                    <div class="menu-icon blue"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
                     <div class="menu-label">Webstore</div>
                 </div>
                 <!-- CETAK STIKER WIDE -->
                 <div class="menu-card-wide" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
-                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
-                    <div class="menu-label">Cetak Stiker</div>
+                    <div class="menu-icon green"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
+                    <div class="menu-label">Cetak Stiker Dashboard</div>
                     <div class="arrow-icon">➔</div>
                 </div>
             </div>
@@ -965,7 +991,7 @@
             </div>
 
             <div style="text-align:center;padding:20px 0 8px;font-size:11px;color:#aaa;font-weight:600;letter-spacing:0.5px;">
-                YANOSHI JAPAN &copy; 2026 &mdash; ADMIN DASHBOARD
+                YANOSHI JAPAN &copy; 2026 &mdash; DASHBOARD ADMIN
             </div>
         </div>
     </main>
@@ -1223,7 +1249,7 @@
 
             </div> 
                         
-            <!-- 3. STATUS CUSTOMER (ALL DATA DENGAN FILTER & WARNA) -->
+            <!-- 3. STATUS CUSTOMER (UPDATE PROGRESS & WARNA DINAMIS) -->
             <div x-show="popupPanel === 'status_customer'" x-data="statusCustomerApp()" x-init="initStatus()" class="w-full" x-cloak>
                 
                 <div class="w-full">
@@ -1238,7 +1264,6 @@
                                 <input type="text" x-model="scSearchNama" placeholder="Cari nama..." class="px-3 py-2 border rounded-lg text-sm outline-none font-medium flex-1 min-w-[120px]">
                                 <input type="text" x-model="scSearchTanggal" placeholder="Tgl kirim (ex: 17 Jul)..." class="px-3 py-2 border rounded-lg text-sm outline-none font-medium flex-1 min-w-[130px]">
                                 
-                                <!-- FILTER BARU: BERDASARKAN SHEET -->
                                 <select x-model="scFilterSheet" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium cursor-pointer">
                                     <option value="">Semua Sheet</option>
                                     <template x-for="sh in availableSheets" :key="sh">
@@ -1253,7 +1278,6 @@
                                     <option value="FB">FB</option><option value="tiktok">Tiktok</option><option value="chatbot">Chatbot</option><option value="web">Web</option>
                                 </select>
 
-                                <!-- FILTER BARU: BERDASARKAN STATUS WARNA -->
                                 <select x-model="scFilterStatus" class="px-3 py-2 border rounded-lg text-sm outline-none font-extrabold cursor-pointer">
                                     <option value="">Semua Status</option>
                                     <option value="sudah kirim">✅ Sudah Kirim</option>
@@ -1263,18 +1287,32 @@
                                     <option value="kirim jepang">✈️ Kirim Jepang</option>
                                     <option value="cancel">❌ Cancel</option>
                                 </select>
+                                
+                                <!-- FILTER BARU: BERDASARKAN PROGRESS -->
+                                <select x-model="scFilterProgress" class="px-3 py-2 border rounded-lg text-sm outline-none font-extrabold cursor-pointer" style="color:var(--gold-light); border-color:var(--border-gold);">
+                                    <option value="">Semua Progress</option>
+                                    <option value="greet">Greet</option>
+                                    <option value="tertarik">Tertarik</option>
+                                    <option value="FU 1">FU 1</option>
+                                    <option value="FU 2">FU 2</option>
+                                    <option value="FU 3">FU 3</option>
+                                    <option value="FU 4">FU 4</option>
+                                    <option value="closing">Closing</option>
+                                    <option value="tidak tertarik">Tidak Tertarik</option>
+                                    <option value="-">Belum Ada Progress</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
                     <div x-show="statusAppLoading" class="flex flex-col justify-center items-center py-16">
                         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mb-4"></div>
-                        <p class="font-bold text-sm" style="color:var(--text-mid);">Menarik data dari seluruh sheet...</p>
+                        <p class="font-bold text-sm" style="color:var(--text-mid);">Membaca seluruh data dari server...</p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-10" x-show="!statusAppLoading">
                         <template x-for="c in filteredStatusData" :key="c.nama + c.sheetName">
-                            <!-- WARNA KOTAK OTOMATIS BERUBAH BERDASARKAN STATUS -->
+                            <!-- KOTAK CUSTOMER DINAMIS -->
                             <div :class="getCardColor(c.statusCustomer)" 
                                  class="rounded-xl shadow-sm border p-5 flex flex-col gap-3 relative break-words transition-all hover:shadow-md">
                                 
@@ -1296,6 +1334,11 @@
                                             <span :class="getPillColor(d)" class="px-2.5 py-0.5 rounded-md text-[10px] font-bold text-white uppercase tracking-wider shadow-sm" x-text="d"></span>
                                         </template>
                                     </div>
+                                    
+                                    <!-- PROGRESS SAAT INI -->
+                                    <div class="text-[11px] font-bold mt-3" :style="c.statusCustomer === 'belum bayar' ? 'color: rgba(255,255,255,0.8);' : 'color: rgba(0,0,0,0.7);'">
+                                        Progress: <span class="font-extrabold uppercase tracking-wide" :style="c.statusCustomer === 'belum bayar' ? 'color: #fff;' : 'color: #1a1a1a;'" x-text="c.progress"></span>
+                                    </div>
                                 </div>
 
                                 <div class="mt-auto pt-4 border-t flex justify-between items-center" style="border-color: rgba(0,0,0,0.1);">
@@ -1305,10 +1348,14 @@
                                               :style="c.statusCustomer === 'belum bayar' ? 'color: white;' : 'color: #1a1a1a;'"
                                               x-text="c.tglKirim || '-'"></span>
                                     </div>
-                                    <!-- TOMBOL SIAPKAN -->
-                                    <div class="flex items-center gap-2">
-                                        <button @click="bukaModalSiapkan(c.nama)" class="text-white px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark));">
-                                            <svg class="icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> Siapkan
+                                    <!-- TOMBOL AKSI -->
+                                    <div class="flex items-center gap-1.5">
+                                        <button @click="bukaModalUpdate(c)" class="px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm border" 
+                                                :style="c.statusCustomer === 'belum bayar' ? 'background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;' : 'background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1a1a1a;'">
+                                            Update
+                                        </button>
+                                        <button @click="bukaModalSiapkan(c.nama)" class="text-white px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm" style="background: linear-gradient(135deg, var(--red), var(--red-dark));">
+                                            Siapkan
                                         </button>
                                     </div>
                                 </div>
@@ -1318,6 +1365,34 @@
                         <div x-show="filteredStatusData.length === 0" class="col-span-full text-center py-12">
                             <div class="mb-3 text-gray-300" style="display:flex;justify-content:center;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                             <div class="text-sm font-bold text-gray-400">Data tidak ditemukan</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL UPDATE STATUS PROGRESS -->
+                <div x-show="modalUpdateOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalUpdate()">
+                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-gold);">
+                        <h3 class="text-lg font-extrabold mb-1" style="color:var(--text-dark);">Update Progress</h3>
+                        <p class="text-xs mb-5" style="color:var(--text-mid);">
+                            Pelanggan: <strong style="color:var(--gold-light);" x-text="activeCustomer?.nama"></strong><br>
+                            Progress saat ini: <strong style="color:var(--red-light);" class="uppercase" x-text="activeCustomer?.progress || '-'"></strong>
+                        </p>
+                        
+                        <select x-model="selectedProgress" class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium cursor-pointer" style="background:rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); color:var(--text-dark);">
+                            <option value="">-- Pilih Progress Baru --</option>
+                            <option value="greet">Greet</option>
+                            <option value="tertarik">Tertarik</option>
+                            <option value="FU 1">FU 1</option>
+                            <option value="FU 2">FU 2</option>
+                            <option value="FU 3">FU 3</option>
+                            <option value="FU 4">FU 4</option>
+                            <option value="closing">Closing</option>
+                            <option value="tidak tertarik">Tidak Tertarik</option>
+                        </select>
+                        
+                        <div class="flex justify-end space-x-3">
+                            <button @click="tutupModalUpdate()" class="px-5 py-2.5 font-bold text-sm rounded-xl transition" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:var(--text-mid);">Batal</button>
+                            <button @click="simpanUpdateStatus()" :disabled="!selectedProgress" class="px-6 py-2.5 text-white rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed" style="background: linear-gradient(135deg, var(--red), var(--red-dark)); box-shadow: 0 0 0 1px rgba(212,175,55,0.25) inset;">Simpan</button>
                         </div>
                     </div>
                 </div>
@@ -1335,7 +1410,7 @@
                 </div>
             </div>
 
-            <!-- 4. ADMIN SALES (FITUR PACKING / OPS) DENGAN FITUR MULTI-DELETE & MULTI-KIRIM -->
+            <!-- 4. ADMIN SALES (FITUR PACKING / OPS) -->
             <div x-show="popupPanel === 'admin_sales'" x-data="adminSalesApp()" x-init="initSales()" @tambah-ke-sales.window="tambahDariStatus($event.detail.nama)" class="w-full" x-cloak>
                 
                 <!-- Sticky Header Filter -->
@@ -1370,7 +1445,7 @@
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
                 </div>
 
-                <!-- Action Bar Multi-Delete & Multi-Kirim (Muncul saat ada checkbox yg dicentang) -->
+                <!-- Action Bar Multi-Delete & Multi-Kirim -->
                 <div x-show="selectedIds.length > 0" x-transition class="border-2 rounded-xl p-3 mb-4 flex flex-col sm:flex-row justify-between items-center shadow-sm gap-3" style="background:rgba(225,29,46,0.08); border-color:rgba(225,29,46,0.3);">
                     <div class="flex items-center gap-3 w-full sm:w-auto">
                         <input type="checkbox" class="w-5 h-5 rounded cursor-pointer"
@@ -1565,20 +1640,13 @@
 
 <script>
 // ─────────────────────────────────────────────────────────────
-//  CONFIG — URL APPS SCRIPT (SUDAH DIPISAHKAN SECARA SPESIFIK)
+//  CONFIG — URL APPS SCRIPT
 // ─────────────────────────────────────────────────────────────
 
-// 1. URL Login & Edit Password
 const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0OHcpS102oD6frRSgacOdiADCt5C0Zphp7wI8mkDP3dKDvo-d6mCw/exec';
-
-// 2. URL Pencapaian (Target Harian)
 const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbzzWyRgZ2fk5NLCPyAViYHF6qyliNfi86ZsbqVHOsAIv3PcKFOK9-eq-4RrjVTkIw0I/exec';
-
-// 3. URL Pesanan Online & Status Customer (DAN BUKU TAMU)
 const PESANAN_STATUS_API_URL = 'https://script.google.com/macros/s/AKfycbz3V7oaXEBuQAATvcrZsDtGFIXAKTl_h3drbgjksBkJEbFZhjJP2WUSTrPv9mxHm35M/exec';
 const P_API_UPLOAD = 'https://script.google.com/macros/s/AKfycbx7w2FXv0ayhq61Le63K7zJsb-znvXq6cjLcLO6shrECvOwN-lF3vBO3-pn1dRCX6dH/exec'; 
-
-// 4. URL Admin Sales (Packing)
 const ADMIN_SALES_API_URL = 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec';
 
 // ─────────────────────────────────────────────────────────────
@@ -1594,9 +1662,19 @@ function appState() {
         editError: '', editSaving: false,
         pencapaianLoaded: false,
 
+        // Variabel Notifikasi Banner
+        countKirimHariIni: 0,
+        countBelumBayar: 0,
+        countBelumKirim: 0,
+        summaryLoaded: false,
+
         init() {
             const saved = localStorage.getItem('yanoshi_user') || sessionStorage.getItem('yanoshi_user');
-            if (saved) { this.isLoggedIn = true; this.currentUser = saved; }
+            if (saved) { 
+                this.isLoggedIn = true; 
+                this.currentUser = saved; 
+                this.loadSummary();
+            }
             startLiveClock();
         },
 
@@ -1605,6 +1683,22 @@ function appState() {
             const d = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             let g = h < 12 ? 'Selamat Pagi' : h < 15 ? 'Selamat Siang' : h < 18 ? 'Selamat Sore' : 'Selamat Malam';
             return `${g} — ${d}`;
+        },
+
+        async loadSummary() {
+            try {
+                const response = await fetch(`${PESANAN_STATUS_API_URL}?action=getAllCustomerData`);
+                const result = await response.json();
+                
+                if (Array.isArray(result)) {
+                    this.countKirimHariIni = result.filter(c => c.statusCustomer === 'kirim hari ini').length;
+                    this.countBelumBayar = result.filter(c => c.statusCustomer === 'belum bayar').length;
+                    this.countBelumKirim = result.filter(c => c.statusCustomer === 'belum di kirim').length;
+                    this.summaryLoaded = true;
+                }
+            } catch (e) {
+                console.error("Gagal load summary banner", e);
+            }
         },
 
         async doLogin() {
@@ -1617,6 +1711,7 @@ function appState() {
                     this.isLoggedIn  = true; this.currentUser = data.username || this.loginForm.username;
                     localStorage.setItem('yanoshi_user', this.currentUser); sessionStorage.setItem('yanoshi_user', this.currentUser);
                     showToast('Login berhasil! Selamat datang 👋', 'success');
+                    this.loadSummary();
                 } else { this.loginError = data.message || 'Username atau password salah.'; }
             } catch (e) { this.loginError = 'Gagal menghubungi server. Cek koneksi internet.'; }
             this.loginLoading = false;
@@ -1701,7 +1796,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ─────────────────────────────────────────────────────────────
-//  TARGET HARIAN PENCAPAIAN LOGIC (Native Embedded)
+//  TARGET HARIAN PENCAPAIAN LOGIC
 // ─────────────────────────────────────────────────────────────
 const TH_REKAP_KEY = "yanoshi_rekap_v3";
 const TH_LAST_AUTO_KEY = "yanoshi_last_auto";
@@ -2071,9 +2166,14 @@ function statusCustomerApp() {
         statusAppLoading: false, 
         availableSheets: [], statusData: [],
         scSearchNama: '', scSearchTanggal: '', scFilterDari: '', scFilterSheet: '', scFilterStatus: '',
+        scFilterProgress: '', 
 
         modalSiapkanOpen: false,
         namaYangDisiapkan: '',
+
+        modalUpdateOpen: false,
+        activeCustomer: null,
+        selectedProgress: '',
 
         async initStatus() {
             this.statusAppLoading = true;
@@ -2108,8 +2208,9 @@ function statusCustomerApp() {
                 const mDari = this.scFilterDari === '' || (c.dari && c.dari.includes(this.scFilterDari));
                 const mSheet = this.scFilterSheet === '' || c.sheetName === this.scFilterSheet;
                 const mStatus = this.scFilterStatus === '' || c.statusCustomer === this.scFilterStatus;
+                const mProgress = this.scFilterProgress === '' || c.progress === this.scFilterProgress;
                 
-                return mNama && mTanggal && mDari && mSheet && mStatus;
+                return mNama && mTanggal && mDari && mSheet && mStatus && mProgress;
             });
         },
 
@@ -2135,19 +2236,54 @@ function statusCustomerApp() {
             this.namaYangDisiapkan = nama || 'Tanpa Nama';
             this.modalSiapkanOpen = true;
         },
-        
         tutupModalSiapkan() {
             this.modalSiapkanOpen = false;
             this.namaYangDisiapkan = '';
         },
-        
         konfirmasiSiapkan() {
-            window.dispatchEvent(new CustomEvent('tambah-ke-sales', { 
-                detail: { nama: this.namaYangDisiapkan } 
-            }));
-            
+            window.dispatchEvent(new CustomEvent('tambah-ke-sales', { detail: { nama: this.namaYangDisiapkan } }));
             showToast(`✅ Data ${this.namaYangDisiapkan} dikirim ke Admin Sales!`, 'success');
             this.tutupModalSiapkan();
+        },
+
+        bukaModalUpdate(customer) {
+            this.activeCustomer = customer;
+            this.selectedProgress = '';
+            this.modalUpdateOpen = true;
+        },
+        tutupModalUpdate() {
+            this.modalUpdateOpen = false;
+            this.activeCustomer = null;
+        },
+        async simpanUpdateStatus() {
+            this.modalUpdateOpen = false;
+            this.statusAppLoading = true;
+            try {
+                const payload = {
+                    action: 'updateProgressCustomer',
+                    sheetName: this.activeCustomer.sheetName,
+                    rowNumber: this.activeCustomer.rowNumber,
+                    progress: this.selectedProgress
+                };
+
+                const response = await fetch(this.apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showToast('Progress berhasil diupdate! ✅', 'success');
+                    this.initStatus(); 
+                    window.dispatchEvent(new CustomEvent('reload-summary'));
+                } else {
+                    showToast('Gagal update progress', 'error');
+                }
+            } catch(e) {
+                showToast('Gagal terhubung ke server', 'error');
+            }
+            this.statusAppLoading = false;
         }
     }
 }
@@ -2351,7 +2487,7 @@ function adminSalesApp() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  BUKU TAMU APP LOGIC (BARU)
+//  BUKU TAMU APP LOGIC
 // ─────────────────────────────────────────────────────────────
 function bukuTamuApp() {
     return {
@@ -2415,6 +2551,7 @@ function bukuTamuApp() {
                     showToast('Data Buku Tamu berhasil diinput! ✅', 'success');
                     this.entries = [];
                     this.addEntry();
+                    window.dispatchEvent(new CustomEvent('reload-summary'));
                 } else {
                     showToast('Gagal: ' + (result.message || 'Server Error'), 'error');
                 }
