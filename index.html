@@ -47,6 +47,37 @@
             --shadow-md: 0 6px 26px rgba(0,0,0,0.45);
             --shadow-lg: 0 10px 48px rgba(0,0,0,0.55);
             --radius: 16px;
+						
+						@keyframes shimmerWave {
+								0% { transform: translateX(-100%); }
+								100% { transform: translateX(100%); }
+						}
+
+						.skeleton-box {
+								position: relative;
+								overflow: hidden;
+								/* Warna kotak dasar */
+								background-color: rgba(255, 255, 255, 0.08); 
+								border-radius: 6px;
+						}
+
+						.skeleton-box::after {
+								content: '';
+								position: absolute;
+								top: 0;
+								right: 0;
+								bottom: 0;
+								left: 0;
+								/* Efek cahaya putih */
+								background: linear-gradient(
+										90deg, 
+										transparent 0%, 
+										rgba(255, 255, 255, 0.3) 50%, 
+										transparent 100%
+								);
+								/* Menggeser cahaya dari luar kiri ke luar kanan pakai GPU */
+								animation: shimmerWave 1.2s infinite linear;
+						}
             
             /* Target Harian Variables */
             --th-primary: #FFFFFF;
@@ -116,16 +147,11 @@
         .login-title { text-align: center; margin-bottom: 8px; }
         .login-title h1 { font-size: 22px; font-weight: 800; color: var(--theme-white); letter-spacing: -0.5px; }
         .login-title p  { font-size: 13px; color: var(--theme-light); font-weight: 500; margin-top: 4px; }
-        .login-divider  {
-            height: 3px; width: 40px;
-            background: var(--grad-white);
-            border-radius: 2px; margin: 16px auto 28px;
-        }
+        .login-divider  { height: 3px; width: 40px; background: var(--grad-white); border-radius: 2px; margin: 16px auto 28px; }
         .login-field { margin-bottom: 18px; }
         .login-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--theme-light); margin-bottom: 8px; }
         .login-field input {
-            width: 100%; padding: 14px 18px;
-            border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
+            width: 100%; padding: 14px 18px; border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
             font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500;
             outline: none; transition: all 0.2s; background: rgba(255,255,255,0.05); color: var(--theme-white);
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
@@ -133,41 +159,27 @@
         .login-field input::placeholder { color: #666; }
         .login-field input:focus { border-color: var(--theme-silver); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 4px rgba(255,255,255,0.1); }
         .login-btn {
-            width: 100%; padding: 15px;
-            background: var(--grad-white);
-            color: var(--theme-black); border: none; border-radius: 12px;
-            font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800;
-            cursor: pointer; transition: all 0.2s; margin-top: 8px;
-            letter-spacing: 0.5px;
+            width: 100%; padding: 15px; background: var(--grad-white); color: var(--theme-black); border: none; border-radius: 12px;
+            font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s; margin-top: 8px; letter-spacing: 0.5px;
             box-shadow: 0 4px 18px rgba(255,255,255,0.15), 0 0 0 1px rgba(255,255,255,0.4) inset;
         }
         .login-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,255,255,0.25), 0 0 0 1px rgba(255,255,255,0.6) inset; }
         .login-btn:active { transform: translateY(0); }
         .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
-        .login-error {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
-            color: #ff8b8f; border-radius: 10px; padding: 12px 16px;
-            font-size: 13px; font-weight: 600; text-align: center; margin-top: 14px;
-        }
+        .login-error { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #ff8b8f; border-radius: 10px; padding: 12px 16px; font-size: 13px; font-weight: 600; text-align: center; margin-top: 14px; }
         .login-footer { text-align: center; margin-top: 24px; font-size: 11px; color: #6b6a68; font-weight: 500; letter-spacing: 0.5px; }
 
         /* ===== STICKY HEADER ===== */
         #mainHeader {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: var(--grad-black);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid transparent;
-            border-image: linear-gradient(90deg, #333 0%, #fff 50%, #333 100%) 1;
-            box-shadow: 0 2px 24px rgba(0,0,0,0.8);
-            height: 64px; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 20px;
+            background: var(--grad-black); backdrop-filter: blur(14px); border-bottom: 1px solid transparent;
+            border-image: linear-gradient(90deg, #333 0%, #fff 50%, #333 100%) 1; box-shadow: 0 2px 24px rgba(0,0,0,0.8);
+            height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
         }
         .header-logo { height: 36px; width: auto; object-fit: contain; cursor: pointer; }
         .hamburger-btn {
-            width: 44px; height: 44px; border-radius: 12px;
-            background: rgba(255,255,255,0.06); border: 1px solid var(--border-soft); cursor: pointer;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-            transition: all 0.2s;
+            width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-soft); cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; transition: all 0.2s;
         }
         .hamburger-btn:hover { background: rgba(255,255,255,0.12); border-color: var(--border-theme); }
         .hamburger-btn span { display: block; width: 20px; height: 2px; background: var(--theme-white); border-radius: 2px; transition: all 0.3s; }
@@ -177,26 +189,15 @@
 
         /* ===== DROPDOWN MENU ===== */
         .user-dropdown {
-            position: fixed; top: 72px; right: 16px; z-index: 999;
-            background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%);
-            border-radius: 16px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15);
-            min-width: 220px; overflow: hidden;
+            position: fixed; top: 72px; right: 16px; z-index: 999; background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%);
+            border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15); min-width: 220px; overflow: hidden;
             animation: dropdownIn 0.2s ease-out;
         }
-        @keyframes dropdownIn {
-            from { opacity: 0; transform: translateY(-8px) scale(0.97); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        @keyframes dropdownIn { from { opacity: 0; transform: translateY(-8px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .dropdown-user-info { padding: 16px 18px 14px; border-bottom: 1px solid var(--border-soft); background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); }
         .dropdown-user-name { font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .dropdown-user-role { font-size: 11px; color: var(--theme-silver); font-weight: 600; margin-top: 2px; letter-spacing: 0.5px; text-transform: uppercase; }
-        .dropdown-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 13px 18px; cursor: pointer;
-            font-size: 13px; font-weight: 600; color: var(--text-dark);
-            transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
+        .dropdown-item { display: flex; align-items: center; gap: 12px; padding: 13px 18px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-dark); transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .dropdown-item:hover { background: rgba(255,255,255,0.08); }
         .dropdown-item.danger { color: #ff8b8f; }
         .dropdown-item.danger:hover { background: rgba(255,255,255,0.12); }
@@ -210,72 +211,44 @@
         /* ===== WELCOME BANNER (ABU ABU GRADASI PUTIH) ===== */
         .welcome-banner {
             background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 50%, #d4d4d8 100%);
-            border-radius: 20px; 
-            padding: 32px 36px; 
-            margin-bottom: 28px; 
-            position: relative; 
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: var(--shadow-md);
+            border-radius: 20px; padding: 32px 36px; margin-bottom: 28px; position: relative; overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.1); box-shadow: var(--shadow-md);
         }
         .welcome-banner::before {
             content: ''; position: absolute; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 120 120'%3E%3Cpath fill='%23000000' fill-opacity='0.03' d='M60 120A60 60 0 0 0 0 60a60 60 0 0 0-60 60h120zm-20 0A40 40 0 0 0 0 80a40 40 0 0 0-40 40h80zm-20 0A20 20 0 0 0 0 100a20 20 0 0 0-20 20h40zm40-120A60 60 0 0 0 0-60a60 60 0 0 0-60 60h120V0zm-20 0A40 40 0 0 0 0-40a40 40 0 0 0-40 40h80V0zm-20 0A20 20 0 0 0 0-20a20 20 0 0 0-20 20h40V0zM120 60a60 60 0 0 0-60-60 60 60 0 0 0-60 60h120zm-20 0a40 40 0 0 0-40-40 40 40 0 0 0-40 40h80zm-20 0a20 20 0 0 0-20-20 20 20 0 0 0-20 20h40z'/%3E%3C/svg%3E");
-            background-position: center center;
-            opacity: 1; mix-blend-mode: normal; z-index: 0;
+            background-position: center center; opacity: 1; mix-blend-mode: normal; z-index: 0;
         }
         .welcome-banner::after {
             content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-            z-index: 1;
+            background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.3) 50%, transparent 100%); z-index: 1;
         }
-        .welcome-title, .welcome-subtitle, .welcome-clock, .welcome-clock-label {
-            position: relative; z-index: 2; 
-        }
+        .welcome-title, .welcome-subtitle, .welcome-clock, .welcome-clock-label { position: relative; z-index: 2; }
         .welcome-title { font-size: 24px; font-weight: 800; color: #1a1a1a; line-height: 1.2; text-shadow: none; }
         .welcome-subtitle { font-size: 13px; color: #444; font-weight: 600; margin-top: 6px; text-shadow: none; }
         .welcome-gold { 
             background: linear-gradient(135deg, #B8941C 0%, #D4AF37 50%, #9C7A1D 100%); 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; text-shadow: none; display: inline-block;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none; display: inline-block;
         }
         .welcome-clock { font-size: 24px; font-weight: 900; color: #1a1a1a; letter-spacing: 2px; margin-top: 14px; font-variant-numeric: tabular-nums; text-shadow: none; }
         .welcome-clock-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2.5px; color: #666; margin-top: 2px; text-shadow: none; }
 
-        /* SUMMARY NOTIFICATION BADGES DI BANNER */
-        .summary-badge-container {
-            background: rgba(0,0,0,0.7); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
-        }
-
         /* ===== SECTION TITLE ===== */
-        .section-title {
-            font-size: 12px; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 2px; color: var(--theme-light); margin-bottom: 16px;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .section-title::before {
-            content: ''; display: block; width: 4px; height: 16px;
-            background: var(--grad-white);
-            border-radius: 2px;
-        }
+        .section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--theme-light); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; display: block; width: 4px; height: 16px; background: var(--grad-white); border-radius: 2px; }
 
-        /* ===== GRID MENU CARDS ===== */
+        /* ===== GRID MENU CARDS (Desktop 4x2, Mobile 2x4) ===== */
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 32px; }
-        @media (min-width: 768px) { .menu-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 1024px) { .menu-grid { grid-template-columns: repeat(6, 1fr); } }
+        @media (min-width: 1024px) { .menu-grid { grid-template-columns: repeat(4, 1fr); } }
 
         .menu-card {
-            background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
-            border-radius: 18px; padding: 22px 16px;
-            box-shadow: var(--shadow-sm); cursor: pointer;
-            border: 1px solid var(--border-soft);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center; user-select: none; position: relative; overflow: hidden;
+            background: linear-gradient(165deg, #1b1b20 0%, #131315 100%); border-radius: 18px; padding: 22px 16px;
+            box-shadow: var(--shadow-sm); cursor: pointer; border: 1px solid var(--border-soft);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); text-align: center; user-select: none; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .menu-card::after {
-            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 3px; background: var(--grad-white);
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--grad-white);
             transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
         }
         .menu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-theme); }
@@ -284,167 +257,56 @@
         .menu-card.active::after { transform: scaleX(1); }
 
         .menu-icon {
-            width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 12px;
-            display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
-            background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%);
-            border: 1px solid var(--border-theme);
-            color: var(--theme-white);
+            width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+            background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid var(--border-theme); color: var(--theme-white);
         }
         .menu-icon svg { width: 24px; height: 24px; }
         .menu-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--theme-silver); line-height: 1.3; margin: 0; }
-        
-        /* ===== WIDE MENU UNTUK CETAK STIKER ===== */
-        .menu-card-wide {
-            background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
-            border-radius: 18px; padding: 14px 20px;
-            box-shadow: var(--shadow-sm); cursor: pointer;
-            border: 1px solid var(--border-soft); 
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            grid-column: 1 / -1; width: 100%;
-        }
-        .menu-card-wide:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-theme); }
-        .menu-card-wide::after {
-            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 3px; background: var(--grad-white);
-            transform: scaleX(0); transition: transform 0.25s ease; transform-origin: left;
-        }
-        .menu-card-wide:hover::after { transform: scaleX(1); }
-        .menu-card-wide .menu-icon { margin: 0; width: 44px; height: 44px; flex-shrink: 0; font-size: 20px; background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid var(--border-theme); color: var(--theme-white); display: flex; align-items: center; justify-content: center; border-radius: 12px;}
-        .menu-card-wide .menu-icon svg { width: 20px; height: 20px; }
-        .menu-card-wide .menu-label { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--theme-silver); }
-        .menu-card-wide .arrow-icon { position: absolute; right: 20px; color: var(--theme-white); font-weight: bold; font-size: 16px; transition: transform 0.2s, color 0.2s; }
-        .menu-card-wide:hover .arrow-icon { transform: translateX(4px); color: var(--theme-white); }
 
         /* ===== POPUP MODAL MENU ===== */
-        .popup-overlay {
-            position: fixed; inset: 0; z-index: 3000;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-            display: flex; align-items: flex-end; justify-content: center;
-            padding: 0;
-            animation: popupFadeIn 0.2s ease-out;
-        }
-        @keyframes popupFadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-        }
-        .popup-sheet {
-            background: linear-gradient(180deg, #18181c 0%, #0e0e10 100%);
-            border: 1px solid var(--border-theme);
-            width: 100%; max-width: 900px;
-            border-radius: 24px 24px 0 0;
-            max-height: 88vh; display: flex; flex-direction: column;
-            box-shadow: 0 -8px 60px rgba(0,0,0,0.8);
-            animation: popupSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-        @media (min-width: 700px) {
-            .popup-overlay { align-items: center; padding: 20px; }
-            .popup-sheet { border-radius: 24px; max-height: 85vh; }
-        }
-        @keyframes popupSlideUp {
-            from { transform: translateY(60px); opacity: 0; }
-            to   { transform: translateY(0); opacity: 1; }
-        }
-        .popup-header {
-            padding: 20px 24px 16px; border-bottom: 1px solid var(--border-soft);
-            background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent 60%);
-            display: flex; align-items: center; justify-content: space-between;
-            flex-shrink: 0;
-        }
-        .popup-drag-handle {
-            width: 40px; height: 4px; background: var(--grad-white); border-radius: 2px;
-            margin: 10px auto 0; flex-shrink: 0; opacity: 0.6;
-        }
+        .popup-overlay { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: flex; align-items: flex-end; justify-content: center; padding: 0; animation: popupFadeIn 0.2s ease-out; }
+        @keyframes popupFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .popup-sheet { background: linear-gradient(180deg, #18181c 0%, #0e0e10 100%); border: 1px solid var(--border-theme); width: 100%; max-width: 1000px; border-radius: 24px 24px 0 0; max-height: 88vh; display: flex; flex-direction: column; box-shadow: 0 -8px 60px rgba(0,0,0,0.8); animation: popupSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
+        @media (min-width: 700px) { .popup-overlay { align-items: center; padding: 20px; } .popup-sheet { border-radius: 24px; max-height: 85vh; } }
+        @keyframes popupSlideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .popup-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border-soft); background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent 60%); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+        .popup-drag-handle { width: 40px; height: 4px; background: var(--grad-white); border-radius: 2px; margin: 10px auto 0; flex-shrink: 0; opacity: 0.6; }
         @media (min-width: 700px) { .popup-drag-handle { display: none; } }
         .popup-title-wrap { display: flex; align-items: center; gap: 10px; }
         .popup-title-icon { color: var(--theme-white); display: flex; align-items: center; }
         .popup-title { font-size: 15px; font-weight: 800; color: var(--text-dark); }
-        .popup-close-btn {
-            width: 36px; height: 36px; border-radius: 10px;
-            background: rgba(255,255,255,0.06); border: 1px solid var(--border-soft); cursor: pointer;
-            font-size: 18px; color: var(--text-dark);
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s; flex-shrink: 0;
-        }
+        .popup-close-btn { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-soft); cursor: pointer; font-size: 18px; color: var(--text-dark); display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
         .popup-close-btn:hover { background: rgba(255,255,255,0.15); border-color: #fff; color: #fff; }
-        .popup-body {
-            flex: 1 1 auto; 
-            overflow-y: auto; padding: 20px 24px 32px;
-            -webkit-overflow-scrolling: touch;
-            min-height: 0; 
-        }
+        .popup-body { flex: 1 1 auto; overflow-y: auto; padding: 20px 24px 32px; -webkit-overflow-scrolling: touch; min-height: 0; }
 
         /* ===== MODAL USER SETTINGS ===== */
-        .modal-overlay {
-            position: fixed; inset: 0; z-index: 2000;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-            display: flex; align-items: center; justify-content: center; padding: 20px;
-        }
-        .modal-box {
-            background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%);
-            border: 1px solid var(--border-theme);
-            border-radius: 24px; padding: 36px 32px; width: 100%; max-width: 420px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8); animation: modalIn 0.25s ease-out;
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to   { opacity: 1; transform: scale(1) translateY(0); }
-        }
+        .modal-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-theme); border-radius: 24px; padding: 36px 32px; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); animation: modalIn 0.25s ease-out; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .modal-title { font-size: 18px; font-weight: 800; color: var(--text-dark); margin-bottom: 6px; }
         .modal-sub   { font-size: 13px; color: var(--text-mid); margin-bottom: 24px; }
         .modal-field { margin-bottom: 18px; }
         .modal-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-mid); margin-bottom: 8px; }
-        .modal-field input {
-            width: 100%; padding: 13px 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
-            font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500;
-            outline: none; transition: all 0.2s; background: rgba(255,255,255,0.04); color: var(--text-dark);
-        }
+        .modal-field input { width: 100%; padding: 13px 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500; outline: none; transition: all 0.2s; background: rgba(255,255,255,0.04); color: var(--text-dark); }
         .modal-field input:focus { border-color: var(--theme-white); box-shadow: 0 0 0 3px rgba(255,255,255,0.1); }
         .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
-        .btn-cancel {
-            flex: 1; padding: 13px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
-            background: rgba(255,255,255,0.05); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
-            color: var(--text-mid); cursor: pointer; transition: all 0.2s;
-        }
+        .btn-cancel { flex: 1; padding: 13px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(255,255,255,0.05); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
         .btn-cancel:hover { background: rgba(255,255,255,0.1); color: #fff;}
-        .btn-save {
-            flex: 2; padding: 13px; border: none; border-radius: 10px;
-            background: var(--grad-white);
-            font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 800;
-            color: #000; cursor: pointer; transition: all 0.2s;
-        }
+        .btn-save { flex: 2; padding: 13px; border: none; border-radius: 10px; background: var(--grad-white); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 800; color: #000; cursor: pointer; transition: all 0.2s; }
         .btn-save:hover { box-shadow: 0 4px 16px rgba(255,255,255,0.3); transform: translateY(-1px); }
         .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         /* ===== UPLOAD ZONE ===== */
-        .upload-zone {
-            border: 2px dashed rgba(255,255,255,0.2) !important; border-radius: 8px;
-            padding: 10px; text-align: center; background: rgba(255,255,255,0.03) !important;
-            transition: border-color 0.2s, background 0.2s; cursor: pointer;
-        }
+        .upload-zone { border: 2px dashed rgba(255,255,255,0.2) !important; border-radius: 8px; padding: 10px; text-align: center; background: rgba(255,255,255,0.03) !important; transition: border-color 0.2s, background 0.2s; cursor: pointer; }
         .upload-zone:hover { border-color: var(--theme-white) !important; background: rgba(255,255,255,0.08) !important; }
         .upload-zone.has-file { border-color: #34d399 !important; background: rgba(16,185,129,0.08) !important; }
         .upload-zone p { color: var(--theme-light) !important; }
         .upload-zone input[type="file"] { display: none; }
 
         /* ===== TOAST ===== */
-        #toastContainer {
-            position: fixed; bottom: 24px; right: 20px; z-index: 9999;
-            display: flex; flex-direction: column; gap: 8px; pointer-events: none;
-        }
-        .toast {
-            padding: 12px 18px; border-radius: 12px; color: white;
-            font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5); pointer-events: auto;
-            animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            max-width: 300px;
-        }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(60px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
+        #toastContainer { position: fixed; bottom: 84px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast { padding: 12px 18px; border-radius: 12px; color: white; font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif; box-shadow: 0 4px 20px rgba(0,0,0,0.5); pointer-events: auto; animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); max-width: 300px; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
         .toast.success { background: linear-gradient(135deg, #059669, #10b981); }
         .toast.error   { background: linear-gradient(135deg, #5c0000, #990000); }
         .toast.info    { background: linear-gradient(135deg, #333333, #1a1a1a); }
@@ -455,83 +317,36 @@
         .iframe-height-lg { height: 600px; }
 
         /* ===== EMBED PANELS ===== */
-        .embed-panel {
-            background: linear-gradient(165deg, #1b1b20 0%, #131315 100%);
-            border-radius: 20px; overflow: hidden;
-            box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); margin-bottom: 28px;
-        }
-        .embed-header {
-            padding: 16px 22px; display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid transparent;
-            border-image: linear-gradient(90deg, #555, #fff, rgba(255,255,255,0.6)) 1;
-            background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent 70%);
-        }
+        .embed-panel { background: linear-gradient(165deg, #1b1b20 0%, #131315 100%); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); margin-bottom: 28px; }
+        .embed-header { padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid transparent; border-image: linear-gradient(90deg, #555, #fff, rgba(255,255,255,0.6)) 1; background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent 70%); }
         .embed-title-wrap { display: flex; align-items: center; gap: 10px; }
-        .embed-icon {
-            width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;
-            background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%);
-            border: 1px solid var(--border-theme);
-            color: var(--theme-white);
-        }
+        .embed-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid var(--border-theme); color: var(--theme-white); }
         .embed-icon svg { width: 18px; height: 18px; }
         .embed-title { font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .embed-sub   { font-size: 11px; color: var(--text-mid); margin-top: 2px; }
-        .embed-toggle {
-            padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border-theme);
-            background: rgba(255,255,255,0.04); font-family: 'Montserrat', sans-serif;
-            font-size: 11px; font-weight: 700; color: var(--text-mid); cursor: pointer;
-            transition: all 0.2s; display: flex; align-items: center; gap: 6px;
-        }
+        .embed-toggle { padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border-theme); background: rgba(255,255,255,0.04); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: var(--text-mid); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
         .embed-toggle:hover { background: rgba(255,255,255,0.1); border-color: #fff; color: #fff; }
         .embed-body { overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .embed-body.collapsed { max-height: 0; }
         .embed-body.expanded { max-height: 600px; }
-        .btn-ext {
-            padding: 8px 16px; border-radius: 10px; border: none;
-            font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
-            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
-        }
+        .btn-ext { padding: 8px 16px; border-radius: 10px; border: none; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
         .btn-ext.primary { background: var(--grad-white); color: #000; box-shadow: 0 0 0 1px rgba(255,255,255,0.25) inset; }
 
         /* =========================================================
-           TARGET HARIAN SCOPED CSS (PENCAPAIAN)
+           TARGET HARIAN SCOPED CSS (PENCAPAIAN) - TETAP BERWARNA EMAS, HIJAU, MERAH
         ========================================================= */
         .th-container { font-family: 'Inter', sans-serif; width: 100%; background: transparent; animation: th_fadeIn 0.8s ease-out; }
-        
-        .th-header-card {
-            background: var(--grad-black);
-            border: 1px solid var(--border-theme);
-            padding: 30px 24px; color: white; text-align: center;
-            border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 20px;
-        }
+        .th-header-card { background: var(--grad-black); border: 1px solid var(--border-theme); padding: 30px 24px; color: white; text-align: center; border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 20px; }
         .th-header-card h1 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; opacity: .9; margin-bottom: 8px; font-weight: 600; }
         .th-header-card .th-date { font-size: 26px; font-weight: 700; margin-bottom: 15px; }
-        .th-deadline-badge {
-            display: inline-block; background-color: rgba(255,255,255,.1); padding: 8px 16px;
-            border-radius: 30px; font-size: 13px; font-weight: 500; backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,.2); margin-bottom: 20px;
-        }
-        .th-total-summary {
-            background-color: rgba(0,0,0,.3); padding: 18px 20px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,.1); display: flex;
-            justify-content: space-between; align-items: center; text-align: left;
-        }
+        .th-deadline-badge { display: inline-block; background-color: rgba(255,255,255,.1); padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 500; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.2); margin-bottom: 20px; }
+        .th-total-summary { background-color: rgba(0,0,0,.3); padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; text-align: left; }
         .th-total-info p { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: .85; margin-bottom: 5px; }
         .th-total-numbers { font-size: 18px; font-weight: 400; }
         .th-total-numbers strong { font-size: 28px; font-weight: 700; color: #fff; }
-        .th-total-percentage-badge {
-            background: rgba(255,255,255,.1); padding: 10px 16px; border-radius: 12px;
-            font-size: 22px; font-weight: 800; color: #fff;
-            box-shadow: 0 4px 6px rgba(0,0,0,.1); backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,.2); transition: all .5s ease;
-        }
-
+        .th-total-percentage-badge { background: rgba(255,255,255,.1); padding: 10px 16px; border-radius: 12px; font-size: 22px; font-weight: 800; color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,.1); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,.2); transition: all .5s ease; }
         .th-item-list { list-style: none; margin: 0; padding: 0; }
-        .th-item-card {
-            background: var(--th-card-bg); padding: 20px; border-radius: 16px;
-            margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border);
-            transition: transform .2s ease, box-shadow .2s ease;
-        }
+        .th-item-card { background: var(--th-card-bg); padding: 20px; border-radius: 16px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border); transition: transform .2s ease, box-shadow .2s ease; }
         .th-item-card:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(0,0,0,.5); }
         .th-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .th-title-wrap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -543,125 +358,68 @@
         .th-status-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; }
         .th-status-success { background-color: rgba(16,185,129,0.1); color: var(--th-accent-green); border: 1px solid rgba(16,185,129,.3); }
         .th-status-warning { background-color: rgba(245,158,11,0.1); color: var(--th-accent-orange); border: 1px solid rgba(245,158,11,.3); }
-        .th-status-danger  { background-color: rgba(239,68,68,0.1); color: var(--th-accent-red);    border: 1px solid rgba(239,68,68,.3); }
+        .th-status-danger  { background-color: rgba(239,68,68,0.1); color: var(--th-accent-red); border: 1px solid rgba(239,68,68,.3); }
         .th-progress-container { width: 100%; height: 10px; background-color: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
         .th-progress-bar { height: 100%; border-radius: 10px; width: 0%; transition: width 1s cubic-bezier(.4,0,.2,1); }
         .th-stats-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--th-text-muted); font-weight: 500; background: var(--th-elev); padding: 10px 12px; border-radius: 10px; }
         .th-stat-val { font-weight: 700; color: var(--th-text-main); margin-left: 4px; }
         .th-val-green { color: var(--th-accent-green); }
         .th-val-red   { color: var(--th-accent-red); }
-
         #th-loading, #th-error { text-align: center; padding: 40px; background: var(--th-card-bg); border: 1px solid var(--th-card-border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
         .th-spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--theme-white); border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite; }
         
         @keyframes th_fadeIn  { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes th_fadeOut { to { opacity: 0; transform: translateX(-50%) translateY(-10px); } }
 
-        .th-auto-rekap-toast {
-            position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-            background: var(--grad-white); color: #000;
-            padding: 12px 22px; border-radius: 14px; font-size: 13px; font-weight: 700;
-            box-shadow: 0 8px 20px rgba(0,0,0,.5); z-index: 9999;
-            display: flex; align-items: center; gap: 8px; max-width: 90%;
-            animation: th_fadeIn .4s ease;
-        }
+        .th-auto-rekap-toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); background: var(--grad-white); color: #000; padding: 12px 22px; border-radius: 14px; font-size: 13px; font-weight: 700; box-shadow: 0 8px 20px rgba(0,0,0,.5); z-index: 9999; display: flex; align-items: center; gap: 8px; max-width: 90%; animation: th_fadeIn .4s ease; }
         .th-auto-rekap-toast.hide { animation: th_fadeOut .4s ease forwards; }
 
         /* Rekap Section */
-        .th-rekap-section {
-            background: var(--th-card-bg); border-radius: var(--radius);
-            box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border);
-            margin-bottom: 20px; overflow: hidden; animation: th_fadeIn .6s ease-out;
-        }
-        .th-rekap-header {
-            background: var(--grad-black);
-            padding: 18px 22px; display: flex; justify-content: space-between;
-            align-items: center; cursor: pointer; user-select: none;
-        }
+        .th-rekap-section { background: var(--th-card-bg); border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border); margin-bottom: 20px; overflow: hidden; animation: th_fadeIn .6s ease-out; }
+        .th-rekap-header { background: var(--grad-black); padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
         .th-rekap-header-left { display: flex; align-items: center; gap: 10px; }
         .th-rekap-icon { font-size: 20px; color: #fff;}
         .th-rekap-title { color: white; font-size: 14px; font-weight: 700; letter-spacing: .5px; }
         .th-rekap-subtitle { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 2px; }
-        .th-rekap-toggle-btn {
-            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-            color: white; border-radius: 8px; padding: 6px 12px; font-size: 12px;
-            font-weight: 600; cursor: pointer; transition: background .2s; white-space: nowrap;
-        }
+        .th-rekap-toggle-btn { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .2s; white-space: nowrap; }
         .th-rekap-toggle-btn:hover { background: rgba(255,255,255,.2); }
         .th-rekap-body { padding: 0 22px 22px; display: none; }
         .th-rekap-body.open { display: block; }
-
         .th-rekap-actions { padding: 14px 0 8px; display: flex; gap: 10px; flex-wrap: wrap; }
-        .th-btn-simpan-rekap {
-            background: var(--grad-white); color: #000;
-            border: none; border-radius: 10px; padding: 10px 16px; font-size: 13px;
-            font-weight: 700; cursor: pointer; transition: opacity .2s, transform .1s;
-            display: flex; align-items: center; gap: 6px;
-        }
+        .th-btn-simpan-rekap { background: var(--grad-white); color: #000; border: none; border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .2s, transform .1s; display: flex; align-items: center; gap: 6px; }
         .th-btn-simpan-rekap:hover { opacity: .9; transform: translateY(-1px); }
-        .th-btn-hapus-semua {
-            background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 700;
-            cursor: pointer; transition: background .2s;
-        }
+        .th-btn-hapus-semua { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background .2s; }
         .th-btn-hapus-semua:hover { background: rgba(255,255,255,0.1); }
-
         .th-rekap-filter { display: flex; align-items: center; gap: 10px; padding: 8px 0 14px; flex-wrap: wrap; }
         .th-rekap-filter label { font-size: 12px; font-weight: 600; color: var(--th-text-muted); text-transform: uppercase; letter-spacing: .5px; }
-        .th-rekap-filter select {
-            border: 1px solid var(--th-card-border); border-radius: 8px; padding: 7px 12px;
-            font-size: 13px; font-weight: 600; color: var(--th-text-main);
-            background: var(--th-elev); cursor: pointer; outline: none; transition: border-color .2s;
-        }
+        .th-rekap-filter select { border: 1px solid var(--th-card-border); border-radius: 8px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--th-text-main); background: var(--th-elev); cursor: pointer; outline: none; transition: border-color .2s; }
         .th-rekap-filter select:focus { border-color: #fff; }
-
         .th-rekap-empty { text-align: center; padding: 30px 20px; color: var(--th-text-muted); font-size: 13px; }
         .th-rekap-empty .th-empty-icon { font-size: 32px; margin-bottom: 8px; }
-
         .th-rekap-month-card { border: 1px solid var(--th-card-border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
-        .th-rekap-month-header {
-            background: var(--th-elev); padding: 12px 16px;
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; user-select: none; border-bottom: 1px solid transparent;
-            transition: background .15s;
-        }
+        .th-rekap-month-header { background: var(--th-elev); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: background .15s; }
         .th-rekap-month-header:hover { background: rgba(255,255,255,0.05); }
         .th-rekap-month-header.detail-open { border-bottom-color: var(--th-card-border); }
         .th-rekap-month-title { font-size: 14px; font-weight: 800; color: var(--th-text-main); display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
         .th-rekap-month-meta  { font-size: 11px; color: var(--th-text-muted); margin-top: 3px; }
         .th-rekap-month-right { display: flex; align-items: center; gap: 8px; flex-shrink:0; }
-
         .th-rekap-perc-badge { display: inline-block; padding: 4px 11px; border-radius: 20px; font-size: 13px; font-weight: 800; }
         .th-rekap-perc-green  { background: rgba(16,185,129,0.15); color: #10b981; }
         .th-rekap-perc-orange { background: rgba(245,158,11,0.15); color: #f59e0b; }
         .th-rekap-perc-red    { background: rgba(239,68,68,0.15); color: #ef4444; }
-
         .th-btn-del-month { background: none; border: none; color: #888; cursor: pointer; font-size: 15px; padding: 2px 6px; border-radius: 6px; transition: color .2s; line-height: 1; }
         .th-btn-del-month:hover { color: #fff; }
-
         .th-rekap-detail { display: none; padding: 14px 16px 16px; }
         .th-rekap-detail.open { display: block; }
-
-        .th-rekap-grand-row {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--grad-black);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; color: white;
-            gap: 8px; flex-wrap: wrap;
-        }
+        .th-rekap-grand-row { display: flex; justify-content: space-between; align-items: center; background: var(--grad-black); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; color: white; gap: 8px; flex-wrap: wrap; }
         .th-rg-label { font-size: 11px; font-weight: 600; opacity: .8; margin-bottom: 3px; }
         .th-rg-val   { font-size: 20px; font-weight: 800; }
         .th-rg-pcs   { font-size: 12px; font-weight: 400; opacity: .75; }
-
         .th-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--th-text-muted); margin: 10px 0 7px; }
         .th-prod-table-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--th-card-border); }
         .th-prod-table { width: 100%; border-collapse: collapse; font-size: 12px; }
         .th-prod-table thead tr { background: var(--th-elev); }
-        .th-prod-table thead th {
-            padding: 8px 10px; font-size: 10px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: .5px;
-            color: var(--th-text-muted); border-bottom: 1px solid var(--th-card-border); text-align:left;
-        }
+        .th-prod-table thead th { padding: 8px 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--th-text-muted); border-bottom: 1px solid var(--th-card-border); text-align:left; }
         .th-prod-table thead th:not(:first-child) { text-align: right; }
         .th-prod-table tbody tr { border-bottom: 1px solid var(--th-card-border); }
         .th-prod-table tbody tr:last-child { border-bottom: none; }
@@ -670,21 +428,12 @@
         .th-prod-table tbody td:not(:first-child) { text-align: right; }
         .th-prod-terjual { color: var(--th-accent-green); font-weight: 700; }
         .th-prod-kurang  { color: var(--th-accent-red);   font-weight: 700; }
-
         .th-mini-bar-wrap { width: 52px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 4px; }
         .th-mini-bar      { height: 100%; border-radius: 6px; }
-
-        .th-rekap-grand-summary {
-            background: var(--grad-black);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px; padding: 16px 18px; color: white;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 4px; gap: 10px;
-        }
+        .th-rekap-grand-summary { background: var(--grad-black); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 16px 18px; color: white; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; gap: 10px; }
         .th-rgs-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: .8; margin-bottom: 4px; }
         .th-rgs-val   { font-size: 22px; font-weight: 800; color: #fff; }
         .th-rgs-sub   { font-size: 12px; opacity: .7; }
-
         .th-rekap-save-notif { display: none; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 600; margin-top: 4px; text-align: center; }
         .th-auto-info-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; margin: 12px 0 4px; }
         .th-auto-tag { font-size: 10px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 7px; font-weight: 700; }
@@ -698,15 +447,11 @@
         .popup-body .bg-gray-50 { background-color: #202024 !important; }
         .popup-body .bg-gray-100 { background-color: rgba(255,255,255,0.07) !important; }
         
-        .popup-body .text-gray-600,
-        .popup-body .text-gray-500 { color: var(--text-mid) !important; }
+        .popup-body .text-gray-600, .popup-body .text-gray-500 { color: var(--text-mid) !important; }
         .popup-body .text-gray-400 { color: #8a8985 !important; }
         .popup-body .text-gray-300 { color: #55555a !important; }
         
-        .popup-body .border-gray-100,
-        .popup-body .border-gray-200,
-        .popup-body .border-gray-300,
-        .popup-body .border { border-color: rgba(255,255,255,0.10) !important; }
+        .popup-body .border-gray-100, .popup-body .border-gray-200, .popup-body .border-gray-300, .popup-body .border { border-color: rgba(255,255,255,0.10) !important; }
         
         .popup-body h3.text-gray-900 { color: var(--text-dark) !important; }
         .popup-body button.text-gray-900 { color: #1a1a1a !important; }
@@ -714,44 +459,22 @@
         .popup-body .hover\:text-blue-800:hover { color: #ccc !important; }
         
         /* Overrides Input, Select & Textarea */
-        .popup-body input[type="text"],
-        .popup-body input[type="date"],
-        .popup-body input[type="password"],
-        .popup-body select,
-        .popup-body textarea {
-            background-color: rgba(255,255,255,0.04) !important;
-            border-color: rgba(255,255,255,0.14) !important;
-            color: var(--text-dark) !important;
+        .popup-body input[type="text"], .popup-body input[type="date"], .popup-body input[type="password"], .popup-body select, .popup-body textarea {
+            background-color: rgba(255,255,255,0.04) !important; border-color: rgba(255,255,255,0.14) !important; color: var(--text-dark) !important;
         }
         .popup-body input::placeholder { color: #8a8985 !important; }
-        .popup-body input:focus,
-        .popup-body select:focus,
-        .popup-body textarea:focus {
-            --tw-ring-color: #fff !important;
-            border-color: #fff !important;
-        }
+        .popup-body input:focus, .popup-body select:focus, .popup-body textarea:focus { border-color: #fff !important; }
         .popup-body option { background: #1b1b20; color: var(--text-dark); }
         .popup-body ::placeholder { opacity: 1; }
 
         /* Checkbox Override (Tema Hitam/Putih) */
-        .popup-body input[type="checkbox"] {
-            background-color: rgba(255,255,255,0.04) !important;
-            border-color: rgba(255,255,255,0.2) !important;
-            appearance: none;
-            -webkit-appearance: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .popup-body input[type="checkbox"]:checked {
-            background-color: var(--theme-white) !important;
-            border-color: var(--theme-white) !important;
-        }
-        .popup-body input[type="checkbox"]:checked::before {
-            content: '✓';
-            color: #000;
-            font-size: 14px;
-            font-weight: bold;
+        .popup-body input[type="checkbox"] { background-color: rgba(255,255,255,0.04) !important; border-color: rgba(255,255,255,0.2) !important; appearance: none; -webkit-appearance: none; display: inline-flex; align-items: center; justify-content: center; }
+        .popup-body input[type="checkbox"]:checked { background-color: var(--theme-white) !important; border-color: var(--theme-white) !important; }
+        .popup-body input[type="checkbox"]:checked::before { content: '✓'; color: #000; font-size: 14px; font-weight: bold; }
+
+        /* CSS KHUSUS GRID CUSTOMER (3 KOLOM DESKTOP) */
+        @media (min-width: 1024px) {
+            .grid-customer { grid-template-columns: repeat(3, 1fr) !important; }
         }
 
         /* ===== RESPONSIVE ===== */
@@ -762,6 +485,65 @@
             #mainHeader { padding: 0 16px; }
             .content-wrap { padding: 20px 14px 40px; }
         }
+		
+				/* ===== FLOATING MEOW REFRESH (KANAN BAWAH) ===== */
+				.fab-meow {
+						position: fixed;
+						bottom: 24px;
+						right: 20px; /* Dipindah ke kanan bawah */
+						z-index: 9999;
+						width: 48px;
+						height: 48px;
+						background: linear-gradient(135deg, #1b1b20 0%, #131315 100%);
+						border: 1px solid var(--border-theme);
+						border-radius: 50%;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						cursor: pointer;
+						box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+						transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+						color: var(--theme-white); /* Warna icon paw */
+				}
+				.fab-meow:hover {
+						transform: translateY(-4px) scale(1.05);
+						background: linear-gradient(135deg, #232328 0%, #1b1b20 100%);
+						border-color: #fff;
+						box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+				}
+				.fab-meow:active {
+						transform: translateY(0) scale(0.95);
+				}
+
+				/* ===== OVERLAY LOADING 3 TITIK ===== */
+				#refreshLoader {
+						position: fixed; inset: 0; z-index: 10000;
+						background: rgba(10, 10, 11, 0.85); /* Latar belakang hitam transparan */
+						backdrop-filter: blur(8px);
+						display: flex; align-items: center; justify-content: center;
+						opacity: 0; pointer-events: none; 
+						transition: opacity 0.3s ease;
+				}
+				#refreshLoader.show {
+						opacity: 1; pointer-events: auto;
+				}
+				.dot-loader {
+						display: flex; gap: 10px;
+				}
+				.dot {
+						width: 18px; height: 18px; 
+						background: var(--theme-white); 
+						border-radius: 50%; 
+						animation: dotBounce 1.4s infinite ease-in-out both;
+				}
+				/* Mengatur delay agar berdenyut bergantian */
+				.dot:nth-child(1) { animation-delay: -0.32s; }
+				.dot:nth-child(2) { animation-delay: -0.16s; }
+
+				@keyframes dotBounce {
+						0%, 80%, 100% { transform: scale(0); }
+						40% { transform: scale(1); }
+				}
     </style>
 </head>
 <body x-data="appState()" x-init="init()" @reload-summary.window="loadSummary()">
@@ -838,33 +620,65 @@
                 </div>
                 
                 <!-- SUMMARY NOTIFICATION BADGES KOMPAK MONOCHROME / GOLD -->
-                <div class="relative z-10 flex flex-col gap-2.5 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);" x-show="summaryLoaded" x-cloak x-transition>
-                    
-                    <div class="flex items-center justify-between gap-8 text-[11px] font-bold uppercase tracking-wider">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 8px rgba(212,175,55,0.7);"></div>
-                            <span style="color: rgba(255,255,255,0.9);">Kirim Hari Ini</span>
-                        </div>
-                        <span style="color: #fff;" x-text="': ' + countKirimHariIni"></span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between gap-8 text-[11px] font-bold uppercase tracking-wider">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 8px rgba(212,175,55,0.7);"></div>
-                            <span style="color: rgba(255,255,255,0.9);">Belum Bayar</span>
-                        </div>
-                        <span style="color: #fff;" x-text="': ' + countBelumBayar"></span>
-                    </div>
+								<div class="relative z-10 flex flex-col gap-2.5 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg min-w-[260px] min-h-[100px]" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
+										
+										<!-- Animasi Loading (Muncul saat data sedang diambil) -->
+										<template x-if="!summaryLoaded">
+												<div class="flex flex-col gap-3.5 py-0.5 justify-center h-full">
+														<div class="flex justify-between items-center gap-8">
+																<div class="flex items-center gap-3 w-full">
+																		<div class="w-2.5 h-2.5 rounded-full skeleton-box flex-shrink-0"></div>
+																		<div class="h-3 w-24 skeleton-box"></div>
+																</div>
+																<div class="h-3 w-8 skeleton-box"></div>
+														</div>
+														<div class="flex justify-between items-center gap-8">
+																<div class="flex items-center gap-3 w-full">
+																		<div class="w-2.5 h-2.5 rounded-full skeleton-box flex-shrink-0"></div>
+																		<div class="h-3 w-20 skeleton-box"></div>
+																</div>
+																<div class="h-3 w-8 skeleton-box"></div>
+														</div>
+														<div class="flex justify-between items-center gap-8">
+																<div class="flex items-center gap-3 w-full">
+																		<div class="w-2.5 h-2.5 rounded-full skeleton-box flex-shrink-0"></div>
+																		<div class="h-3 w-32 skeleton-box"></div>
+																</div>
+																<div class="h-3 w-8 skeleton-box"></div>
+														</div>
+												</div>
+										</template>
 
-                    <div class="flex items-center justify-between gap-8 text-[11px] font-bold uppercase tracking-wider">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--gold-gradient); box-shadow: 0 0 8px rgba(212,175,55,0.7);"></div>
-                            <span style="color: rgba(255,255,255,0.9);">Sdh Bayar / Blm Kirim</span>
-                        </div>
-                        <span style="color: #fff;" x-text="': ' + countBelumKirim"></span>
-                    </div>
+										<!-- Data Asli (Muncul mulus setelah data selesai dimuat) -->
+										<template x-if="summaryLoaded">
+												<div class="flex flex-col gap-2.5 justify-center h-full" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+														<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider">
+																<div class="flex items-center gap-3">
+																		<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
+																		<span style="color: rgba(255,255,255,0.9);">Kirim Hari Ini</span>
+																</div>
+																<span style="color: #fff;" x-text="': ' + countKirimHariIni"></span>
+														</div>
+														
+														<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider">
+																<div class="flex items-center gap-3">
+																		<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
+																		<span style="color: rgba(255,255,255,0.9);">Belum Bayar</span>
+																</div>
+																<span style="color: #fff;" x-text="': ' + countBelumBayar"></span>
+														</div>
 
-                </div>
+														<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider">
+																<div class="flex items-center gap-3">
+																		<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
+																		<span style="color: rgba(255,255,255,0.9);">Sdh Bayar / Blm Kirim</span>
+																</div>
+																<span style="color: #fff;" x-text="': ' + countBelumKirim"></span>
+														</div>
+												</div>
+										</template>
+
+								</div>
             </div>
 
             <div class="section-title">Menu Utama</div>
@@ -894,17 +708,23 @@
                     </div>
                     <div class="menu-label">Buku Tamu</div>
                 </div>
+                <!-- MENU STOK PRODUK BARU -->
+                <div class="menu-card" :class="{ active: popupPanel === 'stok_produk' }" @click="togglePanel('stok_produk')">
+                    <div class="menu-icon">
+                        <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </div>
+                    <div class="menu-label">Stok Produk</div>
+                </div>
 
                 <div class="menu-card" @click="openExternal('https://yanoshistore.netlify.app/')">
                     <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
                     <div class="menu-label">Webstore</div>
                 </div>
                 <!-- CETAK STIKER WIDE -->
-                <div class="menu-card-wide" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
-                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
-                    <div class="menu-label">Cetak Stiker</div>
-                    <div class="arrow-icon">➔</div>
-                </div>
+								<div class="menu-card" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
+										<div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
+										<div class="menu-label">Cetak Stiker</div>
+								</div>
             </div>
 
             <!-- ================== EMBED PANELS ================== -->
@@ -1010,9 +830,10 @@
                     <svg x-show="popupPanel === 'status_customer'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                     <svg x-show="popupPanel === 'admin_sales'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
                     <svg x-show="popupPanel === 'buku_tamu'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <svg x-show="popupPanel === 'stok_produk'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                 </span>
                 <div>
-                    <div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Status Packing (Ops)' : (popupPanel === 'buku_tamu' ? 'Buku Tamu' : ''))))"></div>
+                    <div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Status Packing (Ops)' : (popupPanel === 'buku_tamu' ? 'Buku Tamu' : (popupPanel === 'stok_produk' ? 'Stok Produk' : '')))))"></div>
                 </div>
             </div>
             <button class="popup-close-btn" @click="closePopup()">
@@ -1021,7 +842,7 @@
         </div>
         <div class="popup-body relative flex flex-col h-full">
 
-            <!-- 1. PENCAPAIAN (TARGET HARIAN) -->
+            <!-- 1. PENCAPAIAN (TARGET HARIAN) - WARNA BAR TETAP DIPERTAHANKAN (EMAS, HIJAU, MERAH) -->
             <div x-show="popupPanel === 'pencapaian'">
                 <div class="th-container">
                     <div class="th-header-card">
@@ -1248,7 +1069,7 @@
 
             </div> 
                         
-            <!-- 3. STATUS CUSTOMER (UPDATE PROGRESS & WARNA DINAMIS) -->
+            <!-- 3. STATUS CUSTOMER (WARNA ASLI KOTAK DIPERTAHANKAN) -->
             <div x-show="popupPanel === 'status_customer'" x-data="statusCustomerApp()" x-init="initStatus()" class="w-full" x-cloak>
                 
                 <div class="w-full">
@@ -1287,7 +1108,6 @@
                                     <option value="cancel">❌ Cancel</option>
                                 </select>
                                 
-                                <!-- FILTER BARU: BERDASARKAN PROGRESS -->
                                 <select x-model="scFilterProgress" class="px-3 py-2 border rounded-lg text-sm outline-none font-extrabold cursor-pointer" style="color:var(--theme-white); border-color:rgba(255,255,255,0.2);">
                                     <option value="">Semua Progress</option>
                                     <option value="greet">Greet</option>
@@ -1309,9 +1129,10 @@
                         <p class="font-bold text-sm" style="color:var(--text-mid);">Membaca seluruh data dari server...</p>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-10" x-show="!statusAppLoading">
+                    <!-- GRID 3 KOLOM DESKTOP -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-customer gap-5 pb-10" x-show="!statusAppLoading">
                         <template x-for="c in filteredStatusData" :key="c.nama + c.sheetName">
-                            <!-- KOTAK CUSTOMER DINAMIS (Warna Asli Dipertahankan) -->
+                            <!-- WARNA KOTAK STATUS DIPERTAHANKAN -->
                             <div :class="getCardColor(c.statusCustomer)" 
                                  class="rounded-xl shadow-sm border p-5 flex flex-col gap-3 relative break-words transition-all hover:shadow-md">
                                 
@@ -1334,7 +1155,6 @@
                                         </template>
                                     </div>
                                     
-                                    <!-- PROGRESS SAAT INI -->
                                     <div class="text-[11px] font-bold mt-3" :style="c.statusCustomer === 'belum bayar' ? 'color: rgba(255,255,255,0.8);' : 'color: rgba(0,0,0,0.7);'">
                                         Progress: <span class="font-extrabold uppercase tracking-wide" :style="c.statusCustomer === 'belum bayar' ? 'color: #fff;' : 'color: #1a1a1a;'" x-text="c.progress"></span>
                                     </div>
@@ -1347,7 +1167,6 @@
                                               :style="c.statusCustomer === 'belum bayar' ? 'color: white;' : 'color: #1a1a1a;'"
                                               x-text="c.tglKirim || '-'"></span>
                                     </div>
-                                    <!-- TOMBOL AKSI -->
                                     <div class="flex items-center gap-1.5">
                                         <button @click="bukaModalUpdate(c)" class="px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm border" 
                                                 :style="c.statusCustomer === 'belum bayar' ? 'background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;' : 'background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1a1a1a;'">
@@ -1409,19 +1228,17 @@
                 </div>
             </div>
 
-            <!-- 4. ADMIN SALES (FITUR PACKING / OPS) -->
+            <!-- 4. ADMIN SALES (FITUR PACKING / OPS) (WARNA KOTAK DIPERTAHANKAN + MODIFIKASI HIJAU/MERAH) -->
             <div x-show="popupPanel === 'admin_sales'" x-data="adminSalesApp()" x-init="initSales()" @tambah-ke-sales.window="tambahDariStatus($event.detail.nama)" class="w-full" x-cloak>
                 
                 <!-- Sticky Header Filter -->
                 <div class="sticky top-0 z-10 pb-4 mb-6 pt-1" style="background: linear-gradient(180deg, #18181c 60%, transparent 100%); border-bottom: 1px solid var(--border-soft);">
                     <div class="flex flex-col gap-4">
-                        <!-- Input Nama Bar -->
                         <div class="flex gap-2">
                             <input type="text" x-model="inputNama" placeholder="Masukkan Nama Pelanggan..." @keydown.enter="tambahData()"
                                    class="flex-1 px-4 py-2 border rounded-lg outline-none transition text-sm font-medium">
                             <button @click="tambahData()" class="text-white font-bold px-6 py-2 rounded-lg transition shadow-sm text-sm" style="background: var(--grad-black);">Submit</button>
                         </div>
-                        <!-- Filter Bar -->
                         <div class="flex flex-wrap sm:flex-nowrap gap-2">
                             <input type="date" x-model="fTgl" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium">
                             <input type="text" x-model="fNama" placeholder="Cari Nama..." class="px-3 py-2 border rounded-lg text-sm outline-none font-medium flex-1">
@@ -1464,7 +1281,6 @@
                     </div>
                 </div>
 
-                <!-- List Item Container (Warna Berubah Sesuai Status) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-10" x-show="!loading">
                     <template x-for="item in filteredData" :key="item.id">
                         <div class="rounded-xl shadow-sm border border-l-4 p-5 flex flex-col gap-3 transition-transform hover:-translate-y-1 hover:shadow-md"
@@ -1472,14 +1288,12 @@
                             
                             <div class="flex justify-between items-start">
                                 <div class="flex items-start gap-3">
-                                    <!-- Kotak Centang -->
                                     <input type="checkbox" :value="item.id" x-model="selectedIds" class="mt-1 w-5 h-5 rounded cursor-pointer transition">
                                     <div>
                                         <h3 class="font-extrabold text-lg break-words" style="color:var(--text-dark);" x-text="item.nama"></h3>
                                         <p class="text-xs font-medium mt-1" style="color:var(--text-mid);">Diinput: <span x-text="formatTanggal(item.tanggal)"></span></p>
                                     </div>
                                 </div>
-                                <!-- Tombol Hapus Satuan -->
                                 <button @click="hapusData(item.id)" class="px-3 py-1.5 text-xs font-bold rounded transition shrink-0 ml-3" style="background:rgba(255,255,255,0.05); color:var(--text-mid);">Hapus</button>
                             </div>
 
@@ -1491,7 +1305,6 @@
                                 Note Admin Packing: <span style="color:var(--text-mid);" x-text="item.note"></span>
                             </div>
                             
-                            <!-- Tombol Kirim jika belum terkirim -->
                             <button x-show="!item.status_kirim" @click="bukaModalKirim(item.id)" class="mt-3 font-bold py-2.5 rounded-lg text-xs transition uppercase tracking-wide shadow-sm" style="background: var(--grad-white); color:#000;">
                                 Tandai Sudah Kirim
                             </button>
@@ -1520,7 +1333,6 @@
             <!-- 5. MENU BARU: BUKU TAMU -->
             <div x-show="popupPanel === 'buku_tamu'" x-data="bukuTamuApp()" x-init="initBT()" class="w-full flex flex-col h-full relative" x-cloak>
                 
-                <!-- Sticky Header: Pilih Sheet -->
                 <div class="sticky top-0 z-10 pb-4 mb-6 pt-1" style="background: linear-gradient(180deg, #18181c 60%, transparent 100%); border-bottom: 1px solid var(--border-soft);">
                     <div class="flex flex-col gap-2">
                         <label class="text-xs font-bold uppercase tracking-wider" style="color:var(--text-mid);">Pilih Sheet Tujuan:</label>
@@ -1538,7 +1350,6 @@
                     <p class="font-bold text-sm" style="color:var(--text-mid);">Mengirim data...</p>
                 </div>
 
-                <!-- List Dynamic Inputs -->
                 <div class="flex-1 pb-32">
                     <template x-for="(item, index) in entries" :key="item.id">
                         <div class="p-5 rounded-xl border mb-5 transition-all shadow-sm" style="background: #1b1b20; border-color: var(--border-soft);">
@@ -1594,11 +1405,86 @@
                     </button>
                 </div>
 
-                <!-- Sticky Footer -->
                 <div class="absolute bottom-0 left-0 right-0 p-4 border-t" style="background: #0e0e10; border-color: var(--border-soft); margin-left:-24px; margin-right:-24px; margin-bottom:-32px;">
                     <button @click="submitData()" :disabled="loading" class="w-full py-3.5 text-white font-extrabold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">
                         <span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
                     </button>
+                </div>
+            </div>
+
+            <!-- 6. MENU BARU: STOK PRODUK -->
+            <div x-show="popupPanel === 'stok_produk'" x-data="stokApp()" x-init="initStok()" class="w-full flex flex-col h-full relative" x-cloak>
+                
+                <div class="sticky top-0 z-10 pb-4 mb-6 pt-1 bg-gradient-to-b from-[#18181c] via-[#18181c] to-transparent border-b border-[rgba(255,255,255,0.08)]" style="background: linear-gradient(180deg, #18181c 70%, transparent 100%);">
+                    <input type="text" x-model="searchQuery" placeholder="Cari produk..." class="w-full px-4 py-2 border rounded-lg outline-none transition text-sm font-medium mb-3" style="background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.14); color:var(--text-dark);">
+                    
+                    <!-- Dropdown Kategori -->
+										<select x-model="activeCat" class="w-full px-4 py-3 rounded-lg outline-none transition text-sm font-extrabold uppercase tracking-wider cursor-pointer mb-3 shadow-sm" style="background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); color:var(--theme-white);">
+												<template x-for="cat in categories" :key="cat">
+														<option :value="cat" x-text="cat" style="background: #1b1b20; color: #fff;"></option>
+												</template>
+										</select>
+										
+                </div>
+
+                <div x-show="loading" class="flex flex-col justify-center items-center py-16">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-white mb-3"></div>
+                    <p class="font-bold text-sm" style="color:var(--text-mid);">Memuat Stok...</p>
+                </div>
+
+								<div class="grid grid-cols-2 gap-4 pb-10" x-show="!loading">
+                    <template x-for="item in filteredProducts" :key="item.nama">
+                        <div class="rounded-xl shadow-sm border p-4 flex flex-col sm:flex-row gap-4 hover:shadow-md transition-all" style="background: #1b1b20; border-color: var(--border-soft);">
+                            
+                            <!-- Image Preview -->
+                            <div class="w-full sm:w-32 h-40 flex-shrink-0 rounded-lg overflow-hidden border flex items-center justify-center" style="background: rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.1);">
+                                <template x-if="item.mainImg">
+                                    <img :src="item.mainImg" class="w-full h-full object-cover">
+                                </template>
+                                <template x-if="!item.mainImg">
+                                    <span class="text-xs font-bold" style="color:var(--text-mid);">No Image</span>
+                                </template>
+                            </div>
+
+                            <!-- Details -->
+                            <div class="flex-1 w-full overflow-hidden">
+                                <h3 class="font-extrabold text-[15px] uppercase tracking-wide mb-3" style="color:var(--theme-white);" x-text="item.nama"></h3>
+                                
+                                <div class="w-full border rounded-lg overflow-hidden" style="border-color: rgba(255,255,255,0.1);">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr style="background: rgba(255,255,255,0.05);">
+                                                <th class="px-3 py-2 text-[9px] uppercase font-bold text-gray-400">Size</th>
+                                                <th class="px-3 py-2 text-[9px] uppercase font-bold text-gray-400 text-center">Stok</th>
+                                                <th class="px-3 py-2 text-[9px] uppercase font-bold text-gray-400 text-right">Harga</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="d in item.details" :key="d.row">
+                                                <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                                                    <td class="px-3 py-2 text-xs font-bold text-white" x-text="d.size"></td>
+                                                    <td class="px-3 py-2 text-center">
+                                                        <template x-if="d.stok <= 0">
+                                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background: rgba(225,29,46,0.2); color: var(--red-light);">KOSONG</span>
+                                                        </template>
+                                                        <template x-if="d.stok > 0">
+                                                            <span class="px-2 py-0.5 rounded text-[11px] font-bold" style="background: rgba(255,255,255,0.1); color: #fff;" x-text="d.stok"></span>
+                                                        </template>
+                                                    </td>
+                                                    <td class="px-3 py-2 text-xs font-bold text-right text-gray-300" x-text="formatRp(d.harga)"></td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </template>
+                    
+                    <div x-show="filteredProducts.length === 0" class="col-span-full text-center py-12">
+                        <div class="text-[15px] font-bold text-gray-400">Produk tidak ditemukan</div>
+                    </div>
                 </div>
             </div>
 
@@ -1647,6 +1533,11 @@ const PESANAN_STATUS_API_URL = 'https://script.google.com/macros/s/AKfycbz3V7oaX
 const P_API_UPLOAD = 'https://script.google.com/macros/s/AKfycbx7w2FXv0ayhq61Le63K7zJsb-znvXq6cjLcLO6shrECvOwN-lF3vBO3-pn1dRCX6dH/exec'; 
 const ADMIN_SALES_API_URL = 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec';
 
+// ==========================================
+// ISI VARIABEL INI DENGAN URL APPS SCRIPT BARU DARI LANGKAH 1
+// ==========================================
+const STOK_API_URL = 'https://script.google.com/macros/s/AKfycbw6TaXv2RsoZMNC8j2PVFBYCzxm1mLvrRpDNr5skYxBtg4GmM1fh4P3q4kWEs-ndSBUaQ/exec'; 
+
 // ─────────────────────────────────────────────────────────────
 //  ALPINE STATE UTAMA
 // ─────────────────────────────────────────────────────────────
@@ -1659,20 +1550,11 @@ function appState() {
         editForm: { username: '', newPassword: '', confirmPassword: '' },
         editError: '', editSaving: false,
         pencapaianLoaded: false,
-
-        // Variabel Notifikasi Banner
-        countKirimHariIni: 0,
-        countBelumBayar: 0,
-        countBelumKirim: 0,
-        summaryLoaded: false,
+        countKirimHariIni: 0, countBelumBayar: 0, countBelumKirim: 0, summaryLoaded: false,
 
         init() {
             const saved = localStorage.getItem('yanoshi_user') || sessionStorage.getItem('yanoshi_user');
-            if (saved) { 
-                this.isLoggedIn = true; 
-                this.currentUser = saved; 
-                this.loadSummary();
-            }
+            if (saved) { this.isLoggedIn = true; this.currentUser = saved; this.loadSummary(); }
             startLiveClock();
         },
 
@@ -1687,16 +1569,13 @@ function appState() {
             try {
                 const response = await fetch(`${PESANAN_STATUS_API_URL}?action=getAllCustomerData`);
                 const result = await response.json();
-                
                 if (Array.isArray(result)) {
                     this.countKirimHariIni = result.filter(c => c.statusCustomer === 'kirim hari ini').length;
                     this.countBelumBayar = result.filter(c => c.statusCustomer === 'belum bayar').length;
                     this.countBelumKirim = result.filter(c => c.statusCustomer === 'belum di kirim').length;
                     this.summaryLoaded = true;
                 }
-            } catch (e) {
-                console.error("Gagal load summary banner", e);
-            }
+            } catch (e) { console.error("Gagal load summary banner"); }
         },
 
         async doLogin() {
@@ -1722,22 +1601,13 @@ function appState() {
         },
 
         togglePanel(name) {
-            this.popupPanel = name;
-            this.popupOpen  = true;
+            this.popupPanel = name; this.popupOpen  = true;
             this.$nextTick(() => {
-                if (name === 'pencapaian' && !this.pencapaianLoaded) {
-                    th_updateDateAndDeadline();
-                    th_fetchData();
-                    this.pencapaianLoaded = true;
-                }
+                if (name === 'pencapaian' && !this.pencapaianLoaded) { th_updateDateAndDeadline(); th_fetchData(); this.pencapaianLoaded = true; }
             });
         },
 
-        closePopup() {
-            this.popupOpen  = false;
-            this.popupPanel = null;
-        },
-
+        closePopup() { this.popupOpen = false; this.popupPanel = null; },
         openExternal(url) { window.open(url, '_blank'); },
 
         openEditUser() {
@@ -1799,14 +1669,11 @@ document.addEventListener('keydown', function(e) {
 const TH_REKAP_KEY = "yanoshi_rekap_v3";
 const TH_LAST_AUTO_KEY = "yanoshi_last_auto";
 const TH_NAMA_BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-
 let th_currentGrandTercapai = 0, th_currentGrandTarget = 0, th_currentItems = [];
 
 function th_updateDateAndDeadline() {
-    const now = new Date();
-    document.getElementById('th_currentDate').innerText = now.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-    const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-    const remaining = lastDay - now.getDate();
+    const now = new Date(); document.getElementById('th_currentDate').innerText = now.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate(); const remaining = lastDay - now.getDate();
     const el = document.getElementById('th_closingCountdown');
     if (remaining > 0) el.innerText = `Tinggal ${remaining} hari menuju closing!`;
     else if (remaining === 0) { el.innerText = 'Hari ini adalah tanggal closing! 🚀'; el.style.backgroundColor='rgba(255,255,255,0.1)'; }
@@ -1814,80 +1681,45 @@ function th_updateDateAndDeadline() {
 }
 
 async function th_fetchData() {
-    const loadingEl = document.getElementById('th_loading');
-    const listEl    = document.getElementById('th_dataList');
-    const errorEl   = document.getElementById('th_error');
+    const loadingEl = document.getElementById('th_loading'); const listEl = document.getElementById('th_dataList'); const errorEl = document.getElementById('th_error');
     try {
-        const res  = await fetch(TH_GAS_URL);
-        const data = await res.json();
-        if (data.status === 'success') {
-            th_renderList(data.items);
-            loadingEl.style.display = 'none';
-            listEl.style.display    = 'block';
-            setTimeout(() => document.querySelectorAll('.th-progress-bar').forEach(b => b.style.width = b.dataset.width), 50);
-        } else { throw new Error(data.message); }
-    } catch(e) {
-        console.error(e);
-        loadingEl.style.display = 'none'; errorEl.style.display   = 'block';
-    }
+        const res  = await fetch(TH_GAS_URL); const data = await res.json();
+        if (data.status === 'success') { th_renderList(data.items); loadingEl.style.display = 'none'; listEl.style.display = 'block'; setTimeout(() => document.querySelectorAll('.th-progress-bar').forEach(b => b.style.width = b.dataset.width), 50); } 
+        else { throw new Error(data.message); }
+    } catch(e) { console.error(e); loadingEl.style.display = 'none'; errorEl.style.display = 'block'; }
 }
 
 function th_renderList(items) {
-    const listEl = document.getElementById('th_dataList');
-    listEl.innerHTML = ''; th_currentItems = [];
-    let gTarget = 0, gTercapai = 0;
-
+    const listEl = document.getElementById('th_dataList'); listEl.innerHTML = ''; th_currentItems = []; let gTarget = 0, gTercapai = 0;
     items.forEach(item => {
-        const target = parseInt(item.target) || 0;
-        const kekurangan = Math.max(parseInt(item.val) || 0, 0);
-        const rawKekurangan = parseInt(item.val) || 0;
-        const terjualAsli   = target - rawKekurangan;
-        const pct        = target > 0 ? Math.min((terjualAsli/target)*100, 100) : 0;
-        const kekuranganTampil = terjualAsli >= target ? 0 : kekurangan;
-
+        const target = parseInt(item.target) || 0; const kekurangan = Math.max(parseInt(item.val) || 0, 0); const rawKekurangan = parseInt(item.val) || 0; const terjualAsli = target - rawKekurangan;
+        const pct = target > 0 ? Math.min((terjualAsli/target)*100, 100) : 0; const kekuranganTampil = terjualAsli >= target ? 0 : kekurangan;
         gTarget += target; gTercapai += terjualAsli;
         th_currentItems.push({ label: th_capFirst(item.label), target, tercapai: terjualAsli, kekurangan: kekuranganTampil, persentase: Math.round(pct) });
 
-        // WARNA PROGRESS BAR TETAP DIPERTAHANKAN
-        let barColor = 'linear-gradient(90deg,#D4AF37,#9C7A1D)';
-        let stClass  = 'th-status-warning', stText = 'On Progress', percCls = 'th-perc-warning';
-        if (pct >= 50 || kekuranganTampil === 0) {
-            barColor = 'linear-gradient(90deg,#10b981,#059669)'; stClass  = 'th-status-success';
-            stText   = (pct >= 100 || kekuranganTampil === 0) ? 'Tercapai ✓' : 'Progress Baik'; percCls  = 'th-perc-success';
-        } else if (pct < 30) {
-            barColor = 'linear-gradient(90deg,#FF4550,#B3001B)'; stClass  = 'th-status-danger'; stText = 'Perlu Dikejar'; percCls = 'th-perc-danger';
-        }
+        let barColor = 'linear-gradient(90deg,#D4AF37,#9C7A1D)'; let stClass = 'th-status-warning', stText = 'On Progress', percCls = 'th-perc-warning';
+        if (pct >= 50 || kekuranganTampil === 0) { barColor = 'linear-gradient(90deg,#10b981,#059669)'; stClass = 'th-status-success'; stText = (pct >= 100 || kekuranganTampil === 0) ? 'Tercapai ✓' : 'Progress Baik'; percCls = 'th-perc-success'; } 
+        else if (pct < 30) { barColor = 'linear-gradient(90deg,#FF4550,#B3001B)'; stClass = 'th-status-danger'; stText = 'Perlu Dikejar'; percCls = 'th-perc-danger'; }
 
         const terjualLabel = terjualAsli > target ? `${terjualAsli} <span style="font-size:10px;color:#10b981;font-weight:700;">+${terjualAsli-target}</span>` : `${terjualAsli}`;
         const li = document.createElement('li'); li.className = 'th-item-card';
         li.innerHTML = `
-            <div class="th-item-header">
-                <div class="th-title-wrap"><span class="th-item-title">${th_capFirst(item.label)}</span><span class="th-status-badge ${stClass}">${stText}</span></div>
-                <span class="th-item-percentage ${percCls}">${Math.round(pct)}%</span>
-            </div>
+            <div class="th-item-header"><div class="th-title-wrap"><span class="th-item-title">${th_capFirst(item.label)}</span><span class="th-status-badge ${stClass}">${stText}</span></div><span class="th-item-percentage ${percCls}">${Math.round(pct)}%</span></div>
             <div class="th-progress-container"><div class="th-progress-bar" data-width="${Math.min(pct,100)}%" style="background:${barColor};"></div></div>
-            <div class="th-stats-row">
-                <span>Target:<span class="th-stat-val">${target}</span></span>
-                <span>Terjual:<span class="th-stat-val th-val-green">${terjualLabel}</span></span>
-                <span>Kurang:<span class="th-stat-val ${kekuranganTampil>0?'th-val-red':''}">${kekuranganTampil}</span></span>
-            </div>`;
+            <div class="th-stats-row"><span>Target:<span class="th-stat-val">${target}</span></span><span>Terjual:<span class="th-stat-val th-val-green">${terjualLabel}</span></span><span>Kurang:<span class="th-stat-val ${kekuranganTampil>0?'th-val-red':''}">${kekuranganTampil}</span></span></div>`;
         listEl.appendChild(li);
     });
 
     th_currentGrandTercapai = gTercapai; th_currentGrandTarget = gTarget;
     const gPctDisplay = gTarget > 0 ? Math.round((gTercapai/gTarget)*100) : 0;
-    const badge = document.getElementById('th_grandPercentage');
-    badge.innerText = gPctDisplay + '%';
+    const badge = document.getElementById('th_grandPercentage'); badge.innerText = gPctDisplay + '%';
     if (gPctDisplay >= 100){ badge.style.backgroundColor='rgba(16,185,129,.15)'; badge.style.borderColor='rgba(16,185,129,.4)'; badge.style.color='#10b981'; }
     else if (gPctDisplay >= 50) { badge.style.backgroundColor='rgba(16,185,129,.1)'; badge.style.borderColor='rgba(16,185,129,.2)'; }
-    else if (gPctDisplay  < 30) { badge.style.backgroundColor='rgba(225,29,46,.15)';  badge.style.borderColor='rgba(225,29,46,.3)'; }
+    else if (gPctDisplay  < 30) { badge.style.backgroundColor='rgba(225,29,46,.15)'; badge.style.borderColor='rgba(225,29,46,.3)'; }
     else { badge.style.backgroundColor='rgba(255,255,255,.05)'; badge.style.borderColor='rgba(255,255,255,.1)'; }
 
-    document.getElementById('th_grandTercapai').innerText = gTercapai;
-    document.getElementById('th_grandTarget').innerText   = gTarget;
-    document.getElementById('th_totalSummary').style.display = 'flex';
-    document.getElementById('th_rekapSection').style.display = 'block';
-
+    document.getElementById('th_grandTercapai').innerText = gTercapai; document.getElementById('th_grandTarget').innerText = gTarget;
+    document.getElementById('th_totalSummary').style.display = 'flex'; document.getElementById('th_rekapSection').style.display = 'block';
     th_initRekapFilter(); th_renderListRekap(); th_checkAutoRekap();
 }
 
@@ -1904,252 +1736,90 @@ function th_saveRekapData(arr){ localStorage.setItem(TH_REKAP_KEY, JSON.stringif
 
 function th_simpanRekapBulanIni(isAuto = false) {
     if (th_currentGrandTarget === 0) { th_tampilNotif('⚠️ Data belum tersedia, muat ulang halaman.','warn'); return; }
-    const now = new Date(); const bulanIdx = now.getMonth(); const tahun = now.getFullYear();
-    const bulanKey = `${tahun}-${String(bulanIdx+1).padStart(2,'0')}`;
+    const now = new Date(); const bulanIdx = now.getMonth(); const tahun = now.getFullYear(); const bulanKey = `${tahun}-${String(bulanIdx+1).padStart(2,'0')}`;
     const pct = th_currentGrandTarget > 0 ? Math.round((th_currentGrandTercapai/th_currentGrandTarget)*100) : 0;
     const tanggal = now.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
     const entry = { bulanKey, bulanNama: TH_NAMA_BULAN[bulanIdx], tahun, tercapai: th_currentGrandTercapai, target: th_currentGrandTarget, persentase: pct, tanggalSimpan: tanggal, isAuto, detail: th_currentItems.map(i => ({...i})) };
 
-    let rekap = th_getRekapData();
-    const idx = rekap.findIndex(r => r.bulanKey === bulanKey);
+    let rekap = th_getRekapData(); const idx = rekap.findIndex(r => r.bulanKey === bulanKey);
     if (idx >= 0) { rekap[idx] = entry; if (!isAuto) th_tampilNotif(`✅ Rekap ${TH_NAMA_BULAN[bulanIdx]} ${tahun} diperbarui!`, 'ok'); } 
     else { rekap.push(entry); if (!isAuto) th_tampilNotif(`✅ Rekap ${TH_NAMA_BULAN[bulanIdx]} ${tahun} disimpan!`, 'ok'); }
 
-    rekap.sort((a,b) => b.bulanKey.localeCompare(a.bulanKey));
-    th_saveRekapData(rekap); th_initRekapFilter(); th_renderListRekap();
+    rekap.sort((a,b) => b.bulanKey.localeCompare(a.bulanKey)); th_saveRekapData(rekap); th_initRekapFilter(); th_renderListRekap();
     if (isAuto) th_showAutoToast(`🤖 Auto-rekap ${TH_NAMA_BULAN[bulanIdx]} ${tahun} tersimpan!`);
 }
 
-function th_hapusRekap(bulanKey) {
-    if (!confirm('Yakin hapus rekap bulan ini?')) return;
-    th_saveRekapData(th_getRekapData().filter(r => r.bulanKey !== bulanKey)); th_initRekapFilter(); th_renderListRekap();
-}
-function th_hapusSemuaRekap() {
-    if (!confirm('Yakin hapus SEMUA data rekap?')) return;
-    th_saveRekapData([]); th_initRekapFilter(); th_renderListRekap(); th_tampilNotif('🗑 Semua data rekap dihapus.', 'warn');
-}
-
-function th_initRekapFilter() {
-    const years = [...new Set(th_getRekapData().map(r => r.tahun))].sort((a,b)=>b-a);
-    const sel = document.getElementById('th_filterTahun'); const cur = sel.value;
-    sel.innerHTML = '<option value="semua">Semua Tahun</option>';
-    years.forEach(y => {
-        const o = document.createElement('option'); o.value = y; o.textContent = y;
-        if (String(y) === cur) o.selected = true; sel.appendChild(o);
-    });
-}
-
+function th_hapusRekap(bulanKey) { if (!confirm('Yakin hapus rekap bulan ini?')) return; th_saveRekapData(th_getRekapData().filter(r => r.bulanKey !== bulanKey)); th_initRekapFilter(); th_renderListRekap(); }
+function th_hapusSemuaRekap() { if (!confirm('Yakin hapus SEMUA data rekap?')) return; th_saveRekapData([]); th_initRekapFilter(); th_renderListRekap(); th_tampilNotif('🗑 Semua data rekap dihapus.', 'warn'); }
+function th_initRekapFilter() { const years = [...new Set(th_getRekapData().map(r => r.tahun))].sort((a,b)=>b-a); const sel = document.getElementById('th_filterTahun'); const cur = sel.value; sel.innerHTML = '<option value="semua">Semua Tahun</option>'; years.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; if (String(y) === cur) o.selected = true; sel.appendChild(o); }); }
 function th_renderListRekap() {
-    const rekap = th_getRekapData(); const filter = document.getElementById('th_filterTahun').value;
-    const filtered = filter === 'semua' ? rekap : rekap.filter(r => String(r.tahun)===filter);
-    const cont = document.getElementById('th_rekapListContainer');
-
-    if (!filtered.length) {
-        cont.innerHTML = `<div class="th-rekap-empty"><div class="th-empty-icon">📋</div><p>Belum ada data rekap.<br>Klik <strong>"Simpan Rekap Bulan Ini"</strong> atau tunggu auto-rekap di hari terakhir bulan.</p></div>`; return;
-    }
-
-    const sumTercapai = filtered.reduce((s,r)=>s+r.tercapai,0); const sumTarget = filtered.reduce((s,r)=>s+r.target,0);
-    const sumPct = sumTarget>0 ? Math.round((sumTercapai/sumTarget)*100) : 0;
-
+    const rekap = th_getRekapData(); const filter = document.getElementById('th_filterTahun').value; const filtered = filter === 'semua' ? rekap : rekap.filter(r => String(r.tahun)===filter); const cont = document.getElementById('th_rekapListContainer');
+    if (!filtered.length) { cont.innerHTML = `<div class="th-rekap-empty"><div class="th-empty-icon">📋</div><p>Belum ada data rekap.<br>Klik <strong>"Simpan Rekap Bulan Ini"</strong> atau tunggu auto-rekap di hari terakhir bulan.</p></div>`; return; }
+    const sumTercapai = filtered.reduce((s,r)=>s+r.tercapai,0); const sumTarget = filtered.reduce((s,r)=>s+r.target,0); const sumPct = sumTarget>0 ? Math.round((sumTercapai/sumTarget)*100) : 0;
     let html = filtered.map(r => {
-        const bc = th_bCls(r.persentase); const detailId = `th_detail-${r.bulanKey}`;
-        const autoTag = r.isAuto ? '<span class="th-auto-tag">🤖 Auto</span>' : '';
-        let prodRows = '';
+        const bc = th_bCls(r.persentase); const detailId = `th_detail-${r.bulanKey}`; const autoTag = r.isAuto ? '<span class="th-auto-tag">🤖 Auto</span>' : ''; let prodRows = '';
         if (r.detail && r.detail.length) {
             prodRows = r.detail.map(d => {
                 const col = d.persentase>=50 ? '#10b981' : d.persentase<30 ? '#FF4550' : '#D4AF37';
                 return `<tr><td style="font-weight:600">${d.label}</td><td>${d.target}</td><td class="th-prod-terjual">${d.tercapai > d.target ? `${d.tercapai} <span style="font-size:10px;color:#10b981;font-weight:700;">+${d.tercapai-d.target}</span>` : d.tercapai}</td><td class="${d.kekurangan>0?'th-prod-kurang':'th-val-green'}">${d.kekurangan}</td><td><div style="display:flex;align-items:center;justify-content:flex-end;gap:4px;"><div class="th-mini-bar-wrap"><div class="th-mini-bar" style="width:${Math.min(d.persentase,100)}%;background:${col}"></div></div><span style="font-weight:800;color:${col};font-size:12px;min-width:35px;text-align:right;">${d.persentase}%</span></div></td></tr>`;
             }).join('');
         } else { prodRows = `<tr><td colspan="5" style="text-align:center;color:var(--th-text-muted);padding:12px;">Tidak ada detail produk</td></tr>`; }
-
-        return `<div class="th-rekap-month-card">
-            <div class="th-rekap-month-header" id="th_hdr-${r.bulanKey}" onclick="th_toggleDetail('${r.bulanKey}')">
-                <div style="min-width:0"><div class="th-rekap-month-title">${r.bulanNama} ${r.tahun} ${autoTag}</div><div class="th-rekap-month-meta">Disimpan: ${r.tanggalSimpan} &nbsp;·&nbsp; <span style="color:#10b981;font-weight:700">${r.tercapai.toLocaleString('id-ID')} terjual</span> / ${r.target.toLocaleString('id-ID')} target</div></div>
-                <div class="th-rekap-month-right"><span class="th-rekap-perc-badge ${bc}">${r.persentase}%</span><span class="th-chevron" id="th_chv-${r.bulanKey}">▾</span><button class="th-btn-del-month" onclick="event.stopPropagation();th_hapusRekap('${r.bulanKey}')" title="Hapus">✕</button></div>
-            </div>
-            <div class="th-rekap-detail" id="${detailId}">
-                <div class="th-rekap-grand-row"><div><div class="th-rg-label">Total Terjual</div><div class="th-rg-val">${r.tercapai.toLocaleString('id-ID')} <span class="th-rg-pcs">pcs</span></div></div><div><div class="th-rg-label">Target Bulan</div><div class="th-rg-val">${r.target.toLocaleString('id-ID')} <span class="th-rg-pcs">pcs</span></div></div><div><span class="th-rekap-perc-badge" style="background:rgba(255,255,255,.1);color:var(--text-dark);font-size:20px;padding:6px 14px;border:1px solid rgba(255,255,255,0.2)">${r.persentase}%</span></div></div>
-                <div class="th-section-label">Detail Per Produk</div>
-                <div class="th-prod-table-wrap"><table class="th-prod-table"><thead><tr><th>Produk</th><th style="text-align:right">Target</th><th style="text-align:right">Terjual</th><th style="text-align:right">Kurang</th><th style="text-align:right">Capaian</th></tr></thead><tbody>${prodRows}</tbody></table></div>
-            </div></div>`;
+        return `<div class="th-rekap-month-card"><div class="th-rekap-month-header" id="th_hdr-${r.bulanKey}" onclick="th_toggleDetail('${r.bulanKey}')"><div style="min-width:0"><div class="th-rekap-month-title">${r.bulanNama} ${r.tahun} ${autoTag}</div><div class="th-rekap-month-meta">Disimpan: ${r.tanggalSimpan} &nbsp;·&nbsp; <span style="color:#10b981;font-weight:700">${r.tercapai.toLocaleString('id-ID')} terjual</span> / ${r.target.toLocaleString('id-ID')} target</div></div><div class="th-rekap-month-right"><span class="th-rekap-perc-badge ${bc}">${r.persentase}%</span><span class="th-chevron" id="th_chv-${r.bulanKey}">▾</span><button class="th-btn-del-month" onclick="event.stopPropagation();th_hapusRekap('${r.bulanKey}')" title="Hapus">✕</button></div></div><div class="th-rekap-detail" id="${detailId}"><div class="th-rekap-grand-row"><div><div class="th-rg-label">Total Terjual</div><div class="th-rg-val">${r.tercapai.toLocaleString('id-ID')} <span class="th-rg-pcs">pcs</span></div></div><div><div class="th-rg-label">Target Bulan</div><div class="th-rg-val">${r.target.toLocaleString('id-ID')} <span class="th-rg-pcs">pcs</span></div></div><div><span class="th-rekap-perc-badge" style="background:rgba(255,255,255,.1);color:var(--text-dark);font-size:20px;padding:6px 14px;border:1px solid rgba(255,255,255,0.2)">${r.persentase}%</span></div></div><div class="th-section-label">Detail Per Produk</div><div class="th-prod-table-wrap"><table class="th-prod-table"><thead><tr><th>Produk</th><th style="text-align:right">Target</th><th style="text-align:right">Terjual</th><th style="text-align:right">Kurang</th><th style="text-align:right">Capaian</th></tr></thead><tbody>${prodRows}</tbody></table></div></div></div>`;
     }).join('');
-
     html += `<div class="th-rekap-grand-summary"><div><div class="th-rgs-label">📌 Total Keseluruhan (${filtered.length} bulan)</div><div class="th-rgs-val">${sumTercapai.toLocaleString('id-ID')} pcs</div><div class="th-rgs-sub">dari target ${sumTarget.toLocaleString('id-ID')} pcs</div></div><span class="th-rekap-perc-badge" style="background:rgba(255,255,255,.1);color:var(--text-dark);font-size:22px;padding:8px 16px;border:1px solid rgba(255,255,255,.2);">${sumPct}%</span></div>`;
     cont.innerHTML = html;
 }
-
-function th_toggleDetail(bulanKey) {
-    const det = document.getElementById(`th_detail-${bulanKey}`); const hdr = document.getElementById(`th_hdr-${bulanKey}`); const chv = document.getElementById(`th_chv-${bulanKey}`);
-    const open = det.classList.toggle('open'); hdr.classList.toggle('detail-open', open);
-    if (chv) { chv.textContent = open ? '▴' : '▾'; chv.classList.toggle('open', open); }
-}
-
-function th_toggleRekap() {
-    const body = document.getElementById('th_rekapBody'); const label = document.getElementById('th_rekapToggleLabel');
-    const open = body.classList.toggle('open'); label.textContent = open ? 'Tutup ▴' : 'Lihat ▾';
-}
-
-function th_tampilNotif(pesan, type) {
-    const el = document.getElementById('th_rekapNotif'); el.textContent = pesan; el.style.display = 'block';
-    el.style.background = type==='ok' ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.1)'; el.style.color = type==='ok' ? '#10b981' : '#fff'; el.style.border = type==='ok' ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(255,255,255,0.3)';
-    clearTimeout(el._t); el._t = setTimeout(() => el.style.display='none', 3500);
-}
-function th_showAutoToast(msg) {
-    const t = document.createElement('div'); t.className = 'th-auto-rekap-toast'; t.textContent = msg; document.body.appendChild(t);
-    setTimeout(() => { t.classList.add('hide'); setTimeout(() => t.remove(), 500); }, 4500);
-}
+function th_toggleDetail(bulanKey) { const det = document.getElementById(`th_detail-${bulanKey}`); const hdr = document.getElementById(`th_hdr-${bulanKey}`); const chv = document.getElementById(`th_chv-${bulanKey}`); const open = det.classList.toggle('open'); hdr.classList.toggle('detail-open', open); if (chv) { chv.textContent = open ? '▴' : '▾'; chv.classList.toggle('open', open); } }
+function th_toggleRekap() { const body = document.getElementById('th_rekapBody'); const label = document.getElementById('th_rekapToggleLabel'); const open = body.classList.toggle('open'); label.textContent = open ? 'Tutup ▴' : 'Lihat ▾'; }
+function th_tampilNotif(pesan, type) { const el = document.getElementById('th_rekapNotif'); el.textContent = pesan; el.style.display = 'block'; el.style.background = type==='ok' ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.1)'; el.style.color = type==='ok' ? '#10b981' : '#fff'; el.style.border = type==='ok' ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(255,255,255,0.3)'; clearTimeout(el._t); el._t = setTimeout(() => el.style.display='none', 3500); }
+function th_showAutoToast(msg) { const t = document.createElement('div'); t.className = 'th-auto-rekap-toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => { t.classList.add('hide'); setTimeout(() => t.remove(), 500); }, 4500); }
 function th_bCls(pct) { return pct>=50 ? 'th-rekap-perc-green' : pct<30 ? 'th-rekap-perc-red' : 'th-rekap-perc-orange'; }
 function th_capFirst(s) { if (!s) return ''; return s.split(' ').map(w => w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
 
 // ─────────────────────────────────────────────────────────────
-//  PESANAN APP LOGIC (Alpine Embedded)
+//  PESANAN APP LOGIC
 // ─────────────────────────────────────────────────────────────
 function pesananApp() {
     return {
-        apiUrl:       PESANAN_STATUS_API_URL,
-        uploadUrl:    P_API_UPLOAD,
-        loading:      true,
-        allData:      [],
-        searchQuery:  '',
-        statusFilter: '',
-        statusOptions: ['menunggu', 'DRAFT', 'Verifying', 'Sudah Bayar', 'Sudah Kirim', 'SENT', 'READY'],
-        pModalOpen:   false,
-        pModalTitle:  '',
-        pModalValue:  '',
-        activeRow:    null,
-        activeCol:    null,
-
-        initPesanan() {
-            this.fetchData();
-        },
-
+        apiUrl:       PESANAN_STATUS_API_URL, uploadUrl: P_API_UPLOAD, loading: true, allData: [], searchQuery: '', statusFilter: '', statusOptions: ['menunggu', 'DRAFT', 'Verifying', 'Sudah Bayar', 'Sudah Kirim', 'SENT', 'READY'], pModalOpen: false, pModalTitle: '', pModalValue: '', activeRow: null, activeCol: null,
+        initPesanan() { this.fetchData(); },
         async fetchData() {
             this.loading = true;
             try {
-                const response = await fetch(`${this.apiUrl}?action=read`);
-                let data = await response.json();
-                
-                data.sort((a, b) => {
-                    const dA = new Date(a.tglOrder).getTime();
-                    const dB = new Date(b.tglOrder).getTime();
-                    if (isNaN(dA)) return 1; if (isNaN(dB)) return -1;
-                    return dB - dA;
-                });
-
-                this.allData = data.map(item => ({ 
-                    ...item, 
-                    showItems: false, 
-                    _invoiceFile: null, 
-                    _uploadingInvoice: false 
-                }));
-            } catch (e) {
-                console.error('Pesanan fetch error:', e);
-                showToast('Gagal memuat data pesanan!', 'error');
-            }
+                const response = await fetch(`${this.apiUrl}?action=read`); let data = await response.json();
+                data.sort((a, b) => { const dA = new Date(a.tglOrder).getTime(); const dB = new Date(b.tglOrder).getTime(); if (isNaN(dA)) return 1; if (isNaN(dB)) return -1; return dB - dA; });
+                this.allData = data.map(item => ({ ...item, showItems: false, _invoiceFile: null, _uploadingInvoice: false }));
+            } catch (e) { showToast('Gagal memuat data pesanan!', 'error'); }
             this.loading = false;
         },
-
         get filteredData() {
-            return this.allData.filter(i => {
-                const matchSearch = i.customer.toLowerCase().includes(this.searchQuery.toLowerCase());
-                const matchStatus = this.statusFilter === '' || i.status === this.statusFilter;
-                return matchSearch && matchStatus;
-            });
+            return this.allData.filter(i => { const matchSearch = i.customer.toLowerCase().includes(this.searchQuery.toLowerCase()); const matchStatus = this.statusFilter === '' || i.status === this.statusFilter; return matchSearch && matchStatus; });
         },
-
-        pHandleFileSelect(event, item, type) {
-            const file = event.target.files[0]; if (!file) return;
-            this.pAssignFile(item, file);
-        },
-
-        pHandleDrop(event, item, type) {
-            const file = event.dataTransfer.files[0]; if (!file) return;
-            if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
-                showToast('Format tidak didukung. Gunakan PDF atau Gambar.', 'error'); return;
-            }
-            this.pAssignFile(item, file);
-        },
-
-        pAssignFile(item, file) {
-            const idx = this.allData.findIndex(i => i.row === item.row);
-            if (idx === -1) return;
-            this.allData[idx]._invoiceFile = file;
-        },
-
+        pHandleFileSelect(event, item, type) { const file = event.target.files[0]; if (!file) return; this.pAssignFile(item, file); },
+        pHandleDrop(event, item, type) { const file = event.dataTransfer.files[0]; if (!file) return; if (!file.type.startsWith('image/') && file.type !== 'application/pdf') { showToast('Format tidak didukung. Gunakan PDF atau Gambar.', 'error'); return; } this.pAssignFile(item, file); },
+        pAssignFile(item, file) { const idx = this.allData.findIndex(i => i.row === item.row); if (idx === -1) return; this.allData[idx]._invoiceFile = file; },
         async pUploadFile(item, type) {
-            const idx  = this.allData.findIndex(i => i.row === item.row);
-            const file = item._invoiceFile;
-            
+            const idx  = this.allData.findIndex(i => i.row === item.row); const file = item._invoiceFile;
             if (!file) { showToast('Pilih file terlebih dahulu!', 'error'); return; }
             this.allData[idx]._uploadingInvoice = true;
-            
             try {
-                const base64  = await pFileToBase64(file);
-                const payload = { action: 'uploadInvoice', row: item.row, fileName: file.name, fileData: base64, mimeType: file.type };
-                const response = await fetch(this.uploadUrl, { method: 'POST', body: JSON.stringify(payload) });
-                const result   = await response.json();
-                
-                if (result.success) {
-                    showToast('Invoice berhasil diupload ke Drive! ✅', 'success');
-                    this.allData[idx]._invoiceFile = null;
-                    await this.fetchData();
-                } else { throw new Error(result.message || 'Upload gagal'); }
-            } catch (err) { 
-                showToast('Upload gagal: ' + err.message, 'error'); 
-            } finally { 
-                this.allData[idx]._uploadingInvoice = false; 
-            }
+                const base64  = await pFileToBase64(file); const payload = { action: 'uploadInvoice', row: item.row, fileName: file.name, fileData: base64, mimeType: file.type };
+                const response = await fetch(this.uploadUrl, { method: 'POST', body: JSON.stringify(payload) }); const result   = await response.json();
+                if (result.success) { showToast('Invoice berhasil diupload! ✅', 'success'); this.allData[idx]._invoiceFile = null; await this.fetchData(); } else { throw new Error(result.message || 'Upload gagal'); }
+            } catch (err) { showToast('Upload gagal: ' + err.message, 'error'); } finally { this.allData[idx]._uploadingInvoice = false; }
         },
-
-        async pUpdateStatus(row, val) {
-            await fetch(`${this.apiUrl}?action=update&row=${row}&col=8&val=${encodeURIComponent(val)}`);
-            this.fetchData();
-        },
-
-        pOpenModal(row, col, title, currentValue = '') {
-            this.activeRow = row; this.activeCol = col; this.pModalTitle = title; this.pModalValue = currentValue; this.pModalOpen = true;
-        },
-
-        async pSubmitModal() {
-            this.pModalOpen = false; this.loading = true;
-            await fetch(`${this.apiUrl}?action=update&row=${this.activeRow}&col=${this.activeCol}&val=${encodeURIComponent(this.pModalValue)}`);
-            this.fetchData();
-        },
-
-        async pDeleteData(row, customerName) {
-            if (!confirm(`PERINGATAN!\nApakah Anda yakin ingin menghapus data milik: ${customerName}?\n\nData akan hilang permanen dari Spreadsheet.`)) return;
-            this.loading = true;
-            try {
-                await fetch(`${this.apiUrl}?action=delete&row=${row}`);
-                await this.fetchData();
-                showToast(`Data ${customerName} berhasil dihapus.`, 'info');
-            } catch (e) { showToast('Terjadi kesalahan saat menghapus data.', 'error'); }
-        },
-
+        async pUpdateStatus(row, val) { await fetch(`${this.apiUrl}?action=update&row=${row}&col=8&val=${encodeURIComponent(val)}`); this.fetchData(); },
+        pOpenModal(row, col, title, currentValue = '') { this.activeRow = row; this.activeCol = col; this.pModalTitle = title; this.pModalValue = currentValue; this.pModalOpen = true; },
+        async pSubmitModal() { this.pModalOpen = false; this.loading = true; await fetch(`${this.apiUrl}?action=update&row=${this.activeRow}&col=${this.activeCol}&val=${encodeURIComponent(this.pModalValue)}`); this.fetchData(); },
+        async pDeleteData(row, customerName) { if (!confirm(`PERINGATAN!\nApakah Anda yakin menghapus data milik: ${customerName}?`)) return; this.loading = true; try { await fetch(`${this.apiUrl}?action=delete&row=${row}`); await this.fetchData(); showToast(`Data dihapus.`, 'info'); } catch (e) { showToast('Kesalahan hapus data.', 'error'); } },
         pCopyFormat(i) {
             const text = `*FORMAT PEMESANAN* :\nNama Customer : ${i.customer}\nNo Whatsapp : ${i.whatsapp}\n\n*INFO PENGIRIMAN* :\nNama Penerima : ${i.penerima}\nNomor Penerima : ${i.noPenerima}\nAlamat Pengiriman : ${i.alamat}\nRequest Kirim Tanggal : ${this.pFormatDate(i.tglKirim)}\n\nList Pesanan :\n${i.listPesanan}`;
             navigator.clipboard.writeText(text); showToast('Format Order disalin! 📋', 'info');
         },
-
-        pFormatDate(dateStr) {
-            if (!dateStr) return '-';
-            return new Date(dateStr).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
-        },
-
-        pFormatRupiah(angka) {
-            if (!angka || isNaN(angka)) return angka;
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-        },
-
+        pFormatDate(dateStr) { if (!dateStr) return '-'; return new Date(dateStr).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }); },
+        pFormatRupiah(angka) { if (!angka || isNaN(angka)) return angka; return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); },
         pGetStatusColor(status) {
-            const c = { 
-                'menunggu': 'bg-gray-200 text-gray-700', 
-                'DRAFT': 'bg-orange-100 text-orange-700', 
-                'Verifying': 'bg-blue-100 text-blue-700', 
-                'Sudah Bayar': 'bg-green-100 text-green-700', 
-                'READY': 'bg-yellow-400 text-black', 
-                'SENT': 'bg-purple-100 text-purple-700' 
-            };
+            const c = { 'menunggu': 'bg-gray-200 text-gray-700', 'DRAFT': 'bg-orange-100 text-orange-700', 'Verifying': 'bg-blue-100 text-blue-700', 'Sudah Bayar': 'bg-green-100 text-green-700', 'READY': 'bg-yellow-400 text-black', 'SENT': 'bg-purple-100 text-purple-700' };
             return c[status] || 'bg-red-100 text-red-700';
         }
     };
@@ -2160,43 +1830,17 @@ function pesananApp() {
 // ─────────────────────────────────────────────────────────────
 function statusCustomerApp() {
     return {
-        apiUrl: PESANAN_STATUS_API_URL, 
-        
-        statusAppLoading: false, 
-        availableSheets: [], statusData: [],
-        scSearchNama: '', scSearchTanggal: '', scFilterDari: '', scFilterSheet: '', scFilterStatus: '',
-        scFilterProgress: '', 
-
-        modalSiapkanOpen: false,
-        namaYangDisiapkan: '',
-
-        modalUpdateOpen: false,
-        activeCustomer: null,
-        selectedProgress: '',
+        apiUrl: PESANAN_STATUS_API_URL, statusAppLoading: false, availableSheets: [], statusData: [],
+        scSearchNama: '', scSearchTanggal: '', scFilterDari: '', scFilterSheet: '', scFilterStatus: '', scFilterProgress: '', 
+        modalSiapkanOpen: false, namaYangDisiapkan: '', modalUpdateOpen: false, activeCustomer: null, selectedProgress: '',
 
         async initStatus() {
             this.statusAppLoading = true;
             try {
-                const response = await fetch(`${this.apiUrl}?action=getAllCustomerData`);
-                const result = await response.json();
-                
-                if (Array.isArray(result)) {
-                    this.statusData = result;
-                } else {
-                    console.error("Data error / bukan array:", result);
-                    this.statusData = [];
-                    if (result.status === "connected") {
-                        alert("ERROR SISTEM: Anda belum melakukan 'New Deployment' di Google Apps Script!");
-                    }
-                }
-                
-                const sheets = this.statusData.map(item => item.sheetName);
-                this.availableSheets = [...new Set(sheets)];
-            } catch (e) {
-                console.error("Gagal memuat data keseluruhan", e);
-                this.statusData = [];
-                showToast("Gagal memuat data dari Spreadsheet.", "error"); 
-            }
+                const response = await fetch(`${this.apiUrl}?action=getAllCustomerData`); const result = await response.json();
+                if (Array.isArray(result)) { this.statusData = result; } else { this.statusData = []; if (result.status === "connected") { alert("ERROR SISTEM: Anda belum melakukan 'New Deployment' di Google Apps Script!"); } }
+                const sheets = this.statusData.map(item => item.sheetName); this.availableSheets = [...new Set(sheets)];
+            } catch (e) { this.statusData = []; showToast("Gagal memuat data.", "error"); }
             this.statusAppLoading = false;
         },
 
@@ -2208,12 +1852,10 @@ function statusCustomerApp() {
                 const mSheet = this.scFilterSheet === '' || c.sheetName === this.scFilterSheet;
                 const mStatus = this.scFilterStatus === '' || c.statusCustomer === this.scFilterStatus;
                 const mProgress = this.scFilterProgress === '' || c.progress === this.scFilterProgress;
-                
                 return mNama && mTanggal && mDari && mSheet && mStatus && mProgress;
             });
         },
 
-        // PERTAHANKAN WARNA KOTAK STATUS CUSTOMER
         getCardColor(status) {
             if (status === 'sudah kirim') return 'bg-green-100 border-green-400 text-green-900';
             if (status === 'belum di kirim') return 'bg-blue-100 border-blue-400 text-blue-900';
@@ -2224,65 +1866,24 @@ function statusCustomerApp() {
         },
 
         getPillColor(name) {
-            const colors = {
-                'exata': 'bg-blue-600', 'jastip': 'bg-red-600', 'LPK': 'bg-green-600',
-                'senior': 'bg-purple-600', 'Affiliate': 'bg-pink-500', 'IG': 'bg-gradient-to-r from-orange-400 to-fuchsia-600',
-                'FB': 'bg-blue-800', 'tiktok': 'bg-black', 'chatbot': 'bg-teal-500', 'web': 'bg-orange-500'
-            };
+            const colors = { 'exata': 'bg-blue-600', 'jastip': 'bg-red-600', 'LPK': 'bg-green-600', 'senior': 'bg-purple-600', 'Affiliate': 'bg-pink-500', 'IG': 'bg-gradient-to-r from-orange-400 to-fuchsia-600', 'FB': 'bg-blue-800', 'tiktok': 'bg-black', 'chatbot': 'bg-teal-500', 'web': 'bg-orange-500' };
             return colors[name] || 'bg-gray-500';
         },
 
-        bukaModalSiapkan(nama) {
-            this.namaYangDisiapkan = nama || 'Tanpa Nama';
-            this.modalSiapkanOpen = true;
-        },
-        tutupModalSiapkan() {
-            this.modalSiapkanOpen = false;
-            this.namaYangDisiapkan = '';
-        },
-        konfirmasiSiapkan() {
-            window.dispatchEvent(new CustomEvent('tambah-ke-sales', { detail: { nama: this.namaYangDisiapkan } }));
-            showToast(`✅ Data ${this.namaYangDisiapkan} dikirim ke Admin Sales!`, 'success');
-            this.tutupModalSiapkan();
-        },
-
-        bukaModalUpdate(customer) {
-            this.activeCustomer = customer;
-            this.selectedProgress = '';
-            this.modalUpdateOpen = true;
-        },
-        tutupModalUpdate() {
-            this.modalUpdateOpen = false;
-            this.activeCustomer = null;
-        },
+        bukaModalSiapkan(nama) { this.namaYangDisiapkan = nama || 'Tanpa Nama'; this.modalSiapkanOpen = true; },
+        tutupModalSiapkan() { this.modalSiapkanOpen = false; this.namaYangDisiapkan = ''; },
+        konfirmasiSiapkan() { window.dispatchEvent(new CustomEvent('tambah-ke-sales', { detail: { nama: this.namaYangDisiapkan } })); showToast(`✅ Data dikirim ke Admin Sales!`, 'success'); this.tutupModalSiapkan(); },
+        bukaModalUpdate(customer) { this.activeCustomer = customer; this.selectedProgress = ''; this.modalUpdateOpen = true; },
+        tutupModalUpdate() { this.modalUpdateOpen = false; this.activeCustomer = null; },
+        
         async simpanUpdateStatus() {
-            this.modalUpdateOpen = false;
-            this.statusAppLoading = true;
+            this.modalUpdateOpen = false; this.statusAppLoading = true;
             try {
-                const payload = {
-                    action: 'updateProgressCustomer',
-                    sheetName: this.activeCustomer.sheetName,
-                    rowNumber: this.activeCustomer.rowNumber,
-                    progress: this.selectedProgress
-                };
-
-                const response = await fetch(this.apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payload)
-                });
-                
+                const payload = { action: 'updateProgressCustomer', sheetName: this.activeCustomer.sheetName, rowNumber: this.activeCustomer.rowNumber, progress: this.selectedProgress };
+                const response = await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
                 const result = await response.json();
-                if (result.success) {
-                    showToast('Progress berhasil diupdate! ✅', 'success');
-                    this.initStatus(); 
-                    window.dispatchEvent(new CustomEvent('reload-summary'));
-                } else {
-                    showToast('Gagal update progress', 'error');
-                }
-            } catch(e) {
-                showToast('Gagal terhubung ke server', 'error');
-            }
+                if (result.success) { showToast('Progress berhasil diupdate! ✅', 'success'); this.initStatus(); window.dispatchEvent(new CustomEvent('reload-summary')); } else { showToast('Gagal update progress', 'error'); }
+            } catch(e) { showToast('Gagal terhubung', 'error'); }
             this.statusAppLoading = false;
         }
     }
@@ -2293,208 +1894,94 @@ function statusCustomerApp() {
 // ─────────────────────────────────────────────────────────────
 function adminSalesApp() {
     return {
-        apiUrl: ADMIN_SALES_API_URL, 
-        localData: [],
-        loading: false,
-        inputNama: '',
-        fTgl: '', fNama: '', fPack: '', fKirim: '',
-        modalKirimId: null,
+        apiUrl: ADMIN_SALES_API_URL, localData: [], loading: false, inputNama: '', fTgl: '', fNama: '', fPack: '', fKirim: '', modalKirimId: null, selectedIds: [],
         
-        selectedIds: [],
-        
-        formatTanggal(dateStr) {
-            if (!dateStr) return '-';
-            return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-        },
-
+        formatTanggal(dateStr) { if (!dateStr) return '-'; return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); },
         initSales() {
-            this.localData = JSON.parse(localStorage.getItem('dashOpsData')) || [];
-            this.fetchData();
+            this.localData = JSON.parse(localStorage.getItem('dashOpsData')) || []; this.fetchData();
+            // PERBAIKAN ALPINE V3: Mencegah error "Cannot read properties of undefined (reading '$data')"
             setInterval(() => {
-                const state = document.querySelector('[x-data="appState()"]').__x.$data;
-                if (state && state.popupPanel === 'admin_sales') {
-                    this.fetchData(true);
+                const appEl = document.querySelector('[x-data="appState()"]');
+                if (appEl && appEl._x_dataStack) {
+                    const state = appEl._x_dataStack[0];
+                    if (state && state.popupPanel === 'admin_sales') {
+                        this.fetchData(true);
+                    }
                 }
             }, 10000);
         },
-
         async fetchData(isSilent = false) {
             if (!isSilent) this.loading = true;
             try {
-                if (this.apiUrl && this.apiUrl.startsWith('http')) {
-                    const response = await fetch(this.apiUrl);
-                    this.localData = await response.json();
-                    localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
-                }
-            } catch (error) {
-                console.error('Fetch Admin Sales error:', error);
-            }
+                if (this.apiUrl && this.apiUrl.startsWith('http')) { const response = await fetch(this.apiUrl); this.localData = await response.json(); localStorage.setItem('dashOpsData', JSON.stringify(this.localData)); }
+            } catch (error) { console.error('Fetch error:', error); }
             if (!isSilent) this.loading = false;
         },
-
         async sendToSheet(action, dataObj) {
             this.loading = true;
             try {
                 if (this.apiUrl && this.apiUrl.startsWith('http')) {
-                    await fetch(this.apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify({ action: action, data: dataObj })
-                    });
-                    await this.fetchData();
+                    await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: action, data: dataObj }) }); await this.fetchData();
                 } else {
                     if(action === 'tambah') this.localData.push(dataObj);
                     if(action === 'hapus') this.localData = this.localData.filter(d => d.id !== dataObj.id);
-                    if(action === 'update') {
-                        let idx = this.localData.findIndex(d => d.id === dataObj.id);
-                        if (idx !== -1) Object.assign(this.localData[idx], dataObj);
-                    }
-                    localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
-                    this.loading = false;
+                    if(action === 'update') { let idx = this.localData.findIndex(d => d.id === dataObj.id); if (idx !== -1) Object.assign(this.localData[idx], dataObj); }
+                    localStorage.setItem('dashOpsData', JSON.stringify(this.localData)); this.loading = false;
                 }
-            } catch (error) {
-                showToast('Gagal sinkronisasi data Admin Sales.', 'error');
-                this.loading = false;
-            }
+            } catch (error) { showToast('Gagal sinkronisasi.', 'error'); this.loading = false; }
         },
-
         tambahData() {
             if (!this.inputNama) return showToast('Nama tidak boleh kosong!', 'error');
-            const newData = {
-                id: Date.now().toString(),
-                nama: this.inputNama,
-                tanggal: new Date().toISOString().split('T')[0],
-                status_packing: 'Menunggu',
-                status_kirim: false,
-                note: ''
-            };
-            this.inputNama = '';
-            this.sendToSheet('tambah', newData);
+            const newData = { id: Date.now().toString(), nama: this.inputNama, tanggal: new Date().toISOString().split('T')[0], status_packing: 'Menunggu', status_kirim: false, note: '' };
+            this.inputNama = ''; this.sendToSheet('tambah', newData);
         },
-
-        hapusData(id) {
-            if(confirm('Yakin ingin menghapus data nama pelanggan ini?')) {
-                this.sendToSheet('hapus', { id: id });
-            }
-        },
-
+        hapusData(id) { if(confirm('Yakin ingin menghapus?')) { this.sendToSheet('hapus', { id: id }); } },
+        
         async hapusMultiData() {
-            if (this.selectedIds.length === 0) return;
-            if (!confirm(`PERINGATAN!\nYakin ingin menghapus ${this.selectedIds.length} data terpilih secara permanen?`)) return;
-
-            this.loading = true;
-            const idsToDelete = [...this.selectedIds];
-            this.selectedIds = []; 
-            
-            this.localData = this.localData.filter(d => !idsToDelete.includes(d.id));
-            localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
-
+            if (this.selectedIds.length === 0) return; if (!confirm(`Hapus ${this.selectedIds.length} data terpilih permanen?`)) return;
+            this.loading = true; const idsToDelete = [...this.selectedIds]; this.selectedIds = []; 
+            this.localData = this.localData.filter(d => !idsToDelete.includes(d.id)); localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
             if (this.apiUrl && this.apiUrl.startsWith('http')) {
                 try {
-                    for (let id of idsToDelete) {
-                        await fetch(this.apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'text/plain' },
-                            body: JSON.stringify({ action: 'hapus', data: { id: id } })
-                        });
-                    }
-                    await this.fetchData(true); 
-                    showToast(`${idsToDelete.length} data berhasil dihapus.`, 'info');
-                } catch (error) {
-                    showToast('Gagal menghapus beberapa data di server.', 'error');
-                }
+                    for (let id of idsToDelete) { await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: 'hapus', data: { id: id } }) }); }
+                    await this.fetchData(true); showToast(`${idsToDelete.length} data dihapus.`, 'info');
+                } catch (error) { showToast('Gagal menghapus.', 'error'); }
             }
             this.loading = false;
         },
 
         async kirimMultiData() {
-            if (this.selectedIds.length === 0) return;
-            if (!confirm(`Tandai ${this.selectedIds.length} data terpilih sebagai SUDAH DIKIRIM?`)) return;
-
-            this.loading = true;
-            const idsToUpdate = [...this.selectedIds];
-            this.selectedIds = []; 
-            
-            this.localData = this.localData.map(d => {
-                if (idsToUpdate.includes(d.id)) {
-                    return { ...d, status_kirim: true };
-                }
-                return d;
-            });
+            if (this.selectedIds.length === 0) return; if (!confirm(`Tandai ${this.selectedIds.length} data SUDAH DIKIRIM?`)) return;
+            this.loading = true; const idsToUpdate = [...this.selectedIds]; this.selectedIds = []; 
+            this.localData = this.localData.map(d => { if (idsToUpdate.includes(d.id)) { return { ...d, status_kirim: true }; } return d; });
             localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
-
             if (this.apiUrl && this.apiUrl.startsWith('http')) {
                 try {
-                    for (let id of idsToUpdate) {
-                        let item = this.localData.find(d => d.id === id);
-                        if(item) {
-                            await fetch(this.apiUrl, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'text/plain' },
-                                body: JSON.stringify({ action: 'update', data: item })
-                            });
-                        }
-                    }
-                    await this.fetchData(true); 
-                    showToast(`${idsToUpdate.length} pesanan berhasil ditandai terkirim.`, 'success');
-                } catch (error) {
-                    showToast('Gagal mengupdate beberapa data di server.', 'error');
-                }
+                    for (let id of idsToUpdate) { let item = this.localData.find(d => d.id === id); if(item) { await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: 'update', data: item }) }); } }
+                    await this.fetchData(true); showToast(`${idsToUpdate.length} pesanan terkirim.`, 'success');
+                } catch (error) { showToast('Gagal mengupdate.', 'error'); }
             }
             this.loading = false;
         },
 
         bukaModalKirim(id) { this.modalKirimId = id; },
         tutupModalKirim() { this.modalKirimId = null; },
-        
-        confirmKirim() {
-            let item = this.localData.find(d => d.id === this.modalKirimId);
-            if(item) {
-                item.status_kirim = true;
-                this.sendToSheet('update', item);
-            }
-            this.tutupModalKirim();
-        },
+        confirmKirim() { let item = this.localData.find(d => d.id === this.modalKirimId); if(item) { item.status_kirim = true; this.sendToSheet('update', item); } this.tutupModalKirim(); },
+        tambahDariStatus(nama) { const newData = { id: Date.now().toString(), nama: nama, tanggal: new Date().toISOString().split('T')[0], status_packing: 'Menunggu', status_kirim: false, note: '' }; this.sendToSheet('tambah', newData); },
 
-        tambahDariStatus(nama) {
-            const newData = {
-                id: Date.now().toString(),
-                nama: nama,
-                tanggal: new Date().toISOString().split('T')[0],
-                status_packing: 'Menunggu',
-                status_kirim: false,
-                note: ''
-            };
-            this.sendToSheet('tambah', newData); 
-        },
-
-        // LOGIKA WARNA ADMIN SALES (Dipertahankan dan Dimasukkan)
         getCardStyle(item) {
-            if (this.selectedIds.includes(item.id)) {
-                return 'background:rgba(225,29,46,0.15); border-color:rgba(225,29,46,0.5); border-left-color:var(--theme-white);';
-            }
-            if (item.status_kirim === true) {
-                return 'background:#064e3b; border-color:rgba(16,185,129,0.3); border-left-color:#10b981;'; 
-            }
-            if (item.status_packing === 'Belum Lengkap') {
-                return 'background:#450a0a; border-color:rgba(239,68,68,0.3); border-left-color:#ef4444;'; 
-            }
-            return 'background:#1b1b20; border-color:rgba(255,255,255,0.08); border-left-color:var(--red);';
+            if (this.selectedIds.includes(item.id)) { return 'background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.2); border-left-color:var(--theme-white);'; }
+            if (item.status_kirim === true) { return 'background:#064e3b; border-color:rgba(16,185,129,0.3); border-left-color:#10b981;'; }
+            if (item.status_packing === 'Belum Lengkap') { return 'background:#450a0a; border-color:rgba(239,68,68,0.3); border-left-color:#ef4444;'; }
+            return 'background:#1b1b20; border-color:rgba(255,255,255,0.08); border-left-color:var(--theme-light);';
         },
 
         get filteredData() {
             let data = [...this.localData];
-            if(this.fTgl) {
-                data = data.filter(d => {
-                    let dDate = new Date(d.tanggal);
-                    let localDateStr = dDate.getFullYear() + "-" + String(dDate.getMonth() + 1).padStart(2, '0') + "-" + String(dDate.getDate()).padStart(2, '0');
-                    return localDateStr === this.fTgl || d.tanggal === this.fTgl;
-                });
-            }
+            if(this.fTgl) { data = data.filter(d => { let dDate = new Date(d.tanggal); let localDateStr = dDate.getFullYear() + "-" + String(dDate.getMonth() + 1).padStart(2, '0') + "-" + String(dDate.getDate()).padStart(2, '0'); return localDateStr === this.fTgl || d.tanggal === this.fTgl; }); }
             if(this.fNama) data = data.filter(d => d.nama.toLowerCase().includes(this.fNama.toLowerCase()));
             if(this.fPack) data = data.filter(d => d.status_packing === this.fPack);
             if(this.fKirim !== "") data = data.filter(d => String(d.status_kirim) === this.fKirim);
-            
             return data.sort((a, b) => b.id - a.id);
         }
     };
@@ -2505,75 +1992,121 @@ function adminSalesApp() {
 // ─────────────────────────────────────────────────────────────
 function bukuTamuApp() {
     return {
-        apiUrl: PESANAN_STATUS_API_URL, 
-        availableSheets: [],
-        selectedSheet: '',
-        loading: false,
-        entries: [],
-        
-        initBT() {
-            this.addEntry();
-            this.fetchSheets();
-        },
-        
-        async fetchSheets() {
-            try {
-                const response = await fetch(`${this.apiUrl}?action=getSheets`);
-                const result = await response.json();
-                this.availableSheets = result.sheets || [];
-            } catch(e) { console.error("Gagal load sheet BT", e); }
-        },
-        
-        addEntry() {
-            this.entries.push({
-                id: Date.now() + Math.random(),
-                nama: '',
-                sumber: '',
-                tglKirim: '',
-                isJepang: false
-            });
-        },
-        
-        removeEntry(id) {
-            this.entries = this.entries.filter(e => e.id !== id);
-            if (this.entries.length === 0) this.addEntry();
-        },
+        apiUrl: PESANAN_STATUS_API_URL, availableSheets: [], selectedSheet: '', loading: false, entries: [],
+        initBT() { this.addEntry(); this.fetchSheets(); },
+        async fetchSheets() { try { const response = await fetch(`${this.apiUrl}?action=getSheets`); const result = await response.json(); this.availableSheets = result.sheets || []; } catch(e) { console.error("Gagal load sheet BT"); } },
+        addEntry() { this.entries.push({ id: Date.now() + Math.random(), nama: '', sumber: '', tglKirim: '', isJepang: false }); },
+        removeEntry(id) { this.entries = this.entries.filter(e => e.id !== id); if (this.entries.length === 0) this.addEntry(); },
         
         async submitData() {
             if (!this.selectedSheet) return showToast('Pilih Sheet Tujuan di bagian atas!', 'error');
-            
             const validData = this.entries.filter(e => e.nama.trim() !== '');
             if (validData.length === 0) return showToast('Isi minimal 1 Nama Pelanggan!', 'error');
 
             this.loading = true;
             try {
-                const payload = {
-                    action: 'submitBukuTamu',
-                    spreadsheetId: '1meU6mZxLck7gvymuaOsRgy0jZBUyVK2auqG5s8TSk8w',
-                    sheetName: this.selectedSheet,
-                    data: validData
-                };
-
-                const response = await fetch(this.apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payload)
-                });
-                
+                const payload = { action: 'submitBukuTamu', spreadsheetId: '1meU6mZxLck7gvymuaOsRgy0jZBUyVK2auqG5s8TSk8w', sheetName: this.selectedSheet, data: validData };
+                const response = await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
                 const result = await response.json();
-                if (result.success) {
-                    showToast('Data Buku Tamu berhasil diinput! ✅', 'success');
-                    this.entries = [];
-                    this.addEntry();
-                    window.dispatchEvent(new CustomEvent('reload-summary'));
-                } else {
-                    showToast('Gagal: ' + (result.message || 'Server Error'), 'error');
-                }
-            } catch (e) {
-                showToast('Gagal terhubung ke server.', 'error');
-            }
+                if (result.success) { showToast('Data Buku Tamu berhasil diinput! ✅', 'success'); this.entries = []; this.addEntry(); window.dispatchEvent(new CustomEvent('reload-summary')); } 
+                else { showToast('Gagal: Server Error', 'error'); }
+            } catch (e) { showToast('Gagal terhubung ke server.', 'error'); }
             this.loading = false;
         }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+//  STOK PRODUK APP LOGIC (METODE BYPASS JSONP - ANTI CORS)
+// ─────────────────────────────────────────────────────────────
+function stokApp() {
+    return {
+        // Tempel URL API Anda yang baru di sini
+        apiUrl: 'https://script.google.com/macros/s/AKfycbw6TaXv2RsoZMNC8j2PVFBYCzxm1mLvrRpDNr5skYxBtg4GmM1fh4P3q4kWEs-ndSBUaQ/exec', 
+        loading: false, rawData: [], searchQuery: '', activeCat: 'kaos oversize',
+        categories: ['kaos oversize', 'kaos premium', 'jaket hoodie', 'kakejiku deluxe', 'kakejiku premium', 'gantungan kunci', 'sake set', 'katana'],
+        
+        mapping: {
+            "kaos oversize": [{ nama: "Yanoshi Black", rows: [4, 5, 6] }, { nama: "Yanoshi White", rows: [8, 9, 10] }, { nama: "Ramen", rows: [12, 13, 14] }, { nama: "Vending", rows: [16, 17, 18] }, { nama: "Akatsuki", rows: [20, 21, 22] }, { nama: "Flower Maiden", rows: [24, 25, 26] }],
+            "kaos premium": [{ nama: "Kaos 8B", rows: [65, 66, 67, 68, 69] }, { nama: "Kaos 9B", rows: [71, 72, 73, 74] }, { nama: "Kaos 10W", rows: [76, 77, 78, 79] }, { nama: "Kaos 11B", rows: [81, 82, 83, 84] }, { nama: "Kaos 12B", rows: [86, 87, 88, 89, 90] }, { nama: "Kaos 13B", rows: [92, 93, 94, 95] }, { nama: "Kaos 14B", rows: [97, 98, 99, 100] }, { nama: "Kaos 15B", rows: [102, 103, 104, 105] }, { nama: "Kaos 16W", rows: [107, 108, 109, 110] }, { nama: "Kaos 17B", rows: [112, 113, 114, 115, 116] }, { nama: "Kaos 18B", rows: [118, 119, 120, 121] }, { nama: "Kaos 19K", rows: [123, 124, 125, 126] }, { nama: "Kaos 22B", rows: [128, 129, 130, 131] }, { nama: "Kaos 23P", rows: [133, 134, 135, 136] }, { nama: "Kaos 24Y", rows: [138, 139, 140, 141] }],
+            "jaket hoodie": [{ nama: "Nippon", rows: [144, 145, 146, 147, 148] }, { nama: "Kabuto", rows: [150, 151, 152, 153, 154] }, { nama: "Phoenix", rows: [156, 157, 158, 159, 160] }, { nama: "Osaka", rows: [162, 163, 164, 165, 166] }],
+            "kakejiku deluxe": [{ nama: "KD 5", rows: [168] }, { nama: "KD 7", rows: [169] }, { nama: "KD 8", rows: [170] }, { nama: "KD 9", rows: [171] }, { nama: "KD 1", rows: [172] }, { nama: "KD 2", rows: [173] }, { nama: "KD 3", rows: [174] }, { nama: "KD 4", rows: [175] }, { nama: "KD 10", rows: [176] }, { nama: "KD 11", rows: [177] }, { nama: "KD 13", rows: [178] }],
+            "kakejiku premium": [{ nama: "KP 1", rows: [180] }, { nama: "KP 2", rows: [181] }, { nama: "KP 3", rows: [182] }, { nama: "KP 4", rows: [183] }, { nama: "KP 5", rows: [184] }, { nama: "KP 6", rows: [185] }, { nama: "KP 7", rows: [186] }, { nama: "KP 8", rows: [187] }, { nama: "KP 9", rows: [188] }, { nama: "KP 10", rows: [189] }, { nama: "KP 11", rows: [190] }, { nama: "KP 13", rows: [191] }],
+            "gantungan kunci": [{ nama: "Japan Icon Vol 1", rows: [193] }, { nama: "Japan Icon Vol 2", rows: [194] }, { nama: "Sushi", rows: [195] }],
+            "sake set": [{ nama: "Set A", rows: [197] }, { nama: "Set C", rows: [198] }, { nama: "Set G", rows: [199] }, { nama: "Set P", rows: [200] }],
+            "katana": [{ nama: "Gold", rows: [202] }, { nama: "Hitam", rows: [203] }, { nama: "Putih", rows: [204] }]
+        },
+
+        initStok() {
+            this.fetchData();
+        },
+
+        // INI ADALAH METODE JSONP (KEBAL CORS & BLOKIR BROWSER)
+        fetchData() {
+            if(!this.apiUrl || this.apiUrl === '') {
+                showToast("URL API Stok belum dimasukkan!", "error"); return;
+            }
+            
+            this.loading = true;
+            const callbackName = 'stokCallback_' + Math.floor(Math.random() * 100000);
+            
+            window[callbackName] = (result) => {
+                this.loading = false;
+                if(result.status === "success") { 
+                    this.rawData = result.data; 
+                } else {
+                    showToast("Pesan Server: " + result.message, "error");
+                }
+                delete window[callbackName];
+                document.getElementById(callbackName)?.remove();
+            };
+
+            const script = document.createElement('script');
+            script.id = callbackName;
+            const sep = this.apiUrl.includes('?') ? '&' : '?';
+            script.src = `${this.apiUrl}${sep}callback=${callbackName}`;
+            
+            script.onerror = () => {
+                this.loading = false;
+                showToast("Terjadi kesalahan. Pastikan Pengaturan di Apps Script 'Jalankan Sebagai: Saya'", "error");
+                delete window[callbackName];
+                script.remove();
+            };
+
+            document.body.appendChild(script);
+        },
+
+        formatRp(angka) { 
+            if (!angka || isNaN(angka)) return '-'; 
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); 
+        },
+
+        get filteredProducts() {
+						let prods = [];
+						
+						if(this.searchQuery.trim() !== '') {
+								// PENCARIAN GLOBAL: Jika kolom pencarian diisi, cari di SELURUH kategori
+								const sq = this.searchQuery.toLowerCase();
+								for (let category in this.mapping) {
+										let items = this.mapping[category];
+										// Saring item yang cocok lalu gabungkan ke array prods
+										let matchedItems = items.filter(p => p.nama.toLowerCase().includes(sq));
+										prods = prods.concat(matchedItems);
+								}
+						} else {
+								// TAMPILAN NORMAL: Jika kolom pencarian kosong, tampilkan berdasarkan Dropdown yang dipilih
+								prods = this.mapping[this.activeCat] || [];
+						}
+						
+						return prods.map(p => {
+								let details = p.rows.map(rNum => {
+										let rData = this.rawData.find(d => d.row === rNum);
+										return rData ? rData : { row: rNum, size: '-', stok: 0, harga: 0, img: '' };
+								});
+								let mainImg = details.length > 0 ? details[0].img : '';
+								return { ...p, details: details, mainImg: mainImg };
+						});
+				}
     }
 }
 
@@ -2586,6 +2119,24 @@ function pFileToBase64(file) {
     });
 }
 
+// ==========================================
+// FUNGSI HARD REFRESH + SUARA MEOW + LOADING
+// ==========================================
+function meowAndRefresh() {
+    // 1. Munculkan animasi layar loading 3 titik
+    document.getElementById('refreshLoader').classList.add('show');
+
+    // 2. Mainkan suara Meow
+    const meowAudio = new Audio('https://www.myinstants.com/media/sounds/cat-meow.mp3');
+    meowAudio.volume = 0.8;
+    meowAudio.play().catch(err => console.log("Audio diblokir browser:", err));
+
+    // 3. Beri jeda 1.2 detik agar user dapat menikmati animasi dan suara penuh sebelum layar berkedip
+    setTimeout(() => {
+        window.location.href = window.location.pathname + '?refresh=' + new Date().getTime();
+    }, 1200); 
+}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
@@ -2593,5 +2144,18 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+<!-- OVERLAY LOADING 3 TITIK -->
+<div id="refreshLoader">
+    <div class="dot-loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+</div>
+
+<!-- TOMBOL FLOATING MEOW REFRESH (ICON KUCING) -->
+<button class="fab-meow" onclick="meowAndRefresh()" title="Hard Refresh & Meow!">
+    <img src="https://yanoshijapan.github.io/asetonline/kucing.png" alt="Meow" style="width: 70px; height: 70px; object-fit: contain; pointer-events: none;">
+</button>
 </body>
 </html>
