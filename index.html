@@ -544,6 +544,22 @@
 						0%, 80%, 100% { transform: scale(0); }
 						40% { transform: scale(1); }
 				}
+				
+				/* ===== MENGGESER PANAH (SPINNER) INPUT NUMBER ===== */
+				.input-diskon::-webkit-inner-spin-button, 
+				.input-diskon::-webkit-outer-spin-button {
+						margin-right: 20px; /* Nilai ini mendorong panah ke arah kiri */
+				}
+				
+				/* ===== MENGHILANGKAN PANAH (SPINNER) INPUT ONGKIR ===== */
+				.input-ongkir::-webkit-inner-spin-button,
+				.input-ongkir::-webkit-outer-spin-button {
+						-webkit-appearance: none;
+						margin: 0;
+				}
+.input-ongkir {
+    -moz-appearance: textfield; /* Dukungan khusus untuk browser Firefox */
+}
     </style>
 </head>
 <body x-data="appState()" x-init="init()" @reload-summary.window="loadSummary()">
@@ -725,6 +741,13 @@
 										<div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
 										<div class="menu-label">Cetak Stiker</div>
 								</div>
+								<!-- KALKULATOR CERDAS WIDE (FULL WIDTH) -->
+                <div class="menu-card" style="grid-column: 1 / -1; display: flex; flex-direction: row; gap: 16px; padding: 18px 24px; align-items: center; justify-content: center; background: linear-gradient(165deg, #18181c 0%, #101012 100%);" @click="togglePanel('kalkulator')">
+										<div class="menu-icon" style="margin: 0; width: 44px; height: 44px; flex-shrink: 0; background: rgba(255,255,255,0.05);">
+												<svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="14.01"></line><line x1="12" y1="14" x2="12" y2="14.01"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="16" y1="18" x2="16" y2="18.01"></line><line x1="12" y1="18" x2="12" y2="18.01"></line><line x1="8" y1="18" x2="8" y2="18.01"></line></svg>
+										</div>
+										<div class="menu-label" style="font-size: 15px; font-weight: bold; margin: 0; color: var(--theme-white);">Kalkulator Diskon</div>
+								</div>
             </div>
 
             <!-- ================== EMBED PANELS ================== -->
@@ -831,9 +854,10 @@
                     <svg x-show="popupPanel === 'admin_sales'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
                     <svg x-show="popupPanel === 'buku_tamu'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                     <svg x-show="popupPanel === 'stok_produk'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                </span>
+										<svg x-show="popupPanel === 'kalkulator'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="14.01"></line><line x1="12" y1="14" x2="12" y2="14.01"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="16" y1="18" x2="16" y2="18.01"></line><line x1="12" y1="18" x2="12" y2="18.01"></line><line x1="8" y1="18" x2="8" y2="18.01"></line></svg>
+								</span>
                 <div>
-                    <div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Status Packing (Ops)' : (popupPanel === 'buku_tamu' ? 'Buku Tamu' : (popupPanel === 'stok_produk' ? 'Stok Produk' : '')))))"></div>
+										<div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Status Packing (Ops)' : (popupPanel === 'buku_tamu' ? 'Buku Tamu' : (popupPanel === 'stok_produk' ? 'Stok Produk' : (popupPanel === 'kalkulator' ? 'Kalkulator Cerdas' : ''))))))"></div>
                 </div>
             </div>
             <button class="popup-close-btn" @click="closePopup()">
@@ -1487,6 +1511,161 @@
                     </div>
                 </div>
             </div>
+						
+						<!-- 7. MENU BARU: KALKULATOR CERDAS -->
+            <div x-show="popupPanel === 'kalkulator'" x-data="kalkulatorApp()" x-init="initCalc()" @keydown.window="handleKey($event, $el)" class="w-full flex flex-col h-full" x-cloak>    
+                <!-- Tab Pilihan -->
+								<div class="flex gap-2 mb-5 p-1 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)]">
+										<button @click="activeTab = 'diskon'" :class="activeTab === 'diskon' ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black shadow-md' : 'text-gray-400 hover:text-white'" class="flex-1 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-200">💰 Hitung Diskon</button>
+										<button @click="activeTab = 'biasa'" :class="activeTab === 'biasa' ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black shadow-md' : 'text-gray-400 hover:text-white'" class="flex-1 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-200">🔢 Kalkulator</button>
+								</div>
+
+                <!-- KALKULATOR DISKON -->
+                <div x-show="activeTab === 'diskon'" class="flex flex-col h-full">
+                    
+                    <div x-show="loading" class="flex items-center gap-2 mb-3 text-xs font-bold text-yellow-500">
+                        <div class="animate-spin w-4 h-4 border-2 border-yellow-500 border-t-transparent rounded-full"></div>
+                        Mengambil data harga dari server...
+                    </div>
+
+                    <!-- Area Input Produk -->
+                    <div class="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] p-4 rounded-xl mb-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                            <select x-model="tempCat" @change="tempProd = ''" class="w-full px-3 py-2.5 rounded-lg outline-none text-sm font-bold bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] text-white cursor-pointer">
+                                <option value="">-- Pilih Produk --</option>
+                                <template x-for="cat in categories" :key="cat"><option :value="cat" x-text="cat"></option></template>
+                            </select>
+                            <select x-model="tempProd" :disabled="!tempCat" class="w-full px-3 py-2.5 rounded-lg outline-none text-sm font-bold bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] text-white cursor-pointer disabled:opacity-50">
+                                <option value="">-- Pilih Tipe --</option>
+                                <template x-for="prod in getProducts(tempCat)" :key="prod.nama"><option :value="prod.nama" x-text="prod.nama"></option></template>
+                            </select>
+                        </div>
+                        
+                        <div class="flex gap-3">
+                            <div class="flex-1 flex justify-between items-center bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] rounded-lg px-4 py-2">
+                                <span class="text-xs text-gray-400 font-bold uppercase tracking-wide">Harga</span>
+                                <span class="font-extrabold text-white text-sm" x-text="formatRp(tempHarga)"></span>
+                            </div>
+                            <div class="relative w-24 flex-shrink-0">
+																<input type="number" x-model.number="tempQty" min="1" class="w-full h-full text-center bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] rounded-lg pl-8 pr-2 py-2 outline-none text-white font-bold text-sm focus:border-white transition">
+																<span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold text-[10px] uppercase tracking-wider pointer-events-none">QTY</span>
+														</div>
+														<button @click="addItem()" :disabled="!tempProd || tempHarga === 0" class="px-5 font-bold rounded-lg transition-transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xs uppercase" style="background: var(--grad-white); color: #000;">Tambah</button>
+                        </div>
+                    </div>
+
+                    <!-- List Keranjang -->
+                    <div class="flex-1 overflow-y-auto space-y-2 mb-4 pr-1" style="max-height: 220px; scrollbar-width: thin;">
+                        <template x-for="(item, idx) in selectedItems" :key="item.id">
+                            <div class="flex justify-between items-center p-3 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.05)]">
+                                <div>
+                                    <div class="text-sm font-extrabold text-white uppercase" x-text="item.prod"></div>
+                                    <div class="text-[11px] text-gray-400 font-semibold" x-text="item.qty + ' x ' + formatRp(item.price)"></div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="font-bold text-white text-sm" x-text="formatRp(item.qty * item.price)"></span>
+                                    <button @click="removeItem(item.id)" class="text-red-400 hover:text-red-300 font-extrabold">✕</button>
+                                </div>
+                            </div>
+                        </template>
+                        <div x-show="selectedItems.length === 0" class="text-center py-6 text-xs font-bold text-gray-500 uppercase tracking-widest border border-dashed border-[rgba(255,255,255,0.1)] rounded-xl">List Produk Kosong</div>
+                    </div>
+
+                    <!-- Kalkulasi Total & Diskon -->
+                    <div class="border-t border-[rgba(255,255,255,0.1)] pt-4 mt-auto">
+                        <div class="flex justify-between items-center mb-3 px-2">
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wide">Total Sebelum Diskon</span>
+                            <span class="font-bold text-gray-300 text-sm" x-text="formatRp(subTotal)"></span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4 px-2">
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wide">Potongan Diskon (%)</span>
+                            <div class="relative">
+																<!-- Menambahkan kelas "input-diskon" di awal -->
+																<input type="number" x-model.number="discountPercent" class="input-diskon w-32 text-center bg-[#1b1b20] border border-[rgba(255,255,255,0.2)] rounded-lg px-4 py-1.5 text-white outline-none font-bold focus:border-white transition">
+																<span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold text-xs">%</span>
+														</div>
+                        </div>
+												
+												<div class="flex justify-start items-center gap-3 mb-4 px-2">
+														<span class="text-[11px] font-bold text-gray-400 uppercase tracking-wide">Ongkir</span>
+														<div class="relative">
+																<span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold text-xs pointer-events-none">Rp</span>
+																<!-- Menambahkan kelas input-ongkir -->
+																<input type="number" x-model.number="ongkir" placeholder="0" class="input-ongkir w-32 text-right bg-[#1b1b20] border border-[rgba(255,255,255,0.2)] rounded-lg pl-8 pr-3 py-1.5 text-white outline-none font-bold focus:border-white transition">
+														</div>
+												</div>
+                        
+                        <div class="p-4 rounded-xl border text-center" style="background: linear-gradient(135deg, rgba(20,20,24,1) 0%, rgba(10,10,12,1) 100%); border-color: rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    
+														<!-- Bagian Nilai Potongan (Rata Tengah) -->
+														<div class="flex flex-col items-center justify-center gap-1 mb-2">
+																<span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Nilai Potongan</span>
+																<span class="font-extrabold text-red-400 text-base" x-text="'- ' + formatRp(discountValue)"></span>
+														</div>
+														
+														<!-- Bagian Harga Final (Rata Tengah) -->
+														<div class="flex flex-col items-center justify-center mt-2 border-t border-[rgba(255,255,255,0.08)] pt-3 gap-1">
+																<span class="text-[11px] font-extrabold text-white uppercase tracking-widest">Harga Final</span>
+																<span class="text-3xl font-black mt-1" style="background: var(--grad-white); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" x-text="formatRp(finalTotal)"></span>
+														</div>
+														
+												</div>
+                    </div>
+                </div>
+
+                <!-- KALKULATOR BIASA (STANDAR) -->
+                <div x-show="activeTab === 'biasa'" class="flex flex-col h-full bg-[#131315] rounded-xl p-4 border border-[rgba(255,255,255,0.05)]">
+                    <div class="bg-black rounded-xl p-5 mb-5 text-right overflow-x-auto border border-[rgba(255,255,255,0.08)] shadow-inner flex flex-col justify-end min-h-[90px]" style="scrollbar-width: none;">
+                        <div class="text-[11px] font-bold text-gray-500 mb-1" x-text="calcHistory"></div>
+                        <div class="text-4xl font-mono text-white tracking-widest break-all" x-text="calcDisplay"></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-4 gap-3 flex-1 text-lg">
+												<button @click="cClear()" class="col-span-2 rounded-xl font-black bg-red-900/30 text-red-400 hover:bg-red-900/50 transition">Hapus</button>
+												<button @click="cDel()" class="rounded-xl font-black bg-[rgba(255,255,255,0.05)] text-gray-300 hover:bg-[rgba(255,255,255,0.1)] transition">⌫</button>
+												
+												<!-- Tombol Bagi -->
+												<button @click="cInput('÷')" class="rounded-xl text-black transition flex items-center justify-center gap-1.5" style="background: var(--grad-white);">
+														<span class="font-black text-xl leading-none">÷</span>
+														<span class="text-[15px] font-medium leading-none">(bagi)</span>
+												</button>
+												
+												<button @click="cInput('7')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">7</button>
+												<button @click="cInput('8')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">8</button>
+												<button @click="cInput('9')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">9</button>
+												
+												<!-- Tombol Kali -->
+												<button @click="cInput('×')" class="rounded-xl text-black transition flex items-center justify-center gap-1.5" style="background: var(--grad-white);">
+														<span class="font-black text-xl leading-none">×</span>
+														<span class="text-[15px] font-medium leading-none">(kali)</span>
+												</button>
+												
+												<button @click="cInput('4')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">4</button>
+												<button @click="cInput('5')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">5</button>
+												<button @click="cInput('6')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">6</button>
+												
+												<!-- Tombol Kurang -->
+												<button @click="cInput('-')" class="rounded-xl text-black transition flex items-center justify-center gap-1.5" style="background: var(--grad-white);">
+														<span class="font-black text-xl leading-none">-</span>
+														<span class="text-[15px] font-medium leading-none">(kurang)</span>
+												</button>
+												
+												<button @click="cInput('1')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">1</button>
+												<button @click="cInput('2')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">2</button>
+												<button @click="cInput('3')" class="rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">3</button>
+												
+												<!-- Tombol Tambah -->
+												<button @click="cInput('+')" class="rounded-xl text-black transition flex items-center justify-center gap-1.5" style="background: var(--grad-white);">
+														<span class="font-black text-xl leading-none">+</span>
+														<span class="text-[15px] font-medium leading-none">(tambah)</span>
+												</button>
+												
+												<button @click="cInput('0')" class="col-span-2 rounded-xl font-bold bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">0</button>
+												<button @click="cInput('.')" class="rounded-xl font-black bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.08)] transition text-white">.</button>
+												<button @click="cCalculate()" class="rounded-xl font-black text-white shadow-lg transition transform hover:-translate-y-0.5 text-2xl" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);">=</button>
+										</div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -2107,6 +2286,130 @@ function stokApp() {
 								return { ...p, details: details, mainImg: mainImg };
 						});
 				}
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+//  KALKULATOR CERDAS APP LOGIC
+// ─────────────────────────────────────────────────────────────
+function kalkulatorApp() {
+    return {
+        activeTab: 'diskon', // 'diskon' atau 'biasa'
+        loading: false, rawData: [], 
+        
+        // --- KALKULATOR DISKON ---
+        categories: ['kaos oversize', 'kaos premium', 'jaket hoodie', 'kakejiku deluxe', 'kakejiku premium', 'gantungan kunci', 'sake set', 'katana'],
+        mapping: {
+            "kaos oversize": [{ nama: "Yanoshi Black", rows: [4, 5, 6] }, { nama: "Yanoshi White", rows: [8, 9, 10] }, { nama: "Ramen", rows: [12, 13, 14] }, { nama: "Vending", rows: [16, 17, 18] }, { nama: "Akatsuki", rows: [20, 21, 22] }, { nama: "Flower Maiden", rows: [24, 25, 26] }],
+            "kaos premium": [{ nama: "Kaos 8B", rows: [65, 66, 67, 68, 69] }, { nama: "Kaos 9B", rows: [71, 72, 73, 74] }, { nama: "Kaos 10W", rows: [76, 77, 78, 79] }, { nama: "Kaos 11B", rows: [81, 82, 83, 84] }, { nama: "Kaos 12B", rows: [86, 87, 88, 89, 90] }, { nama: "Kaos 13B", rows: [92, 93, 94, 95] }, { nama: "Kaos 14B", rows: [97, 98, 99, 100] }, { nama: "Kaos 15B", rows: [102, 103, 104, 105] }, { nama: "Kaos 16W", rows: [107, 108, 109, 110] }, { nama: "Kaos 17B", rows: [112, 113, 114, 115, 116] }, { nama: "Kaos 18B", rows: [118, 119, 120, 121] }, { nama: "Kaos 19K", rows: [123, 124, 125, 126] }, { nama: "Kaos 22B", rows: [128, 129, 130, 131] }, { nama: "Kaos 23P", rows: [133, 134, 135, 136] }, { nama: "Kaos 24Y", rows: [138, 139, 140, 141] }],
+            "jaket hoodie": [{ nama: "Nippon", rows: [144, 145, 146, 147, 148] }, { nama: "Kabuto", rows: [150, 151, 152, 153, 154] }, { nama: "Phoenix", rows: [156, 157, 158, 159, 160] }, { nama: "Osaka", rows: [162, 163, 164, 165, 166] }],
+            "kakejiku deluxe": [{ nama: "KD 5", rows: [168] }, { nama: "KD 7", rows: [169] }, { nama: "KD 8", rows: [170] }, { nama: "KD 9", rows: [171] }, { nama: "KD 1", rows: [172] }, { nama: "KD 2", rows: [173] }, { nama: "KD 3", rows: [174] }, { nama: "KD 4", rows: [175] }, { nama: "KD 10", rows: [176] }, { nama: "KD 11", rows: [177] }, { nama: "KD 13", rows: [178] }],
+            "kakejiku premium": [{ nama: "KP 1", rows: [180] }, { nama: "KP 2", rows: [181] }, { nama: "KP 3", rows: [182] }, { nama: "KP 4", rows: [183] }, { nama: "KP 5", rows: [184] }, { nama: "KP 6", rows: [185] }, { nama: "KP 7", rows: [186] }, { nama: "KP 8", rows: [187] }, { nama: "KP 9", rows: [188] }, { nama: "KP 10", rows: [189] }, { nama: "KP 11", rows: [190] }, { nama: "KP 13", rows: [191] }],
+            "gantungan kunci": [{ nama: "Japan Icon Vol 1", rows: [193] }, { nama: "Japan Icon Vol 2", rows: [194] }, { nama: "Sushi", rows: [195] }],
+            "sake set": [{ nama: "Set A", rows: [197] }, { nama: "Set C", rows: [198] }, { nama: "Set G", rows: [199] }, { nama: "Set P", rows: [200] }],
+            "katana": [{ nama: "Gold", rows: [202] }, { nama: "Hitam", rows: [203] }, { nama: "Putih", rows: [204] }]
+        },
+        
+        selectedItems: [], tempCat: '', tempProd: '', tempQty: 1, discountPercent: 0, ongkir: '',
+        // --- KALKULATOR BIASA ---
+        calcDisplay: '0', calcHistory: '',
+
+        initCalc() { this.fetchPrices(); },
+
+        // Menarik Database Harga dengan metode JSONP Bypass anti CORS
+        fetchPrices() {
+            this.loading = true;
+            const callbackName = 'calcStokCallback_' + Math.floor(Math.random() * 100000);
+            window[callbackName] = (result) => {
+                this.loading = false;
+                if(result.status === "success") { this.rawData = result.data; }
+                delete window[callbackName];
+                document.getElementById(callbackName)?.remove();
+            };
+            const script = document.createElement('script'); script.id = callbackName;
+            script.src = `${STOK_API_URL}?action=getStok&callback=${callbackName}`; // Menggunakan URL konstan stok
+            script.onerror = () => { this.loading = false; delete window[callbackName]; script.remove(); };
+            document.body.appendChild(script);
+        },
+
+        getProducts(cat) { return this.mapping[cat] || []; },
+        
+        get tempHarga() {
+            if (!this.tempCat || !this.tempProd || this.rawData.length === 0) return 0;
+            let prods = this.mapping[this.tempCat]; if (!prods) return 0;
+            let prod = prods.find(p => p.nama === this.tempProd); if (!prod || !prod.rows) return 0;
+            // Mengambil harga dari baris pertama ukuran produk
+            let rData = this.rawData.find(d => d.row === prod.rows[0]);
+            return rData ? (Number(rData.harga) || 0) : 0;
+        },
+
+        addItem() {
+            if(!this.tempProd || this.tempHarga === 0) return;
+            this.selectedItems.push({ id: Date.now(), cat: this.tempCat, prod: this.tempProd, price: this.tempHarga, qty: Number(this.tempQty) || 1 });
+            this.tempProd = ''; this.tempQty = 1; // Reset
+        },
+        removeItem(id) { this.selectedItems = this.selectedItems.filter(i => i.id !== id); },
+
+        get subTotal() { return this.selectedItems.reduce((sum, item) => sum + (item.price * item.qty), 0); },
+        get discountValue() { return (this.subTotal * (Number(this.discountPercent) || 0)) / 100; },
+        get finalTotal() { return (this.subTotal - this.discountValue) + (Number(this.ongkir) || 0); },
+				formatRp(angka) { if (isNaN(angka)) return '-'; return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(Math.max(0, angka)); },
+
+        // FUNGSI KALKULATOR STANDAR
+        cInput(val) {
+            if (this.calcDisplay === '0' || this.calcDisplay === 'Error') {
+                if (val !== '÷' && val !== '×' && val !== '+' && val !== '-') this.calcDisplay = val;
+                else this.calcDisplay += val;
+            } else { this.calcDisplay += val; }
+        },
+        cClear() { this.calcDisplay = '0'; this.calcHistory = ''; },
+        cDel() {
+            if (this.calcDisplay.length > 1 && this.calcDisplay !== 'Error') { this.calcDisplay = this.calcDisplay.slice(0, -1); } 
+            else { this.calcDisplay = '0'; }
+        },
+        cCalculate() {
+            try {
+                this.calcHistory = this.calcDisplay + ' =';
+                // Ubah simbol visual ke operator matematika Javascript asli
+                let ekspresi = this.calcDisplay.replace(/×/g, '*').replace(/÷/g, '/');
+                let hasil = Function('"use strict";return (' + ekspresi + ')')();
+                // Membulatkan hasil jika desimal terlalu panjang
+                this.calcDisplay = String(Math.round(hasil * 100000000) / 100000000);
+            } catch (e) {
+                this.calcDisplay = 'Error';
+                setTimeout(() => { this.calcDisplay = '0'; }, 1000);
+            }
+        },
+				handleKey(e, el) {
+            // 1. Cek: Batalkan eksekusi jika Popup Kalkulator sedang tertutup atau sedang di Tab Diskon
+            if (el.style.display === 'none' || this.activeTab !== 'biasa') return;
+
+            const key = e.key;
+
+            // 2. Cegah fungsi bawaan browser (misal menekan '/' biasanya akan membuka fitur Find/Pencarian browser)
+            if (['/','Enter','Backspace'].includes(key)) {
+                e.preventDefault();
+            }
+
+            // 3. Pemetaan Tombol Keyboard -> Fungsi Kalkulator
+            if (key >= '0' && key <= '9') {
+                this.cInput(key);
+            } else if (key === '+' || key === '-') {
+                this.cInput(key);
+            } else if (key === '*' || key.toLowerCase() === 'x') {
+                this.cInput('×'); // Mengubah * menjadi simbol ×
+            } else if (key === '/') {
+                this.cInput('÷'); // Mengubah / menjadi simbol ÷
+            } else if (key === '.' || key === ',') {
+                this.cInput('.'); // Mendukung titik dan koma untuk desimal
+            } else if (key === 'Enter' || key === '=') {
+                this.cCalculate(); // Tombol enter untuk menghitung hasil
+            } else if (key === 'Backspace') {
+                this.cDel(); // Tombol hapus mundur
+            } else if (key === 'Escape' || key === 'Delete') {
+                this.cClear(); // Tombol esc/delete untuk menghapus total (C)
+            }
+        }
     }
 }
 
