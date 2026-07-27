@@ -635,64 +635,68 @@
                     <div class="welcome-clock-label">Waktu Sekarang</div>
                 </div>
                 
-                <!-- SUMMARY NOTIFICATION BADGES KOMPAK MONOCHROME / GOLD -->
-								<div class="relative z-10 flex flex-col gap-2.5 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg min-w-[260px] min-h-[100px]" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
+                <!-- SUMMARY NOTIFICATION BADGES KOMPAK MONOCHROME / GOLD (VERSI DYNAMIC LOADER) -->
+								<div class="relative z-10 flex flex-col gap-3 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg min-w-[260px] min-h-[100px] justify-center" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
 										
-										<!-- Animasi Loading (Muncul saat data sedang diambil) -->
-										<template x-if="!summaryLoaded">
-												<div class="flex flex-col gap-3.5 py-0.5 justify-center h-full">
-														<div class="flex justify-between items-center gap-8">
-																<div class="flex items-center gap-3 w-full">
-																		<div class="w-2.5 h-2.5 rounded-full skeleton-box flex-shrink-0"></div>
-																		<div class="h-3 w-24 skeleton-box"></div>
-																</div>
-																<div class="h-3 w-8 skeleton-box"></div>
-														</div>
-														<div class="flex justify-between items-center gap-8">
-																<div class="flex items-center gap-3 w-full">
-																		<div class="w-2.5 h-2.5 rounded-full skeleton-box flex-shrink-0"></div>
-																		<div class="h-3 w-20 skeleton-box"></div>
-																</div>
-																<div class="h-3 w-8 skeleton-box"></div>
-														</div>
-														<div class="flex justify-between items-center gap-8">
-																<div class="flex items-center gap-3 w-full">
-																		<div class="w-2.5 h-2.5 rounded-full skeleton-box flex-shrink-0"></div>
-																		<div class="h-3 w-32 skeleton-box"></div>
-																</div>
-																<div class="h-3 w-8 skeleton-box"></div>
-														</div>
+										<!-- BARIS 1: Kirim Hari Ini -->
+										<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
+												<!-- Label Statis (Selalu Tampil) -->
+												<div class="flex items-center gap-3">
+														<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
+														<span style="color: rgba(255,255,255,0.9);">Kirim Hari Ini</span>
 												</div>
-										</template>
-
-										<!-- Data Asli (Muncul mulus setelah data selesai dimuat) -->
-										<template x-if="summaryLoaded">
-												<div class="flex flex-col gap-2.5 justify-center h-full" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-														<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider">
-																<div class="flex items-center gap-3">
-																		<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
-																		<span style="color: rgba(255,255,255,0.9);">Kirim Hari Ini</span>
-																</div>
-																<span style="color: #fff;" x-text="': ' + countKirimHariIni"></span>
+												
+												<!-- Area Angka / Loading -->
+												<div class="flex items-center justify-end min-w-[30px]">
+														<!-- Animasi Loading Lingkaran -->
+														<div x-show="!summaryLoaded" class="relative w-3.5 h-3.5 flex items-center justify-center">
+																<div class="absolute w-full h-full border-[1.5px] border-white/10 rounded-full"></div>
+																<div class="absolute w-full h-full border-[1.5px] border-yellow-500 border-t-transparent border-l-transparent rounded-full animate-spin"></div>
 														</div>
-														
-														<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider">
-																<div class="flex items-center gap-3">
-																		<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
-																		<span style="color: rgba(255,255,255,0.9);">Belum Bayar</span>
-																</div>
-																<span style="color: #fff;" x-text="': ' + countBelumBayar"></span>
-														</div>
-
-														<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider">
-																<div class="flex items-center gap-3">
-																		<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
-																		<span style="color: rgba(255,255,255,0.9);">Sdh Bayar / Blm Kirim</span>
-																</div>
-																<span style="color: #fff;" x-text="': ' + countBelumKirim"></span>
-														</div>
+														<!-- Angka Hasil -->
+														<span x-show="summaryLoaded" style="color: #fff;" x-text="': ' + countKirimHariIni" x-cloak x-transition.opacity.duration.300ms></span>
 												</div>
-										</template>
+										</div>
+										
+										<!-- BARIS 2: Belum Bayar -->
+										<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
+												<!-- Label Statis (Selalu Tampil) -->
+												<div class="flex items-center gap-3">
+														<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
+														<span style="color: rgba(255,255,255,0.9);">Belum Bayar</span>
+												</div>
+												
+												<!-- Area Angka / Loading -->
+												<div class="flex items-center justify-end min-w-[30px]">
+														<!-- Animasi Loading Lingkaran -->
+														<div x-show="!summaryLoaded" class="relative w-3.5 h-3.5 flex items-center justify-center">
+																<div class="absolute w-full h-full border-[1.5px] border-white/10 rounded-full"></div>
+																<div class="absolute w-full h-full border-[1.5px] border-yellow-500 border-t-transparent border-l-transparent rounded-full animate-spin"></div>
+														</div>
+														<!-- Angka Hasil -->
+														<span x-show="summaryLoaded" style="color: #fff;" x-text="': ' + countBelumBayar" x-cloak x-transition.opacity.duration.300ms></span>
+												</div>
+										</div>
+
+										<!-- BARIS 3: Sdh Bayar / Blm Kirim -->
+										<div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
+												<!-- Label Statis (Selalu Tampil) -->
+												<div class="flex items-center gap-3">
+														<div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
+														<span style="color: rgba(255,255,255,0.9);">Sdh Bayar / Blm Kirim</span>
+												</div>
+												
+												<!-- Area Angka / Loading -->
+												<div class="flex items-center justify-end min-w-[30px]">
+														<!-- Animasi Loading Lingkaran -->
+														<div x-show="!summaryLoaded" class="relative w-3.5 h-3.5 flex items-center justify-center">
+																<div class="absolute w-full h-full border-[1.5px] border-white/10 rounded-full"></div>
+																<div class="absolute w-full h-full border-[1.5px] border-yellow-500 border-t-transparent border-l-transparent rounded-full animate-spin"></div>
+														</div>
+														<!-- Angka Hasil -->
+														<span x-show="summaryLoaded" style="color: #fff;" x-text="': ' + countBelumKirim" x-cloak x-transition.opacity.duration.300ms></span>
+												</div>
+										</div>
 
 								</div>
             </div>
@@ -857,7 +861,7 @@
 										<svg x-show="popupPanel === 'kalkulator'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="14.01"></line><line x1="12" y1="14" x2="12" y2="14.01"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="16" y1="18" x2="16" y2="18.01"></line><line x1="12" y1="18" x2="12" y2="18.01"></line><line x1="8" y1="18" x2="8" y2="18.01"></line></svg>
 								</span>
                 <div>
-										<div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Status Packing (Ops)' : (popupPanel === 'buku_tamu' ? 'Buku Tamu' : (popupPanel === 'stok_produk' ? 'Stok Produk' : (popupPanel === 'kalkulator' ? 'Kalkulator Cerdas' : ''))))))"></div>
+										<div class="popup-title" x-text="popupPanel === 'pencapaian' ? 'Target Harian' : (popupPanel === 'pesanan' ? 'Admin Pesanan Online' : (popupPanel === 'status_customer' ? 'Status Customer' : (popupPanel === 'admin_sales' ? 'Status Packing' : (popupPanel === 'buku_tamu' ? 'Buku Tamu' : (popupPanel === 'stok_produk' ? 'Stok Produk' : (popupPanel === 'kalkulator' ? 'Kalkulator Diskon' : ''))))))"></div>
                 </div>
             </div>
             <button class="popup-close-btn" @click="closePopup()">
@@ -1132,18 +1136,6 @@
                                     <option value="cancel">❌ Cancel</option>
                                 </select>
                                 
-                                <select x-model="scFilterProgress" class="px-3 py-2 border rounded-lg text-sm outline-none font-extrabold cursor-pointer" style="color:var(--theme-white); border-color:rgba(255,255,255,0.2);">
-                                    <option value="">Semua Progress</option>
-                                    <option value="greet">Greet</option>
-                                    <option value="tertarik">Tertarik</option>
-                                    <option value="FU 1">FU 1</option>
-                                    <option value="FU 2">FU 2</option>
-                                    <option value="FU 3">FU 3</option>
-                                    <option value="FU 4">FU 4</option>
-                                    <option value="closing">Closing</option>
-                                    <option value="tidak tertarik">Tidak Tertarik</option>
-                                    <option value="-">Belum Ada Progress</option>
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -1192,10 +1184,6 @@
                                               x-text="c.tglKirim || '-'"></span>
                                     </div>
                                     <div class="flex items-center gap-1.5">
-                                        <button @click="bukaModalUpdate(c)" class="px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm border" 
-                                                :style="c.statusCustomer === 'belum bayar' ? 'background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;' : 'background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1a1a1a;'">
-                                            Update
-                                        </button>
                                         <button @click="bukaModalSiapkan(c.nama)" class="px-2.5 py-1.5 rounded-lg text-[10px] font-extrabold uppercase transition shadow-sm" style="background: var(--grad-black); color: white;">
                                             Siapkan
                                         </button>
@@ -1211,33 +1199,6 @@
                     </div>
                 </div>
 
-                <!-- MODAL UPDATE STATUS PROGRESS -->
-                <div x-show="modalUpdateOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalUpdate()">
-                    <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid var(--border-theme);">
-                        <h3 class="text-lg font-extrabold mb-1" style="color:var(--text-dark);">Update Progress</h3>
-                        <p class="text-xs mb-5" style="color:var(--text-mid);">
-                            Pelanggan: <strong style="color:#fff;" x-text="activeCustomer?.nama"></strong><br>
-                            Progress saat ini: <strong style="color:var(--theme-light);" class="uppercase" x-text="activeCustomer?.progress || '-'"></strong>
-                        </p>
-                        
-                        <select x-model="selectedProgress" class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium cursor-pointer" style="background:rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); color:var(--text-dark);">
-                            <option value="">-- Pilih Progress Baru --</option>
-                            <option value="greet">Greet</option>
-                            <option value="tertarik">Tertarik</option>
-                            <option value="FU 1">FU 1</option>
-                            <option value="FU 2">FU 2</option>
-                            <option value="FU 3">FU 3</option>
-                            <option value="FU 4">FU 4</option>
-                            <option value="closing">Closing</option>
-                            <option value="tidak tertarik">Tidak Tertarik</option>
-                        </select>
-                        
-                        <div class="flex justify-end space-x-3">
-                            <button @click="tutupModalUpdate()" class="px-5 py-2.5 font-bold text-sm rounded-xl transition" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:var(--text-mid);">Batal</button>
-                            <button @click="simpanUpdateStatus()" :disabled="!selectedProgress" class="px-6 py-2.5 text-white rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">Simpan</button>
-                        </div>
-                    </div>
-                </div>
                 
                 <!-- MODAL SIAPKAN -->
                 <div x-show="modalSiapkanOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center bg-black bg-opacity-60 px-4 backdrop-blur-sm" @click.self="tutupModalSiapkan()">
@@ -1377,7 +1338,7 @@
                     <div class="flex flex-col gap-2 w-full">
                         <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Pilih Sheet Tujuan:</label>
                         <select x-model="selectedSheet" class="w-full px-4 py-2 border border-[rgba(255,255,255,0.2)] rounded-lg outline-none transition text-sm font-bold cursor-pointer bg-[#1b1b20] text-white focus:border-yellow-500 shadow-inner">
-                            <option value="">-- Pilih Sheet Aktif --</option>
+                            <option value="">-- Pilih Sheet Tujuan --</option>
                             <template x-for="sh in availableSheets" :key="sh">
                                 <option :value="sh" x-text="sh"></option>
                             </template>
@@ -1453,12 +1414,12 @@
 								
 								<!-- MODAL POPUP DATABASE BUKU TAMU -->
 								<div x-show="showModalDB" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" x-cloak>
-										<div class="bg-[#131315] border border-[rgba(255,255,255,0.15)] rounded-2xl w-full max-w-md h-[85vh] flex flex-col overflow-hidden shadow-2xl relative" @click.away="showModalDB = false">
+										<div class="bg-[#131315] border border-[rgba(255,255,255,0.15)] rounded-2xl w-full max-w-md h-[85vh] flex flex-col overflow-hidden shadow-2xl relative">
 												
 												<!-- Header Modal -->
 												<div class="p-4 border-b border-[rgba(255,255,255,0.1)] flex justify-between items-center bg-[#1b1b20]">
 														<h3 class="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">
-																<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-yellow-500"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+																<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-yellow-500"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
 																Database Buku Tamu
 														</h3>
 														<button @click="showModalDB = false" class="text-gray-400 hover:text-red-500 transition-colors bg-[rgba(255,255,255,0.05)] rounded-full p-1">
@@ -1466,26 +1427,37 @@
 														</button>
 												</div>
 
-												<!-- Toolbar Pencarian & Pilih Semua -->
-												<div class="p-3 bg-[#131315] border-b border-[rgba(255,255,255,0.05)] flex gap-2 items-center relative z-10">
-														<!-- Kotak Centang Pilih Semua -->
-														<label class="flex items-center justify-center p-2.5 rounded-lg bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] cursor-pointer hover:border-yellow-500 transition" title="Pilih Semua">
-																<input type="checkbox" class="w-4 h-4 cursor-pointer rounded border-gray-600 bg-black checked:bg-yellow-500" 
-																		:checked="selectedDBItems.length === filteredDB().length && filteredDB().length > 0"
-																		@change="$event.target.checked ? selectedDBItems = filteredDB().map(i => i.uid) : selectedDBItems = []">
-														</label>
-
-														<!-- Kolom Pencarian Universal -->
-														<div class="relative flex-1">
-																<input type="text" x-model="dbQuery" placeholder="Cari nama, sumber, atau keyword apapun..." class="w-full bg-[#0a0a0c] border border-[rgba(255,255,255,0.15)] rounded-lg pl-9 pr-3 py-2.5 text-white text-xs outline-none focus:border-yellow-500 transition font-['Montserrat'] shadow-inner">
-																<svg class="absolute left-3 top-3 text-gray-500" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+												<!-- Toolbar Pencarian & Filter Progress -->
+												<div class="p-3 bg-[#131315] border-b border-[rgba(255,255,255,0.05)] flex flex-col gap-2 relative z-10">
+														<div class="flex gap-2 items-center">
+																<label class="flex items-center justify-center p-2.5 rounded-lg bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] cursor-pointer hover:border-yellow-500 transition" title="Pilih Semua">
+																		<input type="checkbox" class="w-4 h-4 cursor-pointer rounded border-gray-600 bg-black checked:bg-yellow-500" 
+																				:checked="selectedDBItems.length === filteredDB().length && filteredDB().length > 0"
+																				@change="$event.target.checked ? selectedDBItems = filteredDB().map(i => i.uid) : selectedDBItems = []">
+																</label>
+																<div class="relative flex-1">
+																		<input type="text" x-model="dbQuery" placeholder="Cari nama, sumber, atau keyword apapun..." class="w-full bg-[#0a0a0c] border border-[rgba(255,255,255,0.15)] rounded-lg pl-9 pr-3 py-2.5 text-white text-xs outline-none focus:border-yellow-500 transition font-['Montserrat'] shadow-inner">
+																		<svg class="absolute left-3 top-2.5 text-gray-500" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+																</div>
 														</div>
+														<!-- Filter Dropdown Progress -->
+														<select x-model="dbProgressFilter" class="w-full px-3 py-2 bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] rounded-lg text-xs outline-none font-bold text-gray-300 focus:border-yellow-500 cursor-pointer">
+																<option value="">Semua Progress</option>
+																<option value="greet">Greet</option>
+																<option value="tertarik">Tertarik</option>
+																<option value="FU 1">FU 1</option>
+																<option value="FU 2">FU 2</option>
+																<option value="FU 3">FU 3</option>
+																<option value="FU 4">FU 4</option>
+																<option value="closing">Closing</option>
+																<option value="tidak tertarik">Tidak Tertarik</option>
+																<option value="-">Belum Ada Progress</option>
+														</select>
 												</div>
 
-												<!-- Panel Aksi Massal (Muncul jika ada data tercentang) -->
 												<div x-show="selectedDBItems.length > 0" class="flex justify-between items-center px-4 py-2 bg-red-900/30 border-b border-red-500/30 transition-all z-10" x-cloak>
 														<span class="text-[11px] font-bold text-red-400 uppercase tracking-wider"><span x-text="selectedDBItems.length"></span> Data Terpilih</span>
-														<button @click="deleteSelectedDB()" class="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-1.5">
+														<button @click="deleteSelectedDB()" class="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5">
 																<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
 																Hapus
 														</button>
@@ -1493,55 +1465,75 @@
 
 												<!-- Area Hasil Data -->
 												<div class="flex-1 overflow-y-auto p-3 space-y-3 bg-[#0a0a0c]" style="scrollbar-width: none;">
-														
 														<div x-show="dbLoading" class="flex flex-col items-center justify-center h-full">
 																<div class="animate-spin w-8 h-8 border-4 border-yellow-500 border-t-transparent rounded-full mb-3"></div>
-																<span class="text-xs font-bold text-gray-400 tracking-widest uppercase">Menyinkronkan Data...</span>
+																<span class="text-xs font-bold text-gray-400 tracking-widest uppercase">Mengambil Data...</span>
 														</div>
-
 														<div x-show="!dbLoading && filteredDB().length === 0" class="text-center py-10 flex flex-col items-center">
 																<span class="text-4xl mb-2">📭</span>
 																<span class="text-gray-500 text-xs font-bold font-['Montserrat']">Tidak ada data ditemukan.</span>
 														</div>
 
-														<!-- Loop Kartu Data -->
 														<template x-for="(item, idx) in filteredDB()" :key="item.uid">
-																<div class="p-3 rounded-xl bg-[#1b1b20] border relative overflow-hidden font-['Montserrat'] transition flex gap-3 cursor-pointer" 
-																		:class="selectedDBItems.includes(item.uid) ? 'border-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.2)]' : 'border-[rgba(255,255,255,0.08)] hover:border-[rgba(255,255,255,0.2)]'"
-																		@click="toggleSelectDB(item.uid)">
+																<div class="p-3 rounded-xl bg-[#1b1b20] border relative overflow-hidden font-['Montserrat'] transition flex gap-3" 
+																		:class="selectedDBItems.includes(item.uid) ? 'border-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.2)]' : 'border-[rgba(255,255,255,0.08)]'">
 																		
-																		<!-- Checkbox Individual -->
 																		<div class="flex items-center justify-center pt-1">
-																				<input type="checkbox" class="w-4 h-4 cursor-pointer rounded pointer-events-none" :checked="selectedDBItems.includes(item.uid)">
+																				<input type="checkbox" class="w-4 h-4 cursor-pointer rounded" :checked="selectedDBItems.includes(item.uid)" @change="toggleSelectDB(item.uid)">
 																		</div>
 																		
-																		<div x-show="item.isJepang" class="absolute top-0 right-0 px-2.5 py-1 bg-yellow-500 text-black text-[9px] font-black tracking-widest rounded-bl-lg shadow-md">
-																				JEPANG
-																		</div>
+																		<div x-show="item.isJepang" class="absolute top-0 right-0 px-2.5 py-1 bg-yellow-500 text-black text-[9px] font-black tracking-widest rounded-bl-lg shadow-md">JEPANG</div>
 																		
 																		<div class="flex flex-col gap-1.5 flex-1">
 																				<div class="flex flex-col">
-																						<span class="text-[10px] font-bold text-gray-500">
-																								<span x-text="item.sheet"></span> (Baris <span x-text="item.rowNumber"></span>)
-																						</span>
+																						<span class="text-[10px] font-bold text-gray-500"><span x-text="item.sheet"></span> (Baris <span x-text="item.rowNumber"></span>)</span>
 																						<span class="text-sm font-black text-white" x-text="item.nama"></span>
 																				</div>
-																				
 																				<div class="flex justify-between items-center mt-1 pt-2 border-t border-[rgba(255,255,255,0.05)]">
 																						<div class="flex flex-col">
-																								<span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Sumber</span>
-																								<span class="text-xs font-bold text-gray-300" x-text="item.sumber || '-'"></span>
+																								<span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Progress</span>
+																								<span class="text-xs font-bold text-yellow-500 uppercase" x-text="item.progress"></span>
 																						</div>
 																						<div class="flex flex-col text-right pr-2">
 																								<span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Tgl Kirim</span>
-																								<span class="text-xs font-bold text-yellow-500" x-text="item.tglKirim || '-'"></span>
+																								<span class="text-xs font-bold text-gray-300" x-text="item.tglKirim || '-'"></span>
 																						</div>
 																				</div>
+																				<!-- Tombol Update Progress Individual -->
+																				<button @click="bukaModalUpdate(item)" class="mt-1 w-full py-2 bg-[rgba(255,255,255,0.03)] hover:bg-yellow-500 hover:text-black text-gray-300 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors border border-[rgba(255,255,255,0.1)] hover:border-yellow-500">
+																						Update Progress
+																				</button>
 																		</div>
 																</div>
 														</template>
-														
 												</div>
+												
+												<!-- MODAL UPDATE PROGRESS (MUNCUL DI ATAS POPUP DATABASE) -->
+												<div x-show="modalUpdateOpen" x-cloak class="absolute inset-0 z-[70] flex items-center justify-center bg-black bg-opacity-70 px-4 backdrop-blur-md">
+														<div class="bg-white rounded-2xl w-full p-6 shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid rgba(255,255,255,0.15);" @click.away="tutupModalUpdate()">
+																<h3 class="text-base font-black mb-1 text-white">Update Progress</h3>
+																<p class="text-xs mb-5 text-gray-400">
+																		Pelanggan: <strong class="text-white" x-text="activeCustomer?.nama"></strong><br>
+																		Progress saat ini: <strong class="text-yellow-500 uppercase" x-text="activeCustomer?.progress || '-'"></strong>
+																</p>
+																<select x-model="selectedProgress" class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium cursor-pointer bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.14)] text-gray-200 focus:border-yellow-500">
+																		<option value="">-- Pilih Progress Baru --</option>
+																		<option value="greet">Greet</option>
+																		<option value="tertarik">Tertarik</option>
+																		<option value="FU 1">FU 1</option>
+																		<option value="FU 2">FU 2</option>
+																		<option value="FU 3">FU 3</option>
+																		<option value="FU 4">FU 4</option>
+																		<option value="closing">Closing</option>
+																		<option value="tidak tertarik">Tidak Tertarik</option>
+																</select>
+																<div class="flex justify-end space-x-3">
+																		<button @click="tutupModalUpdate()" class="px-5 py-2.5 font-bold text-xs rounded-xl transition bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-gray-400 hover:text-white">Batal</button>
+																		<button @click="simpanUpdateStatus()" :disabled="!selectedProgress" class="px-6 py-2.5 text-black rounded-xl font-black shadow-lg transition bg-yellow-500 hover:bg-yellow-400 text-xs disabled:opacity-50 disabled:cursor-not-allowed">Simpan</button>
+																</div>
+														</div>
+												</div>
+
 										</div>
 								</div>
             </div>
@@ -1584,8 +1576,11 @@
                             <div class="flex-1 w-full overflow-hidden">
                                 <h3 class="font-extrabold text-[15px] uppercase tracking-wide mb-3" style="color:var(--theme-white);" x-text="item.nama"></h3>
                                 
-                                <div class="w-full border rounded-lg overflow-hidden" style="border-color: rgba(255,255,255,0.1);">
-                                    <table class="w-full text-left border-collapse">
+                                <!-- PERUBAHAN 1: Mengganti overflow-hidden menjadi overflow-x-auto dan touch-pan-x, serta menyembunyikan scrollbar -->
+                                <div class="w-full border rounded-lg overflow-x-auto touch-pan-x" style="border-color: rgba(255,255,255,0.1); scrollbar-width: none;">
+                                    
+                                    <!-- PERUBAHAN 2: Menambahkan min-w-max dan whitespace-nowrap agar tabel tidak tertekan (squished) -->
+                                    <table class="w-full text-left border-collapse min-w-max whitespace-nowrap">
                                         <thead>
                                             <tr style="background: rgba(255,255,255,0.05);">
                                                 <th class="px-3 py-2 text-[9px] uppercase font-bold text-gray-400">Size</th>
@@ -1635,7 +1630,7 @@
                     
                     <div x-show="loading" class="flex items-center gap-2 mb-3 text-xs font-bold text-yellow-500">
                         <div class="animate-spin w-4 h-4 border-2 border-yellow-500 border-t-transparent rounded-full"></div>
-                        Mengambil data harga dari server...
+                        Mengambil data harga dari stok...
                     </div>
 
                     <!-- Area Input Produk -->
@@ -2287,11 +2282,11 @@ function bukuTamuApp() {
         availableSheets: [], selectedSheet: '', loading: false, entries: [],
         
         // Variabel Database Popup
-        showModalDB: false, 
-        dbLoading: false, 
-        dbData: [], 
-        dbQuery: '',
-        selectedDBItems: [], // Menampung data yang dicentang
+        showModalDB: false, dbLoading: false, dbData: [], dbQuery: '',
+        selectedDBItems: [], dbProgressFilter: '',
+        
+        // Variabel Update Progress
+        modalUpdateOpen: false, activeCustomer: null, selectedProgress: '',
 
         initBT() { this.addEntry(); this.fetchSheets(); },
         
@@ -2304,7 +2299,6 @@ function bukuTamuApp() {
         },
         
         addEntry() { this.entries.push({ id: Date.now() + Math.random(), nama: '', sumber: '', tglKirim: '', isJepang: false }); },
-        
         removeEntry(id) { this.entries = this.entries.filter(e => e.id !== id); if (this.entries.length === 0) this.addEntry(); },
         
         async submitData() {
@@ -2319,13 +2313,9 @@ function bukuTamuApp() {
                 const textResult = await response.text();
                 
                 if (textResult.includes("Gateway Timeout") || textResult.includes("<html") || textResult.includes("Error")) {
-                    showToast('Gagal: Server Google sibuk (Timeout).', 'error');
-                    this.loading = false; return;
+                    showToast('Gagal: Server Google sibuk (Timeout).', 'error'); this.loading = false; return;
                 }
-
-                let result;
-                try { result = JSON.parse(textResult); } catch (e) { showToast('Gagal memproses respons server.', 'error'); this.loading = false; return; }
-
+                let result = JSON.parse(textResult);
                 if (result.success) { 
                     showToast('Data Buku Tamu berhasil diinput! ✅', 'success'); 
                     this.entries = []; this.addEntry(); 
@@ -2335,70 +2325,97 @@ function bukuTamuApp() {
         },
 
         async openDatabase() {
-            this.showModalDB = true;
-            this.dbLoading = true;
-            this.dbData = [];
-            this.dbQuery = ''; 
-            this.selectedDBItems = []; 
-            
+            this.showModalDB = true; this.dbLoading = true; this.dbData = [];
+            this.dbQuery = ''; this.dbProgressFilter = ''; this.selectedDBItems = []; 
             try {
                 const res = await fetch(`${this.apiUrl}?action=getAllData`);
                 const result = await res.json();
-                
                 if (result.success && result.data) {
-                    // Membuat ID unik (uid) untuk melacak penghapusan
                     this.dbData = result.data.map(item => {
-                        item.uid = item.sheet + '_' + item.rowNumber;
-                        return item;
+                        item.uid = item.sheet + '_' + item.rowNumber; return item;
                     }).reverse(); 
                 }
             } catch (e) { showToast("Gagal mengambil data database", "error"); }
             this.dbLoading = false;
         },
 
-        // PERBAIKAN PENCARIAN: Mengubah getter menjadi Fungsi murni agar responsif (real-time)
         filteredDB() {
-            if (!this.dbQuery || this.dbQuery.trim() === '') return this.dbData;
-            const q = this.dbQuery.trim().toLowerCase();
-            return this.dbData.filter(item => JSON.stringify(item).toLowerCase().includes(q));
+            let result = this.dbData;
+            // 1. Filter Berdasarkan Dropdown Progress
+            if (this.dbProgressFilter !== '') {
+                result = result.filter(item => item.progress === this.dbProgressFilter);
+            }
+            // 2. Filter Berdasarkan Kolom Pencarian Teks
+            if (this.dbQuery && this.dbQuery.trim() !== '') {
+                const q = this.dbQuery.trim().toLowerCase();
+                result = result.filter(item => JSON.stringify(item).toLowerCase().includes(q));
+            }
+            return result;
         },
 
-        // Mengatur Logika Centang Kartu
         toggleSelectDB(uid) {
             if (this.selectedDBItems.includes(uid)) {
                 this.selectedDBItems = this.selectedDBItems.filter(id => id !== uid);
-            } else {
-                this.selectedDBItems.push(uid);
-            }
+            } else { this.selectedDBItems.push(uid); }
         },
 
-        // FUNGSI MENGHAPUS DATA BUKU TAMU KE GOOGLE SHEET
         async deleteSelectedDB() {
             if (!confirm(`Apakah Anda yakin ingin menghapus ${this.selectedDBItems.length} data ini dari sistem?`)) return;
-            
             this.dbLoading = true;
-            
-            // Menerjemahkan ID unik (sheet_row) kembali ke data asli
             const payloadData = this.selectedDBItems.map(uid => {
-                const parts = uid.split('_');
-                return { sheet: parts[0], row: parseInt(parts[1]) };
+                const parts = uid.split('_'); return { sheet: parts[0], row: parseInt(parts[1]) };
             });
 
             try {
                 const payload = { action: 'deleteBukuTamu', data: payloadData };
                 const response = await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
-                const textResult = await response.text();
-                
-                let result = JSON.parse(textResult);
+                let result = JSON.parse(await response.text());
                 if (result.success) {
                     showToast(`${this.selectedDBItems.length} Data berhasil dihapus! 🗑️`, 'success');
-                    this.selectedDBItems = [];
-                    await this.openDatabase(); // Refresh data layar agar langsung menghilang
-                } else {
-                    showToast('Gagal menghapus data.', 'error');
+                    this.selectedDBItems = []; await this.openDatabase(); 
+                } else { showToast('Gagal menghapus data.', 'error'); }
+            } catch (e) { showToast('Terjadi kesalahan jaringan.', 'error'); }
+            this.dbLoading = false;
+        },
+
+        // =========================================================
+        // FITUR BARU: UPDATE PROGRESS CUSTOMER
+        // =========================================================
+        bukaModalUpdate(customer) {
+            this.activeCustomer = customer;
+            this.selectedProgress = '';
+            this.modalUpdateOpen = true;
+        },
+        
+        tutupModalUpdate() {
+            this.modalUpdateOpen = false;
+            this.activeCustomer = null;
+        },
+        
+        async simpanUpdateStatus() {
+            this.modalUpdateOpen = false; 
+            this.dbLoading = true; // Gunakan animasi loading bawaan DB
+            
+            try {
+                const payload = { 
+                    action: 'updateProgressCustomer', 
+                    sheetName: this.activeCustomer.sheet, 
+                    rowNumber: this.activeCustomer.rowNumber, 
+                    progress: this.selectedProgress 
+                };
+                
+                const response = await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+                const result = await response.json();
+                
+                if (result.success) { 
+                    showToast('Progress berhasil diupdate! ✅', 'success'); 
+                    // Muat ulang daftar agar warna dan status progress yang baru langsung tampil
+                    await this.openDatabase(); 
+                } else { 
+                    showToast('Gagal update progress', 'error'); 
                 }
-            } catch (e) {
-                showToast('Terjadi kesalahan jaringan.', 'error');
+            } catch(e) { 
+                showToast('Gagal terhubung', 'error'); 
             }
             this.dbLoading = false;
         }
