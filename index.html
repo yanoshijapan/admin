@@ -1333,6 +1333,12 @@
                         <h2 class="text-sm font-black text-white uppercase tracking-widest border-l-4 border-yellow-500 pl-2 shrink-0">
                             Buku Tamu
                         </h2>
+												
+												<!-- TOMBOL DOWNLOAD EXCEL -->
+												<button @click="downloadExcel()" type="button" class="shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-bold text-[11px] uppercase tracking-wider shadow-lg transition-all active:scale-95 text-white bg-green-600 hover:bg-green-500" style="border: none; cursor: pointer; font-family: 'Montserrat', sans-serif;">
+														<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+														Unduh Excel
+												</button>
                         
                         <!-- TOMBOL LIHAT DATA (DIPAKSA TAMPIL DENGAN STYLE INLINE AGAR PASTI MUNCUL) -->
                         <button @click="openDatabase()" type="button" class="shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-bold text-[11px] uppercase tracking-wider shadow-lg transition-all active:scale-95" style="background-color: #eab308; color: #000; border: none; cursor: pointer; font-family: 'Montserrat', sans-serif;">
@@ -2472,6 +2478,53 @@ function bukuTamuApp() {
         rekapData: { totalCustomer: 0, totalHari: 0, sumberHtml: '', progressHtml: '', highestProgress: '' },
 
         initBT() { this.addEntry(); this.fetchSheets(); },
+				
+				// =================================================================
+        // FITUR BARU: DOWNLOAD EXCEL (XLSX)
+        // =================================================================
+        async downloadExcel() {
+            this.loading = true;
+            showToast('Menyiapkan file Excel, mohon tunggu...', 'info');
+            
+            try {
+                // Memanggil backend Apps Script
+                const res = await fetch(`${this.apiUrl}?action=downloadExcel`);
+                const result = await res.json();
+                
+                if (result.success && result.base64) {
+                    // Buat tanggal format dd-mm-yyyy (Garis miring / dilarang di nama file Windows/Mac)
+                    const today = new Date();
+                    const dd = String(today.getDate()).padStart(2, '0');
+                    const mm = String(today.getMonth() + 1).padStart(2, '0');
+                    const yyyy = today.getFullYear();
+                    const fileName = `rekap data (${dd}-${mm}-${yyyy}).xlsx`;
+                    
+                    // Konversi data Base64 ke wujud Blob untuk memicu download browser
+                    const byteCharacters = atob(result.base64);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+                    
+                    // Eksekusi trigger klik otomatis untuk mengunduh
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showToast('Berhasil mengunduh Excel! ✅', 'success');
+                } else {
+                    showToast('Gagal: ' + (result.message || 'Server Error'), 'error');
+                }
+            } catch (e) {
+                showToast('Gagal terhubung ke server.', 'error');
+            }
+            this.loading = false;
+        },
         
         async fetchSheets() { 
             try { 
