@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
     <style>
         :root {
             /* ===== TEMA MONOCHROME BARU ===== */
@@ -543,6 +544,12 @@
 				@keyframes dotBounce {
 						0%, 80%, 100% { transform: scale(0); }
 						40% { transform: scale(1); }
+				}
+				
+				/* Membuat logo kalender (date picker) menjadi warna putih */
+				input[type="date"]::-webkit-calendar-picker-indicator {
+						filter: invert(1) brightness(2);
+						cursor: pointer;
 				}
 				
 				/* ===== MENGGESER PANAH (SPINNER) INPUT NUMBER ===== */
@@ -1367,35 +1374,53 @@
                                     <input type="text" x-model="item.nama" placeholder="Ketik nama..." class="w-full px-4 py-2.5 rounded-lg text-sm font-medium">
                                 </div>
                                 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Sumber</label>
-                                        <select x-model="item.sumber" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium cursor-pointer">
-                                            <option value="">-- Pilih Sumber --</option>
-                                            <option value="IG">IG</option>
-                                            <option value="FB">FB</option>
-                                            <option value="TikTok">TikTok</option>
-                                            <option value="Chatbot">Chatbot</option>
-                                            <option value="Web">Web</option>
-                                            <option value="EXATA">EXATA</option>
-                                            <option value="Jastip">Jastip</option>
-                                            <option value="LPK">LPK</option>
-                                            <option value="Senior/Teman">Senior/Teman</option>
-                                            <option value="Leads Exata">Leads Exata</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Tanggal Kirim</label>
-                                        <input type="date" x-model="item.tglKirim" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium">
-                                    </div>
-                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+																		<div>
+																				<label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Sumber</label>
+																				<select x-model="item.sumber" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium cursor-pointer" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:var(--text-dark);">
+																						<option value="">-- Pilih Sumber --</option>
+																						<option value="IG">IG</option>
+																						<option value="FB">FB</option>
+																						<option value="TikTok">TikTok</option>
+																						<option value="Chatbot">Chatbot</option>
+																						<option value="Web">Web</option>
+																						<option value="EXATA">EXATA</option>
+																						<option value="Jastip">Jastip</option>
+																						<option value="LPK">LPK</option>
+																						<option value="Senior/Teman">Senior/Teman</option>
+																						<option value="Leads Exata">Leads Exata</option>
+																				</select>
+																		</div>
+																		<div>
+																				<label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Tanggal Kirim</label>
+																				<input type="date" x-model="item.tglKirim" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:var(--text-dark);">
+																		</div>
+																</div>
 
-                                <div class="mt-2 flex items-center">
-                                    <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border w-full transition" :style="item.isJepang ? 'background:rgba(255,255,255,0.05); border-color:#fff;' : 'background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08);'">
-                                        <input type="checkbox" x-model="item.isJepang" class="w-5 h-5 rounded cursor-pointer transition">
-                                        <span class="text-sm font-bold" :style="item.isJepang ? 'color:#fff;' : 'color:var(--text-dark);'">Kirim ke Jepang 🇯🇵</span>
-                                    </label>
-                                </div>
+																<!-- BARU: Progress Awal & Catatan -->
+																<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+																		<div>
+																				<label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Progress Awal</label>
+																				<select x-model="item.progress" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium cursor-pointer" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:var(--text-dark);">
+																						<option value="">-- Pilih Progress --</option>
+																						<option value="interest / tanya harga">Interest / Tanya Harga</option>
+																						<option value="belum urgent">Belum Urgent</option>
+																						<option value="belum bayar / tinggal bayar">Belum Bayar / Tinggal Bayar</option>
+																						<option value="ghosting after FU">Ghosting after FU</option>
+																				</select>
+																		</div>
+																		<div>
+																				<label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color:var(--text-mid);">Catatan</label>
+																				<input type="text" x-model="item.catatan" placeholder="Ketik catatan bebas..." class="w-full px-4 py-2.5 rounded-lg text-sm font-medium" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:var(--text-dark);">
+																		</div>
+																</div>
+
+																<div class="mt-4 flex items-center">
+																		<label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border w-full transition" :style="item.isJepang ? 'background:rgba(255,255,255,0.05); border-color:#fff;' : 'background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08);'">
+																				<input type="checkbox" x-model="item.isJepang" class="w-5 h-5 rounded cursor-pointer transition">
+																				<span class="text-sm font-bold" :style="item.isJepang ? 'color:#fff;' : 'color:var(--text-dark);'">Kirim ke Jepang 🇯🇵</span>
+																		</label>
+																</div>
                             </div>
                         </div>
                     </template>
@@ -1406,11 +1431,11 @@
                     </button>
                 </div>
 
-                <div class="absolute bottom-0 left-0 right-0 p-4 border-t" style="background: #0e0e10; border-color: var(--border-soft); margin-left:-24px; margin-right:-24px; margin-bottom:-32px;">
-                    <button @click="submitData()" :disabled="loading" class="w-full py-3.5 text-white font-extrabold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">
-                        <span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
-                    </button>
-                </div>
+                <div class="sticky bottom-0 left-0 right-0 p-4 border-t z-20 shrink-0" style="background: #131315; border-color: var(--border-soft); margin-left:-24px; margin-right:-24px; margin-bottom:-32px;">
+										<button @click="submitData()" :disabled="loading" class="w-full py-3.5 text-white font-extrabold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm" style="background: var(--grad-black); box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset;">
+												<span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
+										</button>
+								</div>
 								
 								<!-- MODAL POPUP DATABASE BUKU TAMU -->
 								<div x-show="showModalDB" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" x-cloak>
@@ -1439,20 +1464,29 @@
 																		<input type="text" x-model="dbQuery" placeholder="Cari nama, sumber, atau keyword apapun..." class="w-full bg-[#0a0a0c] border border-[rgba(255,255,255,0.15)] rounded-lg pl-9 pr-3 py-2.5 text-white text-xs outline-none focus:border-yellow-500 transition font-['Montserrat'] shadow-inner">
 																		<svg class="absolute left-3 top-2.5 text-gray-500" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
 																</div>
+																<button @click="bukaRekap()" class="px-3 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-black uppercase text-[10px] tracking-wider rounded-lg shadow-md hover:scale-105 transition flex gap-1.5 items-center shrink-0">
+																		<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+																		Rekap
+																</button>
 														</div>
 														<!-- Filter Dropdown Progress -->
-														<select x-model="dbProgressFilter" class="w-full px-3 py-2 bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] rounded-lg text-xs outline-none font-bold text-gray-300 focus:border-yellow-500 cursor-pointer">
-																<option value="">Semua Progress</option>
-																<option value="greet">Greet</option>
-																<option value="tertarik">Tertarik</option>
-																<option value="FU 1">FU 1</option>
-																<option value="FU 2">FU 2</option>
-																<option value="FU 3">FU 3</option>
-																<option value="FU 4">FU 4</option>
-																<option value="closing">Closing</option>
-																<option value="tidak tertarik">Tidak Tertarik</option>
-																<option value="-">Belum Ada Progress</option>
-														</select>
+														<div class="grid grid-cols-2 gap-2">
+																<select x-model="dbProgressFilter" class="w-full px-3 py-2 bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] rounded-lg text-xs outline-none font-bold text-white focus:border-yellow-500 cursor-pointer">
+																		<option value="">Semua Progress</option>
+																		<option value="interest / tanya harga">Interest / Tanya Harga</option>
+																		<option value="belum urgent">Belum Urgent</option>
+																		<option value="belum bayar / tinggal bayar">Belum Bayar / Tinggal Bayar</option>
+																		<option value="ghosting after FU">Ghosting after FU</option>
+																		<option value="-">Belum Ada Progress</option>
+																</select>
+																<select x-model="dbSumberFilter" class="w-full px-3 py-2 bg-[#1b1b20] border border-[rgba(255,255,255,0.1)] rounded-lg text-xs outline-none font-bold text-white focus:border-yellow-500 cursor-pointer">
+																		<option value="">Semua Sumber</option>
+																		<option value="IG">IG</option><option value="FB">FB</option><option value="TikTok">TikTok</option>
+																		<option value="Chatbot">Chatbot</option><option value="Web">Web</option><option value="EXATA">EXATA</option>
+																		<option value="Jastip">Jastip</option><option value="LPK">LPK</option><option value="Senior/Teman">Senior/Teman</option>
+																		<option value="Leads Exata">Leads Exata</option>
+																</select>
+														</div>
 												</div>
 
 												<div x-show="selectedDBItems.length > 0" class="flex justify-between items-center px-4 py-2 bg-red-900/30 border-b border-red-500/30 transition-all z-10" x-cloak>
@@ -1476,60 +1510,142 @@
 
 														<template x-for="(item, idx) in filteredDB()" :key="item.uid">
 																<div class="p-3 rounded-xl bg-[#1b1b20] border relative overflow-hidden font-['Montserrat'] transition flex gap-3" 
-																		:class="selectedDBItems.includes(item.uid) ? 'border-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.2)]' : 'border-[rgba(255,255,255,0.08)]'">
-																		
-																		<div class="flex items-center justify-center pt-1">
-																				<input type="checkbox" class="w-4 h-4 cursor-pointer rounded" :checked="selectedDBItems.includes(item.uid)" @change="toggleSelectDB(item.uid)">
-																		</div>
-																		
-																		<div x-show="item.isJepang" class="absolute top-0 right-0 px-2.5 py-1 bg-yellow-500 text-black text-[9px] font-black tracking-widest rounded-bl-lg shadow-md">JEPANG</div>
-																		
-																		<div class="flex flex-col gap-1.5 flex-1">
-																				<div class="flex flex-col">
-																						<span class="text-[10px] font-bold text-gray-500"><span x-text="item.sheet"></span> (Baris <span x-text="item.rowNumber"></span>)</span>
-																						<span class="text-sm font-black text-white" x-text="item.nama"></span>
+																				:class="selectedDBItems.includes(item.uid) ? 'border-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.2)]' : 'border-[rgba(255,255,255,0.08)]'">
+																				
+																				<div class="flex items-center justify-center pt-1">
+																								<input type="checkbox" class="w-4 h-4 cursor-pointer rounded" :checked="selectedDBItems.includes(item.uid)" @change="toggleSelectDB(item.uid)">
 																				</div>
-																				<div class="flex justify-between items-center mt-1 pt-2 border-t border-[rgba(255,255,255,0.05)]">
-																						<div class="flex flex-col">
-																								<span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Progress</span>
-																								<span class="text-xs font-bold text-yellow-500 uppercase" x-text="item.progress"></span>
-																						</div>
-																						<div class="flex flex-col text-right pr-2">
-																								<span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Tgl Kirim</span>
-																								<span class="text-xs font-bold text-gray-300" x-text="item.tglKirim || '-'"></span>
-																						</div>
-																				</div>
-																				<!-- Tombol Update Progress Individual -->
-																				<button @click="bukaModalUpdate(item)" class="mt-1 w-full py-2 bg-[rgba(255,255,255,0.03)] hover:bg-yellow-500 hover:text-black text-gray-300 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors border border-[rgba(255,255,255,0.1)] hover:border-yellow-500">
-																						Update Progress
-																				</button>
-																		</div>
+																				
+																				<div x-show="item.isJepang" class="absolute top-0 right-0 px-2.5 py-1 bg-yellow-500 text-black text-[9px] font-black tracking-widest rounded-bl-lg shadow-md">JEPANG</div>
+																				
+																				<div class="flex flex-col gap-1.5 flex-1">
+																					<div class="flex flex-col">
+																							<span class="text-[10px] font-bold text-gray-100 block mb-0.5">
+																									<span x-text="item.sheet"></span> (Baris <span x-text="item.rowNumber"></span>)
+																							</span>
+																							<span class="text-sm font-black text-white mt-0.5" x-text="item.nama"></span>
+																							<div class="mt-1">
+																									<span class="px-2 py-0.5 bg-[rgba(255,255,255,0.15)] rounded-md text-[8px] font-black uppercase text-yellow-500 tracking-wider inline-block" x-text="item.sumber || 'Tanpa Sumber'"></span>
+																							</div>
+																					</div>
+																					
+																					<div class="flex justify-between items-center mt-1 pt-2 border-t border-[rgba(255,255,255,0.05)]">
+																							<div class="flex flex-col">
+																									<span class="text-[9px] text-gray-100 uppercase tracking-wider mb-0.5">Progress</span>
+																									<span class="text-xs font-bold text-yellow-500 uppercase" x-text="item.progress"></span>
+																							</div>
+																							<div class="flex flex-col text-right pr-2">
+																									<span class="text-[9px] text-gray-100 uppercase tracking-wider mb-0.5">Tgl Kirim</span>
+																									<span class="text-xs font-bold text-white" x-text="item.tglKirim || '-'"></span>
+																							</div>
+																					</div>
+																					
+																					<!-- Tampilan Catatan -->
+																					<div class="mt-2 pt-2 border-t border-[rgba(255,255,255,0.05)]">
+																							<span class="text-[9px] text-gray-100 uppercase tracking-wider block mb-0.5">Catatan:</span>
+																							<span class="text-xs font-medium text-white italic" x-text="item.catatan || '-'"></span>
+																					</div>
+
+																					<button @click="bukaModalUpdate(item)" class="mt-2 w-full py-2 bg-[rgba(255,255,255,0.03)] hover:bg-yellow-500 hover:text-black text-white rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors border border-[rgba(255,255,255,0.1)] hover:border-yellow-500">
+																							Update Progress & Catatan
+																					</button>
+																			</div>
 																</div>
 														</template>
 												</div>
 												
 												<!-- MODAL UPDATE PROGRESS (MUNCUL DI ATAS POPUP DATABASE) -->
 												<div x-show="modalUpdateOpen" x-cloak class="absolute inset-0 z-[70] flex items-center justify-center bg-black bg-opacity-70 px-4 backdrop-blur-md">
-														<div class="bg-white rounded-2xl w-full p-6 shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid rgba(255,255,255,0.15);" @click.away="tutupModalUpdate()">
-																<h3 class="text-base font-black mb-1 text-white">Update Progress</h3>
-																<p class="text-xs mb-5 text-gray-400">
-																		Pelanggan: <strong class="text-white" x-text="activeCustomer?.nama"></strong><br>
-																		Progress saat ini: <strong class="text-yellow-500 uppercase" x-text="activeCustomer?.progress || '-'"></strong>
-																</p>
-																<select x-model="selectedProgress" class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium cursor-pointer bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.14)] text-gray-200 focus:border-yellow-500">
-																		<option value="">-- Pilih Progress Baru --</option>
-																		<option value="greet">Greet</option>
-																		<option value="tertarik">Tertarik</option>
-																		<option value="FU 1">FU 1</option>
-																		<option value="FU 2">FU 2</option>
-																		<option value="FU 3">FU 3</option>
-																		<option value="FU 4">FU 4</option>
-																		<option value="closing">Closing</option>
-																		<option value="tidak tertarik">Tidak Tertarik</option>
-																</select>
-																<div class="flex justify-end space-x-3">
-																		<button @click="tutupModalUpdate()" class="px-5 py-2.5 font-bold text-xs rounded-xl transition bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-gray-400 hover:text-white">Batal</button>
-																		<button @click="simpanUpdateStatus()" :disabled="!selectedProgress" class="px-6 py-2.5 text-black rounded-xl font-black shadow-lg transition bg-yellow-500 hover:bg-yellow-400 text-xs disabled:opacity-50 disabled:cursor-not-allowed">Simpan</button>
+																<div class="bg-white rounded-2xl w-full p-6 shadow-2xl" style="background: linear-gradient(165deg, #1c1c21 0%, #0f0f11 100%); border: 1px solid rgba(255,255,255,0.15);" @click.away="tutupModalUpdate()">
+																				<h3 class="text-base font-black mb-1 text-white">Update Progress</h3>
+																				<p class="text-xs mb-5 text-gray-100">
+																								Pelanggan: <strong class="text-white" x-text="activeCustomer?.nama"></strong><br>
+																								Progress: <strong class="text-yellow-500 uppercase" x-text="activeCustomer?.progress || '-'"></strong>
+																				</p>
+																				<select x-model="selectedProgress" class="w-full px-4 py-3 rounded-xl mb-3 outline-none transition text-sm font-medium cursor-pointer bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.14)] text-gray-200 focus:border-yellow-500">
+																								<option value="">-- Pilih Progress Baru --</option>
+																								<option value="interest / tanya harga">Interest / Tanya Harga</option>
+																								<option value="belum urgent">Belum Urgent</option>
+																								<option value="belum bayar / tinggal bayar">Belum Bayar / Tinggal Bayar</option>
+																								<option value="ghosting after FU">Ghosting after FU</option>
+																				</select>
+																				<input type="text" x-model="selectedCatatan" placeholder="Ketik catatan..." class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.14)] text-white focus:border-yellow-500">
+																				<div class="flex justify-end space-x-3">
+																								<button @click="tutupModalUpdate()" class="px-5 py-2.5 font-bold text-xs rounded-xl transition bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-white hover:text-yellow-500">Batal</button>
+																								<button @click="simpanUpdateStatus()" :disabled="!selectedProgress && !selectedCatatan" class="px-6 py-2.5 text-black rounded-xl font-black shadow-lg transition bg-yellow-500 hover:bg-yellow-400 text-xs disabled:opacity-50 disabled:cursor-not-allowed">Simpan</button>
+																				</div>
+																</div>
+												</div>
+												<!-- MODAL POPUP REKAP DATA -->
+												<div x-show="showModalRekap" x-cloak class="absolute inset-0 z-[80] flex items-center justify-center bg-black bg-opacity-80 px-2 backdrop-blur-md">
+														<div class="bg-black rounded-2xl w-full max-w-sm flex flex-col relative overflow-hidden border border-yellow-600/30 shadow-[0_10px_40px_rgba(234,179,8,0.2)]">
+																
+																<!-- BAGIAN YANG AKAN DI-DOWNLOAD MENJADI GAMBAR -->
+																<div id="rekapCanvasArea" class="p-6 relative bg-gradient-to-br from-[#1a1a20] to-[#0a0a0c] font-['Montserrat']">
+																		<!-- Background Ornamen -->
+																		<div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl"></div>
+																		<div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full blur-2xl"></div>
+																		
+																		<!-- Header Rekap -->
+																		<div class="flex items-center gap-3 mb-5 relative z-10 border-b border-yellow-500/20 pb-4 w-full">
+																				<!-- Tambahan leading-none agar emoji tidak turun -->
+																				<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-black font-black text-xl leading-none">
+																						📊
+																				</div>
+																				<div class="flex-1">
+																						<h2 class="text-white font-black text-sm uppercase tracking-widest leading-none mt-1">Rekapitulasi<br>Buku Tamu</h2>
+																				</div>
+																		</div>
+
+																		<!-- Konten Stats -->
+																		<div class="grid grid-cols-2 gap-3 mb-5 relative z-10 w-full">
+																				<div class="bg-black/50 border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center text-center w-full">
+																						<span class="text-[9px] text-white font-bold uppercase tracking-widest mb-1">Total Customer</span>
+																						<!-- Tambahan leading-none agar angka tidak turun -->
+																						<span class="text-2xl font-black text-white leading-none" x-text="rekapData.totalCustomer"></span>
+																				</div>
+																				<div class="bg-black/50 border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center text-center w-full">
+																						<span class="text-[9px] text-white font-bold uppercase tracking-widest mb-1">Periode Waktu</span>
+																						<!-- Tambahan leading-none agar angka tidak turun -->
+																						<span class="text-xl font-black text-yellow-500 leading-none"><span x-text="rekapData.totalHari"></span> Hari</span>
+																				</div>
+																		</div>
+
+																		<div class="relative z-10 space-y-4">
+																				<!-- Baris Sumber -->
+																				<div>
+																						<h3 class="text-[10px] text-yellow-500 font-bold uppercase tracking-widest border-b border-white/10 pb-1 mb-2">Breakdown Sumber Customer</h3>
+																						<div class="flex flex-wrap gap-1.5" x-html="rekapData.sumberHtml"></div>
+																				</div>
+																				
+																				<!-- Baris Progress -->
+																				<div>
+																						<h3 class="text-[10px] text-yellow-500 font-bold uppercase tracking-widest border-b border-white/10 pb-1 mb-2">Breakdown Progress Customer</h3>
+																						<div class="flex flex-col gap-1.5" x-html="rekapData.progressHtml"></div>
+																				</div>
+
+																				<!-- Kesimpulan -->
+																				<div class="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 mt-4 text-center">
+																						<!-- Ubah text-gray-200 menjadi text-white -->
+																						<p class="text-[11px] font-bold text-white leading-relaxed italic">
+																								"Selama periode <strong class="text-yellow-500" x-text="rekapData.totalHari + ' hari'"></strong> dari <strong class="text-yellow-500" x-text="rekapData.totalCustomer + ' customer'"></strong>, disimpulkan bahwa masih banyak customer yang <strong class="text-white font-black uppercase" x-text="rekapData.highestProgress"></strong>."
+																						</p>
+																				</div>
+																		</div>
+																		
+																		<!-- Watermark -->
+																		<div class="mt-5 text-center text-[8px] font-bold text-gray-600 tracking-widest uppercase relative z-10">
+																				Generated by Yanoshi Dashboard
+																		</div>
+																</div>
+
+																<!-- Tombol Aksi (Tidak Masuk ke Gambar Download) -->
+																<div class="flex border-t border-yellow-600/30">
+																		<button @click="showModalRekap = false" class="flex-1 py-3.5 bg-[#131315] text-gray-400 hover:text-white font-black text-xs uppercase tracking-widest transition">Tutup</button>
+																		<button @click="unduhRekap()" class="flex-1 py-3.5 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-black text-xs uppercase tracking-widest shadow-lg hover:brightness-110 transition flex items-center justify-center gap-2">
+																				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+																				Unduh Image
+																		</button>
 																</div>
 														</div>
 												</div>
@@ -1812,7 +1928,7 @@
 // ─────────────────────────────────────────────────────────────
 
 const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0OHcpS102oD6frRSgacOdiADCt5C0Zphp7wI8mkDP3dKDvo-d6mCw/exec';
-const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbzzWyRgZ2fk5NLCPyAViYHF6qyliNfi86ZsbqVHOsAIv3PcKFOK9-eq-4RrjVTkIw0I/exec';
+const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbz00fFyDEd_Lj8N5Z-SW4zeznpzxSndsX8Z0zFzCTwHgY98VkimviBJASq8Lj20KCME/exec';
 const PESANAN_STATUS_API_URL = 'https://script.google.com/macros/s/AKfycbz3V7oaXEBuQAATvcrZsDtGFIXAKTl_h3drbgjksBkJEbFZhjJP2WUSTrPv9mxHm35M/exec';
 const P_API_UPLOAD = 'https://script.google.com/macros/s/AKfycbx7w2FXv0ayhq61Le63K7zJsb-znvXq6cjLcLO6shrECvOwN-lF3vBO3-pn1dRCX6dH/exec'; 
 const ADMIN_SALES_API_URL = 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec';
@@ -1974,37 +2090,100 @@ async function th_fetchData() {
 }
 
 function th_renderList(items) {
-    const listEl = document.getElementById('th_dataList'); listEl.innerHTML = ''; th_currentItems = []; let gTarget = 0, gTercapai = 0;
+    const listEl = document.getElementById('th_dataList'); 
+    listEl.innerHTML = ''; 
+    th_currentItems = []; 
+    let gTarget = 0, gTercapai = 0;
+    
     items.forEach(item => {
-        const target = parseInt(item.target) || 0; const kekurangan = Math.max(parseInt(item.val) || 0, 0); const rawKekurangan = parseInt(item.val) || 0; const terjualAsli = target - rawKekurangan;
-        const pct = target > 0 ? Math.min((terjualAsli/target)*100, 100) : 0; const kekuranganTampil = terjualAsli >= target ? 0 : kekurangan;
-        gTarget += target; gTercapai += terjualAsli;
-        th_currentItems.push({ label: th_capFirst(item.label), target, tercapai: terjualAsli, kekurangan: kekuranganTampil, persentase: Math.round(pct) });
+        // Ambil target dan hasil tercapai yang dikirim dari script backend (Kolom AK)
+        const target = parseInt(item.target) || 0; 
+        const terjualAsli = parseInt(item.tercapai) || 0; 
+        
+        // Perhitungan Kekurangan (Defisit): Target dikurangi total di kolom AK
+        const rawKekurangan = target - terjualAsli; 
+        const kekuranganTampil = Math.max(rawKekurangan, 0); // Jika surplus/lunas, jangan tampilkan minus
+        
+        const pct = target > 0 ? Math.min((terjualAsli/target)*100, 100) : 0; 
+        
+        gTarget += target; 
+        gTercapai += terjualAsli;
+        
+        th_currentItems.push({ 
+            label: th_capFirst(item.label), 
+            target, 
+            tercapai: terjualAsli, 
+            kekurangan: kekuranganTampil, 
+            persentase: Math.round(pct) 
+        });
 
-        let barColor = 'linear-gradient(90deg,#D4AF37,#9C7A1D)'; let stClass = 'th-status-warning', stText = 'On Progress', percCls = 'th-perc-warning';
-        if (pct >= 50 || kekuranganTampil === 0) { barColor = 'linear-gradient(90deg,#10b981,#059669)'; stClass = 'th-status-success'; stText = (pct >= 100 || kekuranganTampil === 0) ? 'Tercapai ✓' : 'Progress Baik'; percCls = 'th-perc-success'; } 
-        else if (pct < 30) { barColor = 'linear-gradient(90deg,#FF4550,#B3001B)'; stClass = 'th-status-danger'; stText = 'Perlu Dikejar'; percCls = 'th-perc-danger'; }
+        let barColor = 'linear-gradient(90deg,#D4AF37,#9C7A1D)'; 
+        let stClass = 'th-status-warning', stText = 'On Progress', percCls = 'th-perc-warning';
+        
+        if (pct >= 50 || kekuranganTampil === 0) { 
+            barColor = 'linear-gradient(90deg,#10b981,#059669)'; 
+            stClass = 'th-status-success'; 
+            stText = (pct >= 100 || kekuranganTampil === 0) ? 'Tercapai ✓' : 'Progress Baik'; 
+            percCls = 'th-perc-success'; 
+        } else if (pct < 30) { 
+            barColor = 'linear-gradient(90deg,#FF4550,#B3001B)'; 
+            stClass = 'th-status-danger'; 
+            stText = 'Perlu Dikejar'; 
+            percCls = 'th-perc-danger'; 
+        }
 
         const terjualLabel = terjualAsli > target ? `${terjualAsli} <span style="font-size:10px;color:#10b981;font-weight:700;">+${terjualAsli-target}</span>` : `${terjualAsli}`;
-        const li = document.createElement('li'); li.className = 'th-item-card';
+        const li = document.createElement('li'); 
+        li.className = 'th-item-card';
         li.innerHTML = `
-            <div class="th-item-header"><div class="th-title-wrap"><span class="th-item-title">${th_capFirst(item.label)}</span><span class="th-status-badge ${stClass}">${stText}</span></div><span class="th-item-percentage ${percCls}">${Math.round(pct)}%</span></div>
-            <div class="th-progress-container"><div class="th-progress-bar" data-width="${Math.min(pct,100)}%" style="background:${barColor};"></div></div>
-            <div class="th-stats-row"><span>Target:<span class="th-stat-val">${target}</span></span><span>Terjual:<span class="th-stat-val th-val-green">${terjualLabel}</span></span><span>Kurang:<span class="th-stat-val ${kekuranganTampil>0?'th-val-red':''}">${kekuranganTampil}</span></span></div>`;
+            <div class="th-item-header">
+                <div class="th-title-wrap">
+                    <span class="th-item-title">${th_capFirst(item.label)}</span>
+                    <span class="th-status-badge ${stClass}">${stText}</span>
+                </div>
+                <span class="th-item-percentage ${percCls}">${Math.round(pct)}%</span>
+            </div>
+            <div class="th-progress-container">
+                <div class="th-progress-bar" data-width="${Math.min(pct,100)}%" style="background:${barColor};"></div>
+            </div>
+            <div class="th-stats-row">
+                <span>Target:<span class="th-stat-val">${target}</span></span>
+                <span>Terjual:<span class="th-stat-val th-val-green">${terjualLabel}</span></span>
+                <span>Kurang:<span class="th-stat-val ${kekuranganTampil>0?'th-val-red':''}">${kekuranganTampil}</span></span>
+            </div>`;
         listEl.appendChild(li);
     });
 
-    th_currentGrandTercapai = gTercapai; th_currentGrandTarget = gTarget;
+    th_currentGrandTercapai = gTercapai; 
+    th_currentGrandTarget = gTarget;
+    
     const gPctDisplay = gTarget > 0 ? Math.round((gTercapai/gTarget)*100) : 0;
-    const badge = document.getElementById('th_grandPercentage'); badge.innerText = gPctDisplay + '%';
-    if (gPctDisplay >= 100){ badge.style.backgroundColor='rgba(16,185,129,.15)'; badge.style.borderColor='rgba(16,185,129,.4)'; badge.style.color='#10b981'; }
-    else if (gPctDisplay >= 50) { badge.style.backgroundColor='rgba(16,185,129,.1)'; badge.style.borderColor='rgba(16,185,129,.2)'; }
-    else if (gPctDisplay  < 30) { badge.style.backgroundColor='rgba(225,29,46,.15)'; badge.style.borderColor='rgba(225,29,46,.3)'; }
-    else { badge.style.backgroundColor='rgba(255,255,255,.05)'; badge.style.borderColor='rgba(255,255,255,.1)'; }
+    const badge = document.getElementById('th_grandPercentage'); 
+    badge.innerText = gPctDisplay + '%';
+    
+    if (gPctDisplay >= 100){ 
+        badge.style.backgroundColor='rgba(16,185,129,.15)'; 
+        badge.style.borderColor='rgba(16,185,129,.4)'; 
+        badge.style.color='#10b981'; 
+    } else if (gPctDisplay >= 50) { 
+        badge.style.backgroundColor='rgba(16,185,129,.1)'; 
+        badge.style.borderColor='rgba(16,185,129,.2)'; 
+    } else if (gPctDisplay  < 30) { 
+        badge.style.backgroundColor='rgba(225,29,46,.15)'; 
+        badge.style.borderColor='rgba(225,29,46,.3)'; 
+    } else { 
+        badge.style.backgroundColor='rgba(255,255,255,.05)'; 
+        badge.style.borderColor='rgba(255,255,255,.1)'; 
+    }
 
-    document.getElementById('th_grandTercapai').innerText = gTercapai; document.getElementById('th_grandTarget').innerText = gTarget;
-    document.getElementById('th_totalSummary').style.display = 'flex'; document.getElementById('th_rekapSection').style.display = 'block';
-    th_initRekapFilter(); th_renderListRekap(); th_checkAutoRekap();
+    document.getElementById('th_grandTercapai').innerText = gTercapai; 
+    document.getElementById('th_grandTarget').innerText = gTarget;
+    document.getElementById('th_totalSummary').style.display = 'flex'; 
+    document.getElementById('th_rekapSection').style.display = 'block';
+    
+    th_initRekapFilter(); 
+    th_renderListRekap(); 
+    th_checkAutoRekap();
 }
 
 function th_checkAutoRekap() {
@@ -2283,10 +2462,14 @@ function bukuTamuApp() {
         
         // Variabel Database Popup
         showModalDB: false, dbLoading: false, dbData: [], dbQuery: '',
-        selectedDBItems: [], dbProgressFilter: '',
+        selectedDBItems: [], dbProgressFilter: '', dbSumberFilter: '', // Tambahan filter sumber
         
         // Variabel Update Progress
-        modalUpdateOpen: false, activeCustomer: null, selectedProgress: '',
+        modalUpdateOpen: false, activeCustomer: null, selectedProgress: '', selectedCatatan: '',
+
+        // Variabel Rekap
+        showModalRekap: false, 
+        rekapData: { totalCustomer: 0, totalHari: 0, sumberHtml: '', progressHtml: '', highestProgress: '' },
 
         initBT() { this.addEntry(); this.fetchSheets(); },
         
@@ -2298,7 +2481,7 @@ function bukuTamuApp() {
             } catch(e) { console.error("Gagal load sheet BT"); } 
         },
         
-        addEntry() { this.entries.push({ id: Date.now() + Math.random(), nama: '', sumber: '', tglKirim: '', isJepang: false }); },
+        addEntry() { this.entries.push({ id: Date.now() + Math.random(), nama: '', sumber: '', progress: '', catatan: '', tglKirim: '', isJepang: false }); },
         removeEntry(id) { this.entries = this.entries.filter(e => e.id !== id); if (this.entries.length === 0) this.addEntry(); },
         
         async submitData() {
@@ -2326,7 +2509,7 @@ function bukuTamuApp() {
 
         async openDatabase() {
             this.showModalDB = true; this.dbLoading = true; this.dbData = [];
-            this.dbQuery = ''; this.dbProgressFilter = ''; this.selectedDBItems = []; 
+            this.dbQuery = ''; this.dbProgressFilter = ''; this.dbSumberFilter = ''; this.selectedDBItems = []; 
             try {
                 const res = await fetch(`${this.apiUrl}?action=getAllData`);
                 const result = await res.json();
@@ -2341,11 +2524,15 @@ function bukuTamuApp() {
 
         filteredDB() {
             let result = this.dbData;
-            // 1. Filter Berdasarkan Dropdown Progress
+            // 1. Filter Dropdown Progress
             if (this.dbProgressFilter !== '') {
                 result = result.filter(item => item.progress === this.dbProgressFilter);
             }
-            // 2. Filter Berdasarkan Kolom Pencarian Teks
+            // 2. Filter Dropdown Sumber
+            if (this.dbSumberFilter !== '') {
+                result = result.filter(item => item.sumber === this.dbSumberFilter);
+            }
+            // 3. Filter Kolom Pencarian Teks
             if (this.dbQuery && this.dbQuery.trim() !== '') {
                 const q = this.dbQuery.trim().toLowerCase();
                 result = result.filter(item => JSON.stringify(item).toLowerCase().includes(q));
@@ -2378,12 +2565,10 @@ function bukuTamuApp() {
             this.dbLoading = false;
         },
 
-        // =========================================================
-        // FITUR BARU: UPDATE PROGRESS CUSTOMER
-        // =========================================================
         bukaModalUpdate(customer) {
             this.activeCustomer = customer;
-            this.selectedProgress = '';
+            this.selectedProgress = customer.progress === '-' ? '' : customer.progress;
+            this.selectedCatatan = customer.catatan || ''; 
             this.modalUpdateOpen = true;
         },
         
@@ -2394,30 +2579,123 @@ function bukuTamuApp() {
         
         async simpanUpdateStatus() {
             this.modalUpdateOpen = false; 
-            this.dbLoading = true; // Gunakan animasi loading bawaan DB
+            this.dbLoading = true; 
             
             try {
                 const payload = { 
                     action: 'updateProgressCustomer', 
                     sheetName: this.activeCustomer.sheet, 
                     rowNumber: this.activeCustomer.rowNumber, 
-                    progress: this.selectedProgress 
+                    progress: this.selectedProgress,
+                    catatan: this.selectedCatatan 
                 };
                 
                 const response = await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
                 const result = await response.json();
                 
                 if (result.success) { 
-                    showToast('Progress berhasil diupdate! ✅', 'success'); 
-                    // Muat ulang daftar agar warna dan status progress yang baru langsung tampil
+                    showToast('Progress & Catatan berhasil diupdate! ✅', 'success'); 
                     await this.openDatabase(); 
-                } else { 
-                    showToast('Gagal update progress', 'error'); 
-                }
-            } catch(e) { 
-                showToast('Gagal terhubung', 'error'); 
-            }
+                } else { showToast('Gagal update', 'error'); }
+            } catch(e) { showToast('Gagal terhubung', 'error'); }
             this.dbLoading = false;
+        },
+
+        // =================================================================
+        // LOGIKA REKAPITULASI BUKU TAMU
+        // =================================================================
+        bukaRekap() {
+            const currentData = this.filteredDB();
+            if (currentData.length === 0) {
+                showToast("Data kosong, tidak ada yang bisa direkap.", "error"); return;
+            }
+
+            let sumCounts = {};
+            let progCounts = {};
+            let minDate = new Date(); let maxDate = new Date(0);
+            let validDateFound = false;
+
+            currentData.forEach(item => {
+                // Hitung Sumber
+                let src = item.sumber || "Tanpa Sumber";
+                sumCounts[src] = (sumCounts[src] || 0) + 1;
+                
+                // Hitung Progress
+                let prg = item.progress || "-";
+                progCounts[prg] = (progCounts[prg] || 0) + 1;
+
+                // Cek Rentang Tanggal Input (Format DD/MM/YYYY)
+                if (item.tglInput) {
+                    let parts = item.tglInput.split('/');
+                    if (parts.length === 3) {
+                        let d = new Date(parts[2], parts[1]-1, parts[0]);
+                        if (d < minDate) minDate = d;
+                        if (d > maxDate) maxDate = d;
+                        validDateFound = true;
+                    }
+                }
+            });
+
+            // Kalkulasi Hari
+            let totalDays = 1;
+            if (validDateFound) {
+                let diffTime = Math.abs(maxDate - minDate);
+                totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Ditambah 1 karena inklusif
+            }
+
+            // HTML untuk Label Sumber
+            let htmlSumber = Object.keys(sumCounts).sort((a,b) => sumCounts[b] - sumCounts[a]).map(k => {
+                return `<span class="bg-[rgba(255,255,255,0.08)] px-2 py-1 rounded text-[9px] font-bold text-white shadow-sm border border-white/5">${k} <strong class="text-yellow-500 ml-1">${sumCounts[k]}</strong></span>`;
+            }).join('');
+
+            // HTML untuk Bar Progress & Cari Tertinggi
+            let highestProg = ''; let maxPCount = -1;
+						let htmlProgress = Object.keys(progCounts).sort((a,b) => progCounts[b] - progCounts[a]).map(k => {
+								if (k !== '-' && progCounts[k] > maxPCount) { maxPCount = progCounts[k]; highestProg = k; }
+								let label = k === '-' ? 'Belum Ada Progress' : k;
+								
+								// Perbaikan warna di sini (ubah text-gray-300 menjadi text-white, 
+								// dan kotak angka saya buat kuning agar lebih stand out)
+								return `<div class="flex justify-between items-center text-[10px] font-bold text-white bg-black/40 px-3 py-1.5 rounded-lg border border-white/5 uppercase">
+										<span>${label}</span> <span class="text-black font-black bg-yellow-500 px-2 rounded">${progCounts[k]}</span>
+								</div>`;
+						}).join('');
+
+            if (highestProg === '') highestProg = "Belum di Follow Up"; // Fallback jika tidak ada data progress spesifik
+
+            this.rekapData = {
+                totalCustomer: currentData.length,
+                totalHari: totalDays,
+                sumberHtml: htmlSumber,
+                progressHtml: htmlProgress,
+                highestProgress: highestProg
+            };
+
+            this.showModalRekap = true;
+        },
+
+        unduhRekap() {
+            const el = document.getElementById("rekapCanvasArea");
+            
+            // Notifikasi proses agar user tahu sistem sedang bekerja
+            showToast("Sedang memproses gambar...", "info"); 
+            
+            // Menggunakan html-to-image yang 100% akurat merender Flexbox & Font
+            htmlToImage.toPng(el, { 
+                pixelRatio: 3, // Skala 3 untuk hasil gambar HD yang jernih
+                backgroundColor: '#0a0a0c' // Mengunci warna background
+            })
+            .then(dataUrl => {
+                const link = document.createElement("a");
+                link.download = `Rekap_Buku_Tamu_${new Date().getTime()}.png`;
+                link.href = dataUrl;
+                link.click();
+                showToast("Gambar Rekap Berhasil Diunduh! 📸", "success");
+            })
+            .catch(err => {
+                console.error("Gagal buat gambar:", err);
+                showToast("Gagal membuat gambar rekap.", "error");
+            });
         }
     }
 }
