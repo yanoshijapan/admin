@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Survey - Yanoshi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        :root {
+            --theme-silver: #E0E0E0; --theme-white: #FFFFFF;
+            --text-dark: #F3F1EA; --text-mid: #A9A6A0;
+        }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(180deg, #0A0A0B 0%, #141418 45%, #1B1B20 100%); color: var(--text-dark); min-height: 100vh; }
+        [x-cloak] { display: none !important; }
+        
+        /* Modifikasi Scrollbar Umum */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%); border-radius: 3px; }
+        
+        /* CSS Untuk Scroll Menu Horizontal (HP) */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #toastContainer { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast { padding: 12px 18px; border-radius: 12px; color: white; font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif; box-shadow: 0 4px 20px rgba(0,0,0,0.5); pointer-events: auto; animation: toastIn 0.3s ease-out; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+        .toast.success { background: linear-gradient(135deg, #059669, #10b981); }
+        .toast.error   { background: linear-gradient(135deg, #5c0000, #990000); }
+    </style>
+</head>
+<body x-data="surveyApp()" x-init="initSurvey()">
+
+    <div id="toastContainer"></div>
+
+    <!-- HEADER STICKY BARU (SUPER RINGKAS & DINAMIS) -->
+    <div class="sticky top-0 z-50 p-3 sm:p-4 bg-[#131315] border-b border-[rgba(255,255,255,0.1)] shadow-lg flex flex-col sm:flex-row justify-between sm:items-center gap-3 sm:gap-4 w-full">
+        
+        <!-- Sisi Kiri: Judul & Total Counter -->
+        <div class="flex items-center gap-3 shrink-0">
+            <h2 class="text-xs sm:text-sm font-black text-white uppercase tracking-widest border-l-4 border-yellow-500 pl-2">
+                Data Survey
+            </h2>
+            <div class="px-2 py-1 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded text-[10px] font-bold text-yellow-500 whitespace-nowrap shadow-sm">
+                Total: <span class="font-black text-white" x-text="filteredSurveys().length"></span>
+            </div>
+        </div>
+        
+        <!-- Sisi Kanan: Toolbar Kontrol (Bisa digeser menyamping di layar HP) -->
+        <div class="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+            
+            <!-- Dropdown Filter -->
+            <select x-model="filterStatus" class="shrink-0 w-[150px] sm:w-auto px-2 py-1.5 sm:px-3 sm:py-2 bg-[#1b1b20] border border-[rgba(255,255,255,0.2)] rounded-lg text-[9px] sm:text-xs font-extrabold uppercase tracking-wider text-gray-300 outline-none focus:border-yellow-500 cursor-pointer shadow-inner">
+                <option value="all">Semua Survey</option>
+                <option value="belum">Belum Redeem</option>
+                <option value="sudah">Sudah Redeem</option>
+            </select>
+            
+            <!-- Tombol Eksternal Link -->
+            <a href="https://yanoshisurvey.netlify.app/" target="_blank" class="shrink-0 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-blue-600/20 text-blue-400 border border-blue-500/50 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-wider hover:bg-blue-600 hover:text-white transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Link Survey
+            </a>
+
+        </div>
+    </div>
+
+    <!-- CONTENT AREA -->
+    <div class="max-w-4xl mx-auto p-4 md:p-6 w-full">
+
+        <div x-show="loading" class="flex flex-col items-center justify-center py-16" x-cloak>
+            <div class="animate-spin w-10 h-10 border-4 border-yellow-500 border-t-transparent rounded-full mb-3"></div>
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Menyinkronkan Data...</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-10 mt-2" x-show="!loading" x-cloak>
+            
+            <div x-show="filteredSurveys().length === 0" class="col-span-full text-center py-12 text-gray-500 font-bold text-xs uppercase tracking-widest flex flex-col items-center">
+                <span class="text-4xl mb-2 block">📭</span> Tidak ada data survey.
+            </div>
+
+            <template x-for="item in filteredSurveys()" :key="item.rowNumber">
+                <div :class="item.isRedeemed ? 'bg-blue-900/20 border-blue-500/40' : 'bg-[#1b1b20] border-[rgba(255,255,255,0.1)]'" class="p-4 rounded-xl border relative shadow-sm transition-all font-['Montserrat'] flex flex-col justify-between">
+                    
+                    <div x-show="item.isRedeemed" class="absolute top-0 right-0 bg-blue-600 text-white text-[9px] font-black px-2.5 py-1 rounded-bl-lg uppercase tracking-widest shadow-md">TELAH DI-REDEEM</div>
+                    
+                    <div>
+                        <div class="text-[10px] text-gray-500 font-bold mb-4 uppercase tracking-widest" x-text="item.timestamp"></div>
+                        
+                        <div class="space-y-3 mb-5 text-xs border-b border-[rgba(255,255,255,0.05)] pb-5">
+                            <div><span class="text-gray-500 uppercase text-[9px] font-bold block mb-0.5">Kesan Admin:</span> <span class="text-gray-200 font-medium" x-text="item.kesanAdmin"></span></div>
+                            <div><span class="text-gray-500 uppercase text-[9px] font-bold block mb-0.5">Kesan Produk:</span> <span class="text-gray-200 font-medium" x-text="item.kesanProduk"></span></div>
+                            <div><span class="text-gray-500 uppercase text-[9px] font-bold block mb-0.5">Yg harus ditingkatkan:</span> <span class="text-yellow-100 font-medium" x-text="item.peningkatan"></span></div>
+                            <div><span class="text-gray-500 uppercase text-[9px] font-bold block mb-0.5">Kenapa pilih Yanoshi:</span> <span class="text-gray-200 font-medium" x-text="item.alasanPilih"></span></div>
+                            <div><span class="text-gray-500 uppercase text-[9px] font-bold block mb-0.5">Saran Tambahan:</span> <span class="text-gray-200 font-medium" x-text="item.saranLainnya"></span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 bg-black/40 rounded-xl border border-white/5 flex items-center justify-between gap-3 mt-auto">
+                        <div class="flex flex-col">
+                            <span class="text-[9px] text-yellow-500 uppercase font-black tracking-widest mb-0.5">Kode Voucher</span>
+                            <span class="font-mono text-[15px] font-bold text-white tracking-widest" x-text="item.kodeVoucher"></span>
+                        </div>
+                        <template x-if="!item.isRedeemed">
+                            <button @click="openRedeem(item)" class="px-5 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg font-black text-[10px] uppercase tracking-widest shadow-lg transition active:scale-95">Redeem</button>
+                        </template>
+                        <template x-if="item.isRedeemed">
+                            <div class="flex flex-col text-right pr-1">
+                                <span class="text-[9px] text-gray-500 uppercase tracking-widest">Diklaim Oleh:</span>
+                                <span class="font-black text-[12px] text-blue-400" x-text="item.redeemerName"></span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- MODAL POPUP REDEEM -->
+        <div x-show="showRedeemModal" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div class="bg-[#131315] border border-yellow-500/30 rounded-2xl w-full max-w-sm p-6 shadow-2xl relative" @click.away="closeRedeem()">
+                
+                <div class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-4 border border-red-500/20">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                
+                <h3 class="text-white font-black text-[15px] uppercase tracking-wider mb-2">Yakin Menghanguskan Voucher?</h3>
+                <p class="text-xs text-gray-400 mb-5 leading-relaxed">
+                    Kode voucher <strong class="text-yellow-500 font-mono text-sm" x-text="activeRedeem?.kodeVoucher"></strong> ini akan ditandai sebagai telah digunakan.
+                </p>
+                
+                <div class="mb-6">
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Masukkan Nama Customer</label>
+                    <input type="text" x-model="customerName" placeholder="Ketik nama lengkap..." class="w-full px-4 py-3 bg-[#0a0a0c] border border-[rgba(255,255,255,0.15)] rounded-xl text-sm font-bold text-white focus:border-yellow-500 outline-none transition shadow-inner">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button @click="closeRedeem()" class="flex-1 py-3 rounded-xl border border-[rgba(255,255,255,0.1)] text-gray-400 font-bold text-xs uppercase tracking-wider hover:bg-white/5 hover:text-white transition">Batal</button>
+                    <button @click="submitRedeem()" :disabled="!customerName.trim() || redeemLoading" class="flex-1 py-3 rounded-xl bg-yellow-500 text-black font-black text-xs uppercase tracking-wider disabled:opacity-50 hover:bg-yellow-400 transition flex justify-center items-center shadow-lg">
+                        <span x-show="!redeemLoading">Lanjutkan</span>
+                        <div x-show="redeemLoading" class="w-5 h-5 border-[3px] border-black border-t-transparent rounded-full animate-spin"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showToast(msg, type = 'success') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`; t.textContent = msg; c.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(60px)'; t.style.transition = 'all 0.3s ease'; setTimeout(() => t.remove(), 300); }, 3000);
+        }
+
+        function surveyApp() {
+            return {
+                // GANTI DENGAN URL WEB APP BARU ANDA
+                surveyApiUrl: 'https://script.google.com/macros/s/AKfycbxDKoNPfg7-1xrx0ZMf1vvkfWnk_DyA7rkwgsB28OQXYq-PKFvZyU-WpIzdK9MfnMJIMg/exec',
+                loading: false, surveys: [], filterStatus: 'all',
+                showRedeemModal: false, activeRedeem: null, customerName: '', redeemLoading: false,
+                								
+								initSurvey() { 
+                    this.fetchSurveys(false); 
+                    setInterval(() => { this.fetchSurveys(true); }, 120000); // Auto Sync
+                },
+                
+                jsonpRequest(params) {
+                    return new Promise((resolve, reject) => {
+                        const callbackName = 'jsonp_survey_' + Math.round(1000000 * Math.random());
+                        window[callbackName] = function(data) { resolve(data); delete window[callbackName]; document.body.removeChild(script); };
+                        let queryString = Object.keys(params).map(key => key + '=' + encodeURIComponent(params[key])).join('&');
+                        const script = document.createElement('script');
+                        script.src = `${this.surveyApiUrl}?${queryString}&callback=${callbackName}`;
+                        script.onerror = function() { reject(new Error("CORS Bypass Failed")); delete window[callbackName]; document.body.removeChild(script); };
+                        document.body.appendChild(script);
+                    });
+                },
+                
+								
+								async fetchSurveys(isSilent = false) {
+                    if (!isSilent) this.loading = true;
+                    try {
+                        const result = await this.jsonpRequest({ action: 'getSurveys' });
+                        if (result.status === 'success') { this.surveys = result.data || []; }
+                    } catch(e) { 
+                        if (!isSilent) showToast('Gagal memuat data survey.', 'error'); 
+                    }
+                    if (!isSilent) this.loading = false;
+                },
+                
+                filteredSurveys() {
+                    if (this.filterStatus === 'belum') return this.surveys.filter(s => !s.isRedeemed);
+                    if (this.filterStatus === 'sudah') return this.surveys.filter(s => s.isRedeemed);
+                    return this.surveys;
+                },
+                
+                openRedeem(item) { this.activeRedeem = item; this.customerName = ''; this.showRedeemModal = true; },
+                closeRedeem() { this.showRedeemModal = false; this.activeRedeem = null; this.customerName = ''; },
+                
+                async submitRedeem() {
+                    if (!this.customerName.trim()) return;
+                    this.redeemLoading = true;
+                    try {
+                        const result = await this.jsonpRequest({ action: 'redeemVoucher', rowNumber: this.activeRedeem.rowNumber, customerName: this.customerName.trim() });
+                        if (result.status === 'success') { showToast('Voucher berhasil di-redeem! 🎉', 'success'); this.closeRedeem(); await this.fetchSurveys(); } 
+                        else { showToast('Gagal memproses redeem.', 'error'); }
+                    } catch(e) { showToast('Gagal terhubung ke server.', 'error'); }
+                    this.redeemLoading = false;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

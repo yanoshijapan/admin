@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencapaian Target - Yanoshi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --theme-silver: #E0E0E0; --theme-white: #FFFFFF;
+            --grad-black: linear-gradient(135deg, #2b2b2b 0%, #121212 50%, #000000 100%);
+            --grad-white: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%);
+            --text-dark: #F3F1EA; --text-mid: #A9A6A0;
+            --border-soft: rgba(255,255,255,0.08); --border-theme: rgba(255,255,255,0.25);
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.35);
+            --radius: 16px;
+            
+            --th-bg: transparent; --th-card-bg: #1b1b20;
+            --th-card-border: rgba(255,255,255,0.08);
+            --th-elev: #232328;
+            --th-text-main: #F3F1EA; --th-text-muted: #A9A6A0;
+            --th-accent-red: #ef4444; --th-accent-green: #10b981; --th-accent-orange: #f59e0b;
+        }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(180deg, #0A0A0B 0%, #141418 45%, #1B1B20 100%); color: var(--text-dark); min-height: 100vh; }
+        
+        /* TARGET HARIAN STYLES */
+        .th-container { font-family: 'Inter', sans-serif; width: 100%; max-width: 1000px; margin: 0 auto; animation: th_fadeIn 0.8s ease-out; }
+        .th-header-card { background: var(--grad-black); border: 1px solid var(--border-theme); padding: 30px 24px; color: white; text-align: center; border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+        .th-header-card h1 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; opacity: .9; margin-bottom: 8px; font-weight: 600; }
+        .th-header-card .th-date { font-size: 26px; font-weight: 700; margin-bottom: 15px; }
+        .th-deadline-badge { display: inline-block; background-color: rgba(255,255,255,.1); padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 500; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.2); margin-bottom: 20px; }
+        .th-total-summary { background-color: rgba(0,0,0,.3); padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; text-align: left; }
+        .th-total-info p { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: .85; margin-bottom: 5px; }
+        .th-total-numbers { font-size: 18px; font-weight: 400; }
+        .th-total-numbers strong { font-size: 28px; font-weight: 700; color: #fff; }
+        .th-total-percentage-badge { background: rgba(255,255,255,.1); padding: 10px 16px; border-radius: 12px; font-size: 22px; font-weight: 800; color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,.1); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,.2); transition: all .5s ease; }
+        .th-item-list { list-style: none; margin: 0; padding: 0; }
+        .th-item-card { background: var(--th-card-bg); padding: 20px; border-radius: 16px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border); transition: transform .2s ease, box-shadow .2s ease; }
+        .th-item-card:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(0,0,0,.5); }
+        .th-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .th-title-wrap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .th-item-title { font-size: 16px; font-weight: 700; color: var(--th-text-main); }
+        .th-item-percentage { font-size: 22px; font-weight: 800; }
+        .th-perc-success { color: var(--th-accent-green); }
+        .th-perc-warning { color: var(--th-accent-orange); }
+        .th-perc-danger  { color: var(--th-accent-red); }
+        .th-status-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; }
+        .th-status-success { background-color: rgba(16,185,129,0.1); color: var(--th-accent-green); border: 1px solid rgba(16,185,129,.3); }
+        .th-status-warning { background-color: rgba(245,158,11,0.1); color: var(--th-accent-orange); border: 1px solid rgba(245,158,11,.3); }
+        .th-status-danger  { background-color: rgba(239,68,68,0.1); color: var(--th-accent-red); border: 1px solid rgba(239,68,68,.3); }
+        .th-progress-container { width: 100%; height: 10px; background-color: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+        .th-progress-bar { height: 100%; border-radius: 10px; width: 0%; transition: width 1s cubic-bezier(.4,0,.2,1); }
+        .th-stats-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--th-text-muted); font-weight: 500; background: var(--th-elev); padding: 10px 12px; border-radius: 10px; }
+        .th-stat-val { font-weight: 700; color: var(--th-text-main); margin-left: 4px; }
+        .th-val-green { color: var(--th-accent-green); }
+        .th-val-red   { color: var(--th-accent-red); }
+        
+        .th-spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--theme-white); border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes th_fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* REKAP STYLES */
+        .th-rekap-section { background: var(--th-card-bg); border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--th-card-border); margin-bottom: 20px; overflow: hidden; }
+        .th-rekap-header { background: var(--grad-black); padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .th-rekap-header-left { display: flex; align-items: center; gap: 10px; }
+        .th-rekap-title { color: white; font-size: 14px; font-weight: 700; }
+        .th-rekap-subtitle { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 2px; }
+        .th-rekap-toggle-btn { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .th-rekap-body { padding: 0 22px 22px; display: none; }
+        .th-rekap-body.open { display: block; }
+        .th-rekap-actions { padding: 14px 0 8px; display: flex; gap: 10px; }
+        .th-btn-simpan-rekap { background: var(--grad-white); color: #000; border: none; border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
+        .th-btn-hapus-semua { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
+        
+        .th-rekap-month-card { border: 1px solid var(--th-card-border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+        .th-rekap-month-header { background: var(--th-elev); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .th-rekap-month-title { font-size: 14px; font-weight: 800; color: var(--th-text-main); display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+        .th-rekap-month-meta  { font-size: 11px; color: var(--th-text-muted); margin-top: 3px; }
+        .th-rekap-month-right { display: flex; align-items: center; gap: 8px; }
+        .th-rekap-perc-badge { padding: 4px 11px; border-radius: 20px; font-size: 13px; font-weight: 800; }
+        .th-rekap-perc-green  { background: rgba(16,185,129,0.15); color: #10b981; }
+        .th-rekap-perc-orange { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .th-rekap-perc-red    { background: rgba(239,68,68,0.15); color: #ef4444; }
+        
+        .th-rekap-detail { display: none; padding: 14px 16px 16px; }
+        .th-rekap-detail.open { display: block; }
+        .th-rekap-grand-row { display: flex; justify-content: space-between; background: var(--grad-black); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; color: white; }
+        .th-rg-val { font-size: 20px; font-weight: 800; }
+        .th-prod-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .th-prod-table thead th { padding: 8px 10px; font-size: 10px; color: var(--th-text-muted); text-align: left; border-bottom: 1px solid var(--th-card-border); }
+        .th-prod-table tbody td { padding: 9px 10px; border-bottom: 1px solid var(--th-card-border); }
+        
+        #toastContainer { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast { padding: 12px 18px; border-radius: 12px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body onload="initPencapaian()">
+
+    <div id="toastContainer"></div>
+
+    <!-- CONTENT (Header Kembali Dihapus Sesuai Permintaan) -->
+    <div class="max-w-7xl mx-auto p-4 md:p-6 w-full mt-2">
+        
+        <div class="th-container">
+            <div class="th-header-card">
+                <h1>Target Harian Yanoshi</h1>
+                <div class="th-date" id="th_currentDate">-</div>
+                <div class="th-deadline-badge" id="th_closingCountdown">Menghitung hari...</div>
+                <div class="th-total-summary" id="th_totalSummary" style="display:none;">
+                    <div class="th-total-info">
+                        <p>Pencapaian Keseluruhan</p>
+                        <div class="th-total-numbers">
+                            <strong id="th_grandTercapai">0</strong> / <span id="th_grandTarget">0</span> pcs
+                        </div>
+                    </div>
+                    <div class="th-total-percentage-badge" id="th_grandPercentage">0%</div>
+                </div>
+            </div>
+
+            <div id="th_loading"><div class="th-spinner"></div><p style="font-size:13px;color:#888;text-align:center;">Tunggu Sebentar...</p></div>
+            <div id="th_error" style="display:none; text-align:center; padding:40px;"><p style="color:#cc0000; font-size:14px;">Gagal memuat data.<br><small>Cek koneksi internet.</small></p></div>
+
+            <ul class="th-item-list" id="th_dataList" style="display:none;"></ul>
+
+            <div class="th-rekap-section" id="th_rekapSection" style="display:none;">
+                <div class="th-rekap-header" onclick="th_toggleRekap()">
+                    <div class="th-rekap-header-left">
+                        <span class="th-rekap-icon" style="font-size: 20px;">📋</span>
+                        <div>
+                            <div class="th-rekap-title">Rekap Akhir Bulan</div>
+                            <div class="th-rekap-subtitle">Histori pencapaian + detail produk per bulan</div>
+                        </div>
+                    </div>
+                    <button class="th-rekap-toggle-btn" id="th_rekapToggleLabel">Lihat ▾</button>
+                </div>
+
+                <div class="th-rekap-body" id="th_rekapBody">
+                    <div class="th-rekap-actions">
+                        <button class="th-btn-simpan-rekap" onclick="th_simpanRekapBulanIni(false)">💾 Simpan Rekap Bulan Ini</button>
+                        <button class="th-btn-hapus-semua" onclick="th_hapusSemuaRekap()">🗑 Hapus Semua</button>
+                    </div>
+                    
+                    <div style="margin: 14px 0;">
+                        <label style="font-size: 12px; color: var(--th-text-muted); text-transform: uppercase;">Tampilkan Tahun:</label>
+                        <select id="th_filterTahun" onchange="th_renderListRekap()" style="background: var(--th-elev); color: white; border: 1px solid var(--border-soft); padding: 6px; border-radius: 6px; margin-left: 10px; outline: none;">
+                            <option value="semua">Semua Tahun</option>
+                        </select>
+                    </div>
+
+                    <div id="th_rekapListContainer"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showToast(msg, type = 'success') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`; t.textContent = msg; c.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(60px)'; t.style.transition = 'all 0.3s ease'; setTimeout(() => t.remove(), 300); }, 3000);
+        }
+
+        const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbz00fFyDEd_Lj8N5Z-SW4zeznpzxSndsX8Z0zFzCTwHgY98VkimviBJASq8Lj20KCME/exec';
+        const TH_REKAP_KEY = "yanoshi_rekap_v3";
+        const TH_LAST_AUTO_KEY = "yanoshi_last_auto";
+        const TH_NAMA_BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        let th_currentGrandTercapai = 0, th_currentGrandTarget = 0, th_currentItems = [];
+				
+				function initPencapaian() {
+            th_updateDateAndDeadline(); 
+            th_fetchData(false);
+            setInterval(() => { th_fetchData(true); }, 120000); // Auto Sync
+        }
+
+        function th_updateDateAndDeadline() {
+            const now = new Date(); document.getElementById('th_currentDate').innerText = now.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+            const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate(); const remaining = lastDay - now.getDate();
+            const el = document.getElementById('th_closingCountdown');
+            if (remaining > 0) el.innerText = `Tinggal ${remaining} hari menuju closing!`;
+            else if (remaining === 0) { el.innerText = 'Hari ini adalah tanggal closing! 🚀'; el.style.backgroundColor='rgba(255,255,255,0.1)'; }
+            else el.style.display = 'none';
+        }
+				
+				async function th_fetchData(isSilent = false) {
+            const loadingEl = document.getElementById('th_loading'); 
+            const listEl = document.getElementById('th_dataList'); 
+            
+            if (!isSilent) loadingEl.style.display = 'block';
+            
+            try {
+                const res  = await fetch(TH_GAS_URL); 
+                const data = await res.json();
+                if (data.status === 'success') { 
+                    th_renderList(data.items); 
+                    loadingEl.style.display = 'none'; 
+                    listEl.style.display = 'block'; 
+                    if (!isSilent) setTimeout(() => document.querySelectorAll('.th-progress-bar').forEach(b => b.style.width = b.dataset.width), 50); 
+                } 
+            } catch(e) { console.error(e); }
+        }
+
+        function th_renderList(items) {
+            const listEl = document.getElementById('th_dataList'); listEl.innerHTML = ''; th_currentItems = []; 
+            let gTarget = 0, gTercapai = 0;
+            
+            items.forEach(item => {
+                const target = parseInt(item.target) || 0; const terjualAsli = parseInt(item.tercapai) || 0; 
+                const rawKekurangan = target - terjualAsli; const kekuranganTampil = Math.max(rawKekurangan, 0); 
+                const pct = target > 0 ? Math.min((terjualAsli/target)*100, 100) : 0; 
+                gTarget += target; gTercapai += terjualAsli;
+                
+                th_currentItems.push({ label: th_capFirst(item.label), target, tercapai: terjualAsli, kekurangan: kekuranganTampil, persentase: Math.round(pct) });
+
+                let barColor = 'linear-gradient(90deg,#D4AF37,#9C7A1D)'; let stClass = 'th-status-warning', stText = 'On Progress', percCls = 'th-perc-warning';
+                if (pct >= 50 || kekuranganTampil === 0) { barColor = 'linear-gradient(90deg,#10b981,#059669)'; stClass = 'th-status-success'; stText = (pct >= 100 || kekuranganTampil === 0) ? 'Tercapai ✓' : 'Progress Baik'; percCls = 'th-perc-success'; } 
+                else if (pct < 30) { barColor = 'linear-gradient(90deg,#FF4550,#B3001B)'; stClass = 'th-status-danger'; stText = 'Perlu Dikejar'; percCls = 'th-perc-danger'; }
+
+                const terjualLabel = terjualAsli > target ? `${terjualAsli} <span style="font-size:10px;color:#10b981;font-weight:700;">+${terjualAsli-target}</span>` : `${terjualAsli}`;
+                const li = document.createElement('li'); li.className = 'th-item-card';
+                li.innerHTML = `<div class="th-item-header"><div class="th-title-wrap"><span class="th-item-title">${th_capFirst(item.label)}</span><span class="th-status-badge ${stClass}">${stText}</span></div><span class="th-item-percentage ${percCls}">${Math.round(pct)}%</span></div><div class="th-progress-container"><div class="th-progress-bar" data-width="${Math.min(pct,100)}%" style="background:${barColor};"></div></div><div class="th-stats-row"><span>Target:<span class="th-stat-val">${target}</span></span><span>Terjual:<span class="th-stat-val th-val-green">${terjualLabel}</span></span><span>Kurang:<span class="th-stat-val ${kekuranganTampil>0?'th-val-red':''}">${kekuranganTampil}</span></span></div>`;
+                listEl.appendChild(li);
+            });
+
+            th_currentGrandTercapai = gTercapai; th_currentGrandTarget = gTarget;
+            const gPctDisplay = gTarget > 0 ? Math.round((gTercapai/gTarget)*100) : 0;
+            const badge = document.getElementById('th_grandPercentage'); badge.innerText = gPctDisplay + '%';
+            
+            if (gPctDisplay >= 100){ badge.style.backgroundColor='rgba(16,185,129,.15)'; badge.style.color='#10b981'; } 
+            else if (gPctDisplay >= 50) { badge.style.backgroundColor='rgba(16,185,129,.1)'; } 
+            else if (gPctDisplay  < 30) { badge.style.backgroundColor='rgba(225,29,46,.15)'; } 
+
+            document.getElementById('th_grandTercapai').innerText = gTercapai; document.getElementById('th_grandTarget').innerText = gTarget;
+            document.getElementById('th_totalSummary').style.display = 'flex'; document.getElementById('th_rekapSection').style.display = 'block';
+            
+            th_initRekapFilter(); th_renderListRekap(); th_checkAutoRekap();
+        }
+
+        function th_checkAutoRekap() {
+            const now = new Date(); const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+            if (now.getDate() !== lastDay) return;
+            const bulanKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+            if (localStorage.getItem(TH_LAST_AUTO_KEY) === bulanKey) return;
+            th_simpanRekapBulanIni(true); localStorage.setItem(TH_LAST_AUTO_KEY, bulanKey);
+        }
+
+        function th_getRekapData() { try { return JSON.parse(localStorage.getItem(TH_REKAP_KEY)) || []; } catch { return []; } }
+        function th_saveRekapData(arr){ localStorage.setItem(TH_REKAP_KEY, JSON.stringify(arr)); }
+
+        function th_simpanRekapBulanIni(isAuto = false) {
+            if (th_currentGrandTarget === 0) { showToast('⚠️ Data belum tersedia, muat ulang halaman.','error'); return; }
+            const now = new Date(); const bulanIdx = now.getMonth(); const tahun = now.getFullYear(); const bulanKey = `${tahun}-${String(bulanIdx+1).padStart(2,'0')}`;
+            const pct = th_currentGrandTarget > 0 ? Math.round((th_currentGrandTercapai/th_currentGrandTarget)*100) : 0;
+            const tanggal = now.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
+            const entry = { bulanKey, bulanNama: TH_NAMA_BULAN[bulanIdx], tahun, tercapai: th_currentGrandTercapai, target: th_currentGrandTarget, persentase: pct, tanggalSimpan: tanggal, isAuto, detail: th_currentItems.map(i => ({...i})) };
+
+            let rekap = th_getRekapData(); const idx = rekap.findIndex(r => r.bulanKey === bulanKey);
+            if (idx >= 0) { rekap[idx] = entry; if (!isAuto) showToast(`✅ Rekap diperbarui!`, 'success'); } 
+            else { rekap.push(entry); if (!isAuto) showToast(`✅ Rekap disimpan!`, 'success'); }
+
+            rekap.sort((a,b) => b.bulanKey.localeCompare(a.bulanKey)); th_saveRekapData(rekap); th_initRekapFilter(); th_renderListRekap();
+        }
+
+        function th_hapusRekap(bulanKey) { if (!confirm('Yakin hapus rekap bulan ini?')) return; th_saveRekapData(th_getRekapData().filter(r => r.bulanKey !== bulanKey)); th_initRekapFilter(); th_renderListRekap(); }
+        function th_hapusSemuaRekap() { if (!confirm('Yakin hapus SEMUA data rekap?')) return; th_saveRekapData([]); th_initRekapFilter(); th_renderListRekap(); showToast('🗑 Semua data rekap dihapus.', 'info'); }
+        function th_initRekapFilter() { const years = [...new Set(th_getRekapData().map(r => r.tahun))].sort((a,b)=>b-a); const sel = document.getElementById('th_filterTahun'); const cur = sel.value; sel.innerHTML = '<option value="semua">Semua Tahun</option>'; years.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; if (String(y) === cur) o.selected = true; sel.appendChild(o); }); }
+        
+        function th_renderListRekap() {
+            const rekap = th_getRekapData(); const filter = document.getElementById('th_filterTahun').value; const filtered = filter === 'semua' ? rekap : rekap.filter(r => String(r.tahun)===filter); const cont = document.getElementById('th_rekapListContainer');
+            if (!filtered.length) { cont.innerHTML = `<div style="text-align:center; padding: 20px; color:#888;">Belum ada data rekap.</div>`; return; }
+            let html = filtered.map(r => {
+                const bc = r.persentase>=50 ? 'th-rekap-perc-green' : r.persentase<30 ? 'th-rekap-perc-red' : 'th-rekap-perc-orange';
+                let prodRows = r.detail ? r.detail.map(d => `<tr><td>${d.label}</td><td>${d.target}</td><td style="color:#10b981">${d.tercapai}</td><td style="color:#ef4444">${d.kekurangan}</td></tr>`).join('') : '';
+                return `<div class="th-rekap-month-card"><div class="th-rekap-month-header" onclick="th_toggleDetail('${r.bulanKey}')"><div><div class="th-rekap-month-title">${r.bulanNama} ${r.tahun}</div><div class="th-rekap-month-meta">Tercapai: ${r.tercapai} / Target: ${r.target}</div></div><div class="th-rekap-month-right"><span class="th-rekap-perc-badge ${bc}">${r.persentase}%</span><button style="background:none; border:none; color:#888; font-size:16px; cursor:pointer;" onclick="event.stopPropagation();th_hapusRekap('${r.bulanKey}')">✕</button></div></div><div class="th-rekap-detail" id="th_detail-${r.bulanKey}"><table class="th-prod-table"><thead><tr><th>Produk</th><th>Target</th><th>Terjual</th><th>Kurang</th></tr></thead><tbody>${prodRows}</tbody></table></div></div>`;
+            }).join('');
+            cont.innerHTML = html;
+        }
+        function th_toggleDetail(bulanKey) { const det = document.getElementById(`th_detail-${bulanKey}`); det.classList.toggle('open'); }
+        function th_toggleRekap() { const body = document.getElementById('th_rekapBody'); const label = document.getElementById('th_rekapToggleLabel'); const open = body.classList.toggle('open'); label.textContent = open ? 'Tutup ▴' : 'Lihat ▾'; }
+        function th_capFirst(s) { if (!s) return ''; return s.split(' ').map(w => w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
+    </script>
+</body>
+</html>

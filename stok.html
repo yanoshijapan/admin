@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stok Produk - Yanoshi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        :root {
+            --theme-silver: #E0E0E0; --theme-white: #FFFFFF;
+            --grad-black: linear-gradient(135deg, #2b2b2b 0%, #121212 50%, #000000 100%);
+            --grad-white: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%);
+            --text-dark: #F3F1EA; --text-mid: #A9A6A0;
+            --border-soft: rgba(255,255,255,0.08); --border-theme: rgba(255,255,255,0.25);
+            --red-light: #FF4550;
+        }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(180deg, #0A0A0B 0%, #141418 45%, #1B1B20 100%); color: var(--text-dark); min-height: 100vh; }
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f0f11; }
+        ::-webkit-scrollbar-thumb { background: var(--grad-white); border-radius: 3px; }
+        
+        #toastContainer { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast { padding: 12px 18px; border-radius: 12px; color: white; font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif; box-shadow: 0 4px 20px rgba(0,0,0,0.5); pointer-events: auto; animation: toastIn 0.3s ease-out; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+        .toast.error { background: linear-gradient(135deg, #5c0000, #990000); }
+    </style>
+</head>
+<body x-data="stokApp()" x-init="initStok()">
+
+    <div id="toastContainer"></div>
+
+    <!-- HEADER STICKY BARU (PENCARIAN & KATEGORI) -->
+    <!-- Di HP akan susun atas-bawah, di Desktop akan menyamping sejajar -->
+    <div class="sticky top-0 z-50 p-3 sm:p-4 bg-[#131315] border-b border-[rgba(255,255,255,0.1)] shadow-lg flex flex-col sm:flex-row gap-3 w-full">
+        
+        <!-- Input Cari -->
+        <div class="relative flex-1">
+            <input type="text" x-model="searchQuery" placeholder="Cari nama produk..." class="w-full pl-10 pr-4 py-2.5 sm:py-2 border border-[rgba(255,255,255,0.15)] rounded-lg outline-none transition text-sm font-medium bg-[#0a0a0c] text-white focus:border-yellow-500 shadow-inner">
+            <svg class="absolute left-3 top-3 sm:top-2.5 text-gray-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        
+        <!-- Dropdown Kategori -->
+        <select x-model="activeCat" class="w-full sm:w-[220px] lg:w-[280px] shrink-0 px-4 py-2.5 sm:py-2 border border-[rgba(255,255,255,0.15)] rounded-lg outline-none transition text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer bg-[#1b1b20] text-yellow-500 focus:border-yellow-500 shadow-sm">
+            <template x-for="cat in categories" :key="cat">
+                <option :value="cat" x-text="cat" class="text-white bg-[#1b1b20]"></option>
+            </template>
+        </select>
+        
+    </div>
+
+    <!-- CONTENT -->
+    <div class="max-w-7xl mx-auto p-4 md:p-6 w-full">
+
+        <div x-show="loading" class="flex flex-col justify-center items-center py-16" x-cloak>
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-yellow-500 mb-3"></div>
+            <p class="font-bold text-sm" style="color:var(--text-mid);">Memuat Stok...</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-10" x-show="!loading" x-cloak>
+            <template x-for="item in filteredProducts" :key="item.nama">
+                <div class="rounded-xl shadow-sm border p-4 flex flex-col sm:flex-row gap-4 hover:shadow-md transition-all bg-[#1b1b20]" style="border-color: var(--border-soft);">
+                    
+                    <!-- Image Preview -->
+                    <div class="w-full sm:w-32 h-40 flex-shrink-0 rounded-lg overflow-hidden border flex items-center justify-center bg-black/50" style="border-color: rgba(255,255,255,0.1);">
+                        <template x-if="item.mainImg">
+                            <img :src="item.mainImg" class="w-full h-full object-cover">
+                        </template>
+                        <template x-if="!item.mainImg">
+                            <span class="text-xs font-bold" style="color:var(--text-mid);">No Image</span>
+                        </template>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="flex-1 w-full overflow-hidden">
+                        <h3 class="font-extrabold text-[15px] uppercase tracking-wide mb-3 text-white" x-text="item.nama"></h3>
+                        
+                        <div class="w-full border rounded-lg overflow-x-auto touch-pan-x" style="border-color: rgba(255,255,255,0.1); scrollbar-width: none;">
+                            <table class="w-full text-left border-collapse min-w-max whitespace-nowrap">
+                                <thead>
+                                    <tr style="background: rgba(255,255,255,0.05);">
+                                        <th class="px-3 py-2 text-[9px] uppercase font-bold text-gray-400">Size</th>
+                                        <th class="px-3 py-2 text-[9px] uppercase font-bold text-gray-400 text-center">Stok</th>
+                                        <th class="px-3 py-2 text-[9px] uppercase font-bold text-gray-400 text-right">Harga</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template x-for="d in item.details" :key="d.row">
+                                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                                            <td class="px-3 py-2 text-xs font-bold text-white" x-text="d.size"></td>
+                                            <td class="px-3 py-2 text-center">
+                                                <template x-if="d.stok <= 0">
+                                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background: rgba(225,29,46,0.2); color: var(--red-light);">KOSONG</span>
+                                                </template>
+                                                <template x-if="d.stok > 0">
+                                                    <span class="px-2 py-0.5 rounded text-[11px] font-bold" style="background: rgba(255,255,255,0.1); color: #fff;" x-text="d.stok"></span>
+                                                </template>
+                                            </td>
+                                            <td class="px-3 py-2 text-xs font-bold text-right text-gray-300" x-text="formatRp(d.harga)"></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+            </template>
+            
+            <div x-show="filteredProducts.length === 0" class="col-span-full text-center py-12">
+                <span class="text-4xl mb-2 block">📭</span>
+                <div class="text-[13px] font-bold text-gray-400 uppercase tracking-widest">Produk tidak ditemukan</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showToast(msg, type = 'success') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`; t.textContent = msg; c.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(60px)'; t.style.transition = 'all 0.3s ease'; setTimeout(() => t.remove(), 300); }, 3000);
+        }
+
+        const STOK_API_URL = 'https://script.google.com/macros/s/AKfycbw6TaXv2RsoZMNC8j2PVFBYCzxm1mLvrRpDNr5skYxBtg4GmM1fh4P3q4kWEs-ndSBUaQ/exec'; 
+
+        function stokApp() {
+            return {
+                apiUrl: STOK_API_URL, loading: false, rawData: [], searchQuery: '', activeCat: 'kaos oversize',
+                categories: ['kaos oversize', 'kaos premium', 'jaket hoodie', 'kakejiku deluxe', 'kakejiku premium', 'gantungan kunci', 'sake set', 'katana'],
+                
+                mapping: {
+                    "kaos oversize": [{ nama: "Yanoshi Black", rows: [4, 5, 6] }, { nama: "Yanoshi White", rows: [8, 9, 10] }, { nama: "Ramen", rows: [12, 13, 14] }, { nama: "Vending", rows: [16, 17, 18] }, { nama: "Akatsuki", rows: [20, 21, 22] }, { nama: "Flower Maiden", rows: [24, 25, 26] }],
+                    "kaos premium": [{ nama: "Kaos 8B", rows: [65, 66, 67, 68, 69] }, { nama: "Kaos 9B", rows: [71, 72, 73, 74] }, { nama: "Kaos 10W", rows: [76, 77, 78, 79] }, { nama: "Kaos 11B", rows: [81, 82, 83, 84] }, { nama: "Kaos 12B", rows: [86, 87, 88, 89, 90] }, { nama: "Kaos 13B", rows: [92, 93, 94, 95] }, { nama: "Kaos 14B", rows: [97, 98, 99, 100] }, { nama: "Kaos 15B", rows: [102, 103, 104, 105] }, { nama: "Kaos 16W", rows: [107, 108, 109, 110] }, { nama: "Kaos 17B", rows: [112, 113, 114, 115, 116] }, { nama: "Kaos 18B", rows: [118, 119, 120, 121] }, { nama: "Kaos 19K", rows: [123, 124, 125, 126] }, { nama: "Kaos 22B", rows: [128, 129, 130, 131] }, { nama: "Kaos 23P", rows: [133, 134, 135, 136] }, { nama: "Kaos 24Y", rows: [138, 139, 140, 141] }],
+                    "jaket hoodie": [{ nama: "Nippon", rows: [144, 145, 146, 147, 148] }, { nama: "Kabuto", rows: [150, 151, 152, 153, 154] }, { nama: "Phoenix", rows: [156, 157, 158, 159, 160] }, { nama: "Osaka", rows: [162, 163, 164, 165, 166] }],
+                    "kakejiku deluxe": [{ nama: "KD 5", rows: [168] }, { nama: "KD 7", rows: [169] }, { nama: "KD 8", rows: [170] }, { nama: "KD 9", rows: [171] }, { nama: "KD 1", rows: [172] }, { nama: "KD 2", rows: [173] }, { nama: "KD 3", rows: [174] }, { nama: "KD 4", rows: [175] }, { nama: "KD 10", rows: [176] }, { nama: "KD 11", rows: [177] }, { nama: "KD 13", rows: [178] }],
+                    "kakejiku premium": [{ nama: "KP 1", rows: [180] }, { nama: "KP 2", rows: [181] }, { nama: "KP 3", rows: [182] }, { nama: "KP 4", rows: [183] }, { nama: "KP 5", rows: [184] }, { nama: "KP 6", rows: [185] }, { nama: "KP 7", rows: [186] }, { nama: "KP 8", rows: [187] }, { nama: "KP 9", rows: [188] }, { nama: "KP 10", rows: [189] }, { nama: "KP 11", rows: [190] }, { nama: "KP 13", rows: [191] }],
+                    "gantungan kunci": [{ nama: "Japan Icon Vol 1", rows: [193] }, { nama: "Japan Icon Vol 2", rows: [194] }, { nama: "Sushi", rows: [195] }],
+                    "sake set": [{ nama: "Set A", rows: [197] }, { nama: "Set C", rows: [198] }, { nama: "Set G", rows: [199] }, { nama: "Set P", rows: [200] }],
+                    "katana": [{ nama: "Gold", rows: [202] }, { nama: "Hitam", rows: [203] }, { nama: "Putih", rows: [204] }]
+                },
+
+                initStok() { 
+                    this.fetchData(false); 
+                    setInterval(() => { this.fetchData(true); }, 120000); // Auto Sync
+                },
+
+                fetchData(isSilent = false) {
+                    if (!isSilent) this.loading = true;
+                    const callbackName = 'stokCallback_' + Math.floor(Math.random() * 100000);
+                    
+                    window[callbackName] = (result) => {
+                        if (!isSilent) this.loading = false;
+                        if(result.status === "success") { this.rawData = result.data; } 
+                        else { if(!isSilent) showToast("Pesan Server: " + result.message, "error"); }
+                        delete window[callbackName];
+                        document.getElementById(callbackName)?.remove();
+                    };
+
+                    const script = document.createElement('script'); script.id = callbackName;
+                    script.src = `${this.apiUrl}?action=getStok&callback=${callbackName}`;
+                    
+                    script.onerror = () => {
+                        if (!isSilent) this.loading = false;
+                        if (!isSilent) showToast("Terjadi kesalahan koneksi.", "error");
+                        delete window[callbackName]; script.remove();
+                    };
+                    document.body.appendChild(script);
+                },
+
+                formatRp(angka) { 
+                    if (!angka || isNaN(angka)) return '-'; 
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); 
+                },
+
+                get filteredProducts() {
+                    let prods = [];
+                    if(this.searchQuery.trim() !== '') {
+                        const sq = this.searchQuery.toLowerCase();
+                        for (let category in this.mapping) {
+                            let items = this.mapping[category];
+                            let matchedItems = items.filter(p => p.nama.toLowerCase().includes(sq));
+                            prods = prods.concat(matchedItems);
+                        }
+                    } else {
+                        prods = this.mapping[this.activeCat] || [];
+                    }
+                    
+                    return prods.map(p => {
+                        let details = p.rows.map(rNum => {
+                            let rData = this.rawData.find(d => d.row === rNum);
+                            return rData ? rData : { row: rNum, size: '-', stok: 0, harga: 0, img: '' };
+                        });
+                        let mainImg = details.length > 0 ? details[0].img : '';
+                        return { ...p, details: details, mainImg: mainImg };
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
