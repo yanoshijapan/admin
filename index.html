@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yanoshi Dashboard</title>
+    <title>Yanoshi Dashboard Master</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#050505">
@@ -421,14 +421,18 @@
                 </div>
 
                 <!-- 10. CETAK STIKER WIDE (External) -->
-                <div class="menu-card" @click="openExternal('https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html')">
-                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
+								<div class="menu-card" @click="openIframe('Cetak Stiker', 'https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html', 'stiker')">
+                    <div class="menu-icon">
+                        <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8.01" y2="16"></line><line x1="16" y1="16" x2="16.01" y2="16"></line></svg>
+                    </div>
                     <div class="menu-label">Stiker</div>
                 </div>
 
                 <!-- 11. WEBSTORE (External) -->
-                <div class="menu-card" @click="openExternal('https://yanoshistore.netlify.app/')">
-                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+								<div class="menu-card" @click="openIframe('Yanoshi Webstore', 'https://yanoshistore.netlify.app/', 'webstore')">
+                    <div class="menu-icon">
+                        <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8.01" y2="16"></line><line x1="16" y1="16" x2="16.01" y2="16"></line></svg>
+                    </div>
                     <div class="menu-label">Webstore</div>
                 </div>
 
