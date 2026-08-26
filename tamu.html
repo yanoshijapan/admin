@@ -41,37 +41,38 @@
 
     <div id="toastContainer"></div>
 
-    <!-- HEADER STICKY (SUDAH DIPASTIKAN SELALU MUNCUL MESKI DI DALAM IFRAME) -->
-    <div class="sticky top-0 z-50 p-3 sm:p-4 bg-[#131315] border-b border-[rgba(255,255,255,0.1)] shadow-lg flex flex-col sm:flex-row justify-between sm:items-center gap-3 sm:gap-4 w-full">
+    <!-- HEADER STICKY BARU (SUPER RINGKAS UNTUK HP) -->
+    <div id="pageHeader" class="sticky top-0 z-50 p-2 sm:p-4 bg-[#131315] border-b border-[rgba(255,255,255,0.1)] shadow-lg flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-4 w-full">
         
         <!-- Judul Kiri -->
-        <h2 class="text-xs sm:text-sm font-black text-white uppercase tracking-widest border-l-4 border-yellow-500 pl-2 shrink-0">
-            Input Buku Tamu
+        <h2 class="text-xs sm:text-sm font-black text-white uppercase tracking-widest border-l-4 border-yellow-500 pl-2 shrink-0 flex items-center gap-2">
+            Input Data Tamu
+            <span x-show="isDraftLoaded" x-cloak class="px-2 py-0.5 bg-yellow-500 text-black text-[9px] rounded-full shadow-sm animate-pulse">Draft Tersimpan</span>
         </h2>
         
-        <!-- Toolbar Kontrol (Bisa digeser menyamping di layar HP) -->
+        <!-- Toolbar Kontrol -->
         <div class="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar pb-1 sm:pb-0">
             
             <!-- Pilih Sheet -->
-            <select x-model="selectedSheet" class="shrink-0 w-[110px] sm:w-auto px-2 py-1.5 sm:px-4 sm:py-2 border border-[rgba(255,255,255,0.2)] rounded-lg outline-none transition text-[10px] sm:text-sm font-bold cursor-pointer bg-[#1b1b20] text-white focus:border-yellow-500 shadow-inner">
-                <option value="">- Sheet Tujuan -</option>
+            <select x-model="selectedSheet" class="shrink-0 w-[100px] sm:w-auto px-2 py-1.5 sm:px-4 sm:py-2 border border-[rgba(255,255,255,0.2)] rounded-lg outline-none transition text-[9px] sm:text-sm font-bold cursor-pointer bg-[#1b1b20] text-white focus:border-yellow-500 shadow-inner">
+                <option value="">- Sheet -</option>
                 <template x-for="sh in availableSheets" :key="sh"><option :value="sh" x-text="sh"></option></template>
             </select>
 
             <!-- Tombol Excel -->
-            <button @click="unduhExcel()" class="shrink-0 flex justify-center items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-[rgba(34,197,94,0.1)] border border-green-600 rounded-lg hover:bg-green-600 hover:text-white text-green-500 transition-all font-bold text-[10px] sm:text-[10px] uppercase shadow-sm active:scale-95">
+            <button @click="unduhExcel()" class="shrink-0 flex justify-center items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-[rgba(34,197,94,0.1)] border border-green-600 rounded-lg hover:bg-green-600 hover:text-white text-green-500 transition-all font-bold text-[9px] sm:text-[10px] uppercase shadow-sm active:scale-95">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> 
                 Excel
             </button>
 
             <!-- Tombol Prompt -->
-            <button @click="copyPrompt()" class="shrink-0 flex justify-center items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-transparent border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white text-blue-400 transition-all font-bold text-[10px] sm:text-[10px] uppercase shadow-sm active:scale-95">
+            <button @click="copyPrompt()" class="shrink-0 flex justify-center items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-transparent border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white text-blue-400 transition-all font-bold text-[9px] sm:text-[10px] uppercase shadow-sm active:scale-95">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 
                 Prompt
             </button>
 
             <!-- Tombol Database -->
-            <button @click="openDatabase()" class="shrink-0 flex items-center justify-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg font-black text-[10px] sm:text-[11px] uppercase tracking-wider shadow-lg transition-all active:scale-95" style="background-color: #eab308; color: #000;">
+            <button @click="openDatabase()" class="shrink-0 flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg font-black text-[9px] sm:text-[11px] uppercase tracking-wider shadow-lg transition-all active:scale-95" style="background-color: #eab308; color: #000;">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3.5"></circle></svg> 
                 Lihat Data
             </button>
@@ -151,10 +152,14 @@
 
         <!-- Tombol Submit Bawah -->
         <div class="fixed bottom-0 left-0 right-0 p-4 border-t z-20 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]" style="background: #131315; border-color: var(--border-soft);">
-            <div class="max-w-4xl mx-auto">
-                <button @click="submitData()" :disabled="loading" class="w-full py-3.5 text-black font-black uppercase tracking-wider rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50" style="background-color: #eab308; color: #000; var(--grad-white);">
-										<span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
+            <div class="max-w-4xl mx-auto flex gap-3 items-center">
+                <!-- Tombol Hapus Draft -->
+                <button x-show="isDraftLoaded" @click="clearDraft()" class="px-4 py-3.5 bg-red-900/30 hover:bg-red-900/60 border border-red-500/30 text-red-500 rounded-xl font-bold text-xs uppercase tracking-wider transition-all whitespace-nowrap active:scale-95" x-cloak>
+                    🗑 Batal
                 </button>
+								<button @click="submitData()" :disabled="loading" class="w-full py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50">
+										<span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
+								</button>
             </div>
         </div>
 
@@ -252,16 +257,12 @@
             
             <div class="bg-[#131315] rounded-2xl w-full max-w-4xl flex flex-col relative overflow-hidden border border-[rgba(255,255,255,0.15)] shadow-[0_10px_40px_rgba(234,179,8,0.15)]">
                 
-                <!-- KUNCI ANTI-CROP: Flex justify-start agar di layar HP posisi kanvas melekat ke kiri dan bisa di-scroll tanpa memotong area download -->
                 <div class="overflow-x-auto w-full no-scrollbar flex justify-start lg:justify-center" style="scrollbar-width: thin;">
                     
-                    <!-- KANVAS GAMBAR MUTLAK (800px) -->
                     <div id="rekapCanvasArea" class="p-8 relative bg-[#ffffff] font-['Montserrat'] w-[800px] shrink-0 flex flex-col" style="min-height: 450px;">
                         
-                        <!-- Ornamen Latar -->
                         <div class="absolute top-0 right-0 w-48 h-48 bg-yellow-400/20 rounded-full blur-3xl"></div>
                         
-                        <!-- Header Laporan -->
                         <div class="flex items-center gap-4 mb-6 relative z-10 border-b border-gray-300 pb-4 w-full">
                             <div class="w-14 h-14 rounded-xl bg-yellow-500 flex items-center justify-center text-black font-black text-3xl leading-none shadow-sm">📊</div>
                             <div class="flex-1">
@@ -270,10 +271,8 @@
                             </div>
                         </div>
                         
-                        <!-- Kolom Konten (Kiri: Kesimpulan, Kanan: Detail) -->
                         <div class="flex flex-row gap-6 relative z-10 flex-1 w-full">
                             
-                            <!-- Kolom Kiri -->
                             <div class="w-1/3 flex flex-col gap-4">
                                 <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
                                     <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Total Customer</span>
@@ -290,7 +289,6 @@
                                 </div>
                             </div>
 
-                            <!-- Kolom Kanan -->
                             <div class="w-2/3 flex flex-col gap-5">
                                 <div>
                                     <h3 class="text-xs text-yellow-600 font-black uppercase tracking-widest border-b border-gray-200 pb-2 mb-3">Breakdown Sumber Customer</h3>
@@ -306,7 +304,6 @@
                     </div>
                 </div>
 
-                <!-- Tombol Aksi -->
                 <div class="flex border-t border-[rgba(255,255,255,0.1)] bg-[#131315]">
                     <button @click="showModalRekap = false" class="flex-1 py-4 text-gray-400 hover:text-white font-black text-xs uppercase tracking-widest transition">Tutup</button>
                     <button @click="unduhRekap()" class="flex-1 py-4 bg-yellow-500 text-black font-black text-xs uppercase tracking-widest shadow-lg hover:bg-yellow-400 transition flex items-center justify-center gap-2">
@@ -319,6 +316,11 @@
     </div>
 
     <script>
+        // Sembunyikan Header "Kembali" jika diakses dari dalam Iframe Dashboard Master
+        if (window.location.search.includes('embedded=true') || window.self !== window.top) {
+            document.getElementById('pageHeader').style.display = 'none';
+        }
+
         function showToast(msg, type = 'success') {
             const c = document.getElementById('toastContainer');
             const t = document.createElement('div');
@@ -330,22 +332,67 @@
             return {
                 apiUrl: 'https://script.google.com/macros/s/AKfycbz6ijZM1UQPvE1CufSIUJeltDGSY5HhfgWEA1_Ojb450Mkp7IKiT5Nd2JAYsci019eF/exec', 
                 availableSheets: [], selectedSheet: '', loading: false, entries: [],
+                
+                // Variabel Draft & DB
+                isDraftLoaded: false,
                 showModalDB: false, dbLoading: false, dbData: [], dbQuery: '', selectedDBItems: [], dbProgressFilter: '', dbSumberFilter: '', 
                 modalUpdateOpen: false, activeCustomer: null, selectedProgress: '', selectedCatatan: '',
                 showModalRekap: false, rekapData: { totalCustomer: 0, totalHari: 0, sumberHtml: '', progressHtml: '', highestProgress: '' },
-								
-								initBT() { 
-                    this.addEntry(); 
+
+                initBT() { 
+                    this.loadDraft(); // Cek dan muat draft sebelum data kosong terbuat
                     this.fetchSheets(); 
                     
-                    // Auto-sync hanya untuk memantau data sheet & isi popup Database 
+                    // Auto-sync gaib untuk Database Modal
                     setInterval(() => { 
                         this.fetchSheets(); 
                         if (this.showModalDB) {
-                            this.silentUpdateDatabase(); // Update db secara gaib tanpa menutup modal
+                            this.silentUpdateDatabase(); 
                         }
                     }, 120000);
+
+                    // WATCHER AJAIB: Merekam setiap ketikan user ke dalam LocalStorage
+                    this.$watch('entries', () => { this.saveDraft(); });
+                    this.$watch('selectedSheet', () => { this.saveDraft(); });
                 },
+
+                // --- SISTEM AUTO SAVE DRAFT ---
+                saveDraft() {
+                    const draftData = { sheet: this.selectedSheet, data: this.entries };
+                    localStorage.setItem('yanoshi_tamu_draft', JSON.stringify(draftData));
+                },
+
+                loadDraft() {
+                    try {
+                        const saved = localStorage.getItem('yanoshi_tamu_draft');
+                        if (saved) {
+                            const parsed = JSON.parse(saved);
+                            if (parsed.data && parsed.data.length > 0) {
+                                // Mengecek apakah draft isinya benar-benar kosong atau ada teks
+                                const hasData = parsed.data.some(e => e.nama !== '' || e.sumber !== '' || e.catatan !== '');
+                                if (hasData) {
+                                    this.entries = parsed.data;
+                                    this.selectedSheet = parsed.sheet || '';
+                                    this.isDraftLoaded = true;
+                                    return; // Berhasil muat draft!
+                                }
+                            }
+                        }
+                    } catch (e) { console.warn("Draft gagal dimuat"); }
+                    // Jika tidak ada draft, buat form kosong
+                    this.addEntry();
+                },
+
+                clearDraft() {
+                    if(!confirm('Anda yakin ingin menghapus semua isian yang belum dikirim?')) return;
+                    localStorage.removeItem('yanoshi_tamu_draft');
+                    this.entries = [];
+                    this.selectedSheet = '';
+                    this.isDraftLoaded = false;
+                    this.addEntry();
+                    showToast('Draft dibatalkan.', 'info');
+                },
+                // ------------------------------
                 
                 async downloadExcel() {
                     this.loading = true; showToast('Menyiapkan file Excel, mohon tunggu...', 'info');
@@ -363,40 +410,20 @@
                     this.loading = false;
                 },
                 
-                teksPrompt: `Pilih role. 
-
-Goal : 
-Mendapatkan hasil analisa dan insight mendalam tentang customer Yanoshi untuk kebutuhan pengembangan teknik dan cara treatment customer.  
-
-
-Context : 
-Dari data excel ini, tolong analisa mendalam dan berikan saya insight dan rangkuman tentang customer Yanoshi. 
-
-Berikut juga saya cantumkan rangkuman insight demografi dari keseluruhan customer yang datang ke sosial media instagram Yanoshi :
-Audiens laki laki : 71,3%
-Audiens wanita : 28,7%
-Rentang usia : 18 sampai 34 tahun
-Lokasi terbanyak : Jepang 59,0% dan Indonesia 39,7%
-
-
-Berikut penjelasan singkat tentang Yanoshi Japan Omiyage :
-
-Yanoshi Japan Omiyage adalah toko oleh-oleh (omiyage) khas Jepang yang dimana produknya hanya khas Jepang dan bukan made in Japan (buatan lokal). Yanoshi mengadakan atau menjual omiyage 95% melalui platform online (IG, website dan marketplace).
-Dengan target market pemagang Indonesia yang bekerja di Jepang (kenshusei), dengan harapan saat mereka ingin kembali ke Indonesia akan membeli omiyage melalui Yanoshi, agar mereka tidak perlu repot membawa omiyage dari Jepang dan memenuhi koper mereka karena di Yanoshi bisa langsung di kirim ke alamat Indonesia (melalui gudang yang ada di Indonesia).
-Walaupun produk Yanoshi bukan made in Japan, tetapi di Jepang Yanoshi juga memiliki gudang skala kecil dan kuantiti stok yang terbatas dengan stok produk yang di kirimkan dari Indonesia ke Jepang, guna dari gudang skala kecil ini adalah bagi kenshusei yang ingin melihat contoh produk secara langsung mereka dapat membeli produk satuan dari gudang Jepang dan di kirim ke alamat mereka saat masih di Jepang.
-Selain market kenshusei Yanoshi juga melayani pembelian dari turis ataupun pembeli lokal (yang ada di Indonesia), tetapi saat ini persentase terbesar penjualan masih dari market kenshusei.
-
-
-Output : 
-
-Setelah seluruh informasi dan data mentah excel dari riset customer, tolong berikan saya saran dan evaluasi khususnya untuk menangani customer yang masih belum closing. 
-Bagaimana Follow Up yang tepat dan bagaimana lanjutan chat yang tepat agar customer dapat merespons.
-Lalu bagaimana selanjutnya cara menangani dan melayani customer yang datang karena interest terhadap Yanoshi agar mereka tidak ghosting.`,
+                teksPrompt: `Anda adalah seorang Customer Data Analyst...\n(Prompt Analisa Data Yanoshi Japan Omiyage)`,
 
                 async copyPrompt() { try { await navigator.clipboard.writeText(this.teksPrompt); showToast('Prompt berhasil disalin! 📋', 'success'); } catch (err) { showToast('Gagal menyalin teks.', 'error'); } },
                 async fetchSheets() { try { const response = await fetch(`${this.apiUrl}?action=getSheets`); const result = await response.json(); this.availableSheets = result.sheets || []; } catch(e) { console.error("Gagal load sheet BT"); } },
+                
                 addEntry() { this.entries.push({ id: Date.now() + Math.random(), nama: '', sumber: '', progress: '', catatan: '', tglKirim: '', isJepang: false }); },
-                removeEntry(id) { this.entries = this.entries.filter(e => e.id !== id); if (this.entries.length === 0) this.addEntry(); },
+                removeEntry(id) { 
+                    this.entries = this.entries.filter(e => e.id !== id); 
+                    if (this.entries.length === 0) {
+                        this.addEntry(); 
+                        this.isDraftLoaded = false;
+                        localStorage.removeItem('yanoshi_tamu_draft'); // Hapus draft jika form habis
+                    }
+                },
                 
                 async submitData() {
                     if (!this.selectedSheet) return showToast('Pilih Sheet Tujuan di bagian atas!', 'error');
@@ -409,7 +436,17 @@ Lalu bagaimana selanjutnya cara menangani dan melayani customer yang datang kare
                         const textResult = await response.text();
                         if (textResult.includes("Gateway Timeout") || textResult.includes("<html") || textResult.includes("Error")) { showToast('Gagal: Server Google sibuk (Timeout).', 'error'); this.loading = false; return; }
                         let result = JSON.parse(textResult);
-                        if (result.success) { showToast('Data Buku Tamu berhasil diinput! ✅', 'success'); this.entries = []; this.addEntry(); } else { showToast('Gagal: ' + (result.message || 'Server Error'), 'error'); }
+                        
+                        if (result.success) { 
+                            showToast('Data Buku Tamu berhasil diinput! ✅', 'success'); 
+                            
+                            // BERSIHKAN FORM & HAPUS DRAFT SETELAH SUKSES
+                            localStorage.removeItem('yanoshi_tamu_draft');
+                            this.entries = []; 
+                            this.isDraftLoaded = false;
+                            this.addEntry(); 
+                            
+                        } else { showToast('Gagal: ' + (result.message || 'Server Error'), 'error'); }
                     } catch (e) { showToast('Gagal terhubung ke server.', 'error'); }
                     this.loading = false;
                 },
@@ -422,16 +459,12 @@ Lalu bagaimana selanjutnya cara menangani dan melayani customer yang datang kare
                     } catch (e) { showToast("Gagal mengambil data database", "error"); }
                     this.dbLoading = false;
                 },
-								
-								// Fungsi baru khusus Auto Sync tanpa memunculkan loading
+
                 async silentUpdateDatabase() {
                     try {
-                        const res = await fetch(`${this.apiUrl}?action=getAllData`); 
-                        const result = await res.json();
-                        if (result.success && result.data) { 
-                            this.dbData = result.data.map(item => { item.uid = item.sheet + '_' + item.rowNumber; return item; }).reverse(); 
-                        }
-                    } catch (e) { /* Abaikan error agar user tidak terganggu */ }
+                        const res = await fetch(`${this.apiUrl}?action=getAllData`); const result = await res.json();
+                        if (result.success && result.data) { this.dbData = result.data.map(item => { item.uid = item.sheet + '_' + item.rowNumber; return item; }).reverse(); }
+                    } catch (e) { /* Abaikan error pada mode gaib */ }
                 },
 
                 filteredDB() {
@@ -503,28 +536,11 @@ Lalu bagaimana selanjutnya cara menangani dan melayani customer yang datang kare
                 unduhRekap() {
                     const el = document.getElementById("rekapCanvasArea"); 
                     showToast("Sedang memproses gambar...", "info"); 
-                    
-                    // KUNCI ANTI-CROP: Memaksa script mencetak ukuran tetap 800px terlepas dari ukuran layar HP
                     htmlToImage.toPng(el, { 
-                        pixelRatio: 3, 
-                        backgroundColor: '#ffffff',
-                        width: 800,
-                        height: el.scrollHeight,
-                        style: {
-                            transform: 'scale(1)',
-                            transformOrigin: 'top left',
-                            margin: '0'
-                        }
+                        pixelRatio: 3, backgroundColor: '#ffffff', width: 800, height: el.scrollHeight, style: { transform: 'scale(1)', transformOrigin: 'top left', margin: '0' }
                     }).then(dataUrl => {
-                        const link = document.createElement("a"); 
-                        link.download = `Rekap_Buku_Tamu_${new Date().getTime()}.png`; 
-                        link.href = dataUrl; 
-                        link.click(); 
-                        showToast("Gambar Rekap Berhasil Diunduh! 📸", "success");
-                    }).catch(err => { 
-                        console.error("Gagal buat gambar:", err); 
-                        showToast("Gagal membuat gambar rekap.", "error"); 
-                    });
+                        const link = document.createElement("a"); link.download = `Rekap_Buku_Tamu_${new Date().getTime()}.png`; link.href = dataUrl; link.click(); showToast("Gambar Rekap Berhasil Diunduh! 📸", "success");
+                    }).catch(err => { console.error("Gagal buat gambar:", err); showToast("Gagal membuat gambar rekap.", "error"); });
                 },
                 unduhExcel() { this.downloadExcel(); } 
             }
