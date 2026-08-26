@@ -1004,6 +1004,7 @@ function appState() {
             const cacheBuster = new Date().getTime();
             // Menggabungkan URL asli + embedded=true + v=angkaUnik
             this.iframeUrl = url + (url.includes('?') ? '&' : '?') + 'embedded=true&v=' + cacheBuster;
+			this.popupIcon = iconKey;
             this.popupOpen = true;
             this.menuOpen = false; 
         },
