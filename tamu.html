@@ -47,14 +47,15 @@
         <!-- Judul Kiri -->
         <h2 class="text-xs sm:text-sm font-black text-white uppercase tracking-widest border-l-4 border-yellow-500 pl-2 shrink-0 flex items-center gap-2">
             Input Data Tamu
+            <!-- Lencana ini sekarang akan langsung menyala saat Anda mengetik huruf pertama -->
             <span x-show="isDraftLoaded" x-cloak class="px-2 py-0.5 bg-yellow-500 text-black text-[9px] rounded-full shadow-sm animate-pulse">Draft Tersimpan</span>
         </h2>
         
         <!-- Toolbar Kontrol -->
         <div class="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar pb-1 sm:pb-0">
             
-            <!-- Pilih Sheet -->
-            <select x-model="selectedSheet" class="shrink-0 w-[100px] sm:w-auto px-2 py-1.5 sm:px-4 sm:py-2 border border-[rgba(255,255,255,0.2)] rounded-lg outline-none transition text-[9px] sm:text-sm font-bold cursor-pointer bg-[#1b1b20] text-white focus:border-yellow-500 shadow-inner">
+            <!-- Pilih Sheet (Kini langsung trigger saveDraft saat diganti) -->
+            <select x-model="selectedSheet" @change="saveDraft()" class="shrink-0 w-[100px] sm:w-auto px-2 py-1.5 sm:px-4 sm:py-2 border border-[rgba(255,255,255,0.2)] rounded-lg outline-none transition text-[9px] sm:text-sm font-bold cursor-pointer bg-[#1b1b20] text-white focus:border-yellow-500 shadow-inner">
                 <option value="">- Sheet -</option>
                 <template x-for="sh in availableSheets" :key="sh"><option :value="sh" x-text="sh"></option></template>
             </select>
@@ -88,8 +89,8 @@
             <p class="font-bold text-sm" style="color:var(--text-mid);">Memproses...</p>
         </div>
 
-        <!-- List Form Dinamis -->
-        <div class="pb-32 mt-2">
+        <!-- PERBAIKAN MUTLAK: Seluruh kotak ini akan merekam setiap kali ada huruf diketik atau opsi dipilih (@input & @change) -->
+        <div class="pb-32 mt-2" @input="saveDraft()" @change="saveDraft()">
             <template x-for="(item, index) in entries" :key="item.id">
                 <div class="p-4 sm:p-5 rounded-xl border mb-5 transition-all shadow-sm bg-[#1b1b20]" style="border-color: var(--border-soft);">
                     <div class="flex justify-between items-center mb-4 pb-3 border-b" style="border-color: rgba(255,255,255,0.06);">
@@ -157,9 +158,9 @@
                 <button x-show="isDraftLoaded" @click="clearDraft()" class="px-4 py-3.5 bg-red-900/30 hover:bg-red-900/60 border border-red-500/30 text-red-500 rounded-xl font-bold text-xs uppercase tracking-wider transition-all whitespace-nowrap active:scale-95" x-cloak>
                     🗑 Batal
                 </button>
-								<button @click="submitData()" :disabled="loading" class="w-full py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50">
-										<span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
-								</button>
+                <button @click="submitData()" :disabled="loading" class="w-full py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50">
+                    <span x-text="loading ? 'Mengirim Data...' : '📥 Input Buku Tamu'"></span>
+                </button>
             </div>
         </div>
 
@@ -252,7 +253,7 @@
             </div>
         </div>
 
-        <!-- MODAL POPUP REKAP DATA (Anti-Crop & Landscape) -->
+        <!-- MODAL POPUP REKAP DATA -->
         <div x-show="showModalRekap" x-cloak class="fixed inset-0 z-[80] flex items-center justify-center bg-black bg-opacity-80 px-2 sm:px-4 backdrop-blur-md">
             
             <div class="bg-[#131315] rounded-2xl w-full max-w-4xl flex flex-col relative overflow-hidden border border-[rgba(255,255,255,0.15)] shadow-[0_10px_40px_rgba(234,179,8,0.15)]">
@@ -340,7 +341,7 @@
                 showModalRekap: false, rekapData: { totalCustomer: 0, totalHari: 0, sumberHtml: '', progressHtml: '', highestProgress: '' },
 
                 initBT() { 
-                    this.loadDraft(); // Cek dan muat draft sebelum data kosong terbuat
+                    this.loadDraft(); 
                     this.fetchSheets(); 
                     
                     // Auto-sync gaib untuk Database Modal
@@ -350,16 +351,18 @@
                             this.silentUpdateDatabase(); 
                         }
                     }, 120000);
-
-                    // WATCHER AJAIB: Merekam setiap ketikan user ke dalam LocalStorage
-                    this.$watch('entries', () => { this.saveDraft(); });
-                    this.$watch('selectedSheet', () => { this.saveDraft(); });
+                    
+                    // Kita menghapus perintah this.$watch karena ia gagal mendeteksi huruf yang diketik.
+                    // Sebagai gantinya, HTML akan menggunakan perintah @input="saveDraft()" 
                 },
 
-                // --- SISTEM AUTO SAVE DRAFT ---
+                // --- SISTEM AUTO SAVE DRAFT YANG 100% PASTI BEKERJA ---
                 saveDraft() {
                     const draftData = { sheet: this.selectedSheet, data: this.entries };
                     localStorage.setItem('yanoshi_tamu_draft', JSON.stringify(draftData));
+                    
+                    // Ini membuat badge "Draft Tersimpan" langsung menyala berkedip saat Anda mengetik
+                    this.isDraftLoaded = true; 
                 },
 
                 loadDraft() {
@@ -418,6 +421,8 @@
                 addEntry() { this.entries.push({ id: Date.now() + Math.random(), nama: '', sumber: '', progress: '', catatan: '', tglKirim: '', isJepang: false }); },
                 removeEntry(id) { 
                     this.entries = this.entries.filter(e => e.id !== id); 
+                    this.saveDraft(); // Paksa update draft jika menghapus form
+                    
                     if (this.entries.length === 0) {
                         this.addEntry(); 
                         this.isDraftLoaded = false;
