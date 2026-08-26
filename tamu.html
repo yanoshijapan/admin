@@ -317,11 +317,7 @@
     </div>
 
     <script>
-        // Sembunyikan Header "Kembali" jika diakses dari dalam Iframe Dashboard Master
-        if (window.location.search.includes('embedded=true') || window.self !== window.top) {
-            document.getElementById('pageHeader').style.display = 'none';
-        }
-
+        
         function showToast(msg, type = 'success') {
             const c = document.getElementById('toastContainer');
             const t = document.createElement('div');
