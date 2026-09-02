@@ -385,7 +385,7 @@
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                     </div>
-                    <div class="menu-label">Tamu</div>
+                    <div class="menu-label">CRM</div>
                 </div>
                 
                 <!-- 6. STOK PRODUK (Iframe) -->
@@ -560,6 +560,23 @@
                 </div>
             </div>
             <div class="flex items-center gap-3">
+                <button x-show="popupIcon === 'buku_tamu'" @click="toggleTemaTamu()" class="flex items-center gap-2.5 px-3 py-1.5 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-lg hover:bg-[rgba(255,255,255,0.1)] transition shadow-sm active:scale-95 group">
+                    <span class="text-[10px] font-bold text-gray-300 group-hover:text-white uppercase tracking-widest transition-colors">
+                        Mode : <span x-text="iframeUrl.includes('tamucerah.html') ? 'Cerah' : 'Gelap'" :style="iframeUrl.includes('tamucerah.html') ? 'color: #facc15; font-weight: 900;' : 'color: white;'"></span>
+                    </span>
+                    
+                    <!-- Animasi Track Switch Berbasis Inline CSS -->
+                    <div class="relative w-[34px] h-[18px] rounded-full transition-colors duration-300 shadow-inner border border-[rgba(255,255,255,0.1)]" 
+                         :style="iframeUrl.includes('tamucerah.html') ? 'background-color: #eab308;' : 'background-color: #1b1b20;'">
+                        
+                        <!-- Lingkaran Switch Berbasis Transform GPU -->
+                        <div class="absolute top-[2px] w-[12px] h-[12px] rounded-full bg-white shadow-md transition-transform duration-300 ease-in-out" 
+                             :style="iframeUrl.includes('tamucerah.html') ? 'transform: translateX(18px);' : 'transform: translateX(2px);'">
+                        </div>
+
+                    </div>
+                </button>
+
                 <button x-show="popupPanel === 'iframe'" @click="openExternal(externalUrl)" class="text-[10px] text-gray-400 hover:text-white uppercase font-bold tracking-widest hidden sm:flex items-center gap-1 transition">
                     Buka Penuh <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 </button>
@@ -1024,7 +1041,20 @@ function appState() {
             setTimeout(() => { this.iframeUrl = ''; }, 300); 
         },
 
-        openExternal(url) { window.open(url, '_blank'); }
+        openExternal(url) { window.open(url, '_blank'); }, // <--- Jangan lupa tambah koma di sini!
+
+        // FUNGSI GANTI TEMA BUKU TAMU
+        toggleTemaTamu() {
+            if (this.iframeUrl.includes('tamucerah.html')) {
+                // Ubah ke Dark Mode
+                this.iframeUrl = 'tamu.html?embedded=true';
+                this.externalUrl = 'tamu.html';
+            } else {
+                // Ubah ke Light Mode
+                this.iframeUrl = 'tamucerah.html?embedded=true';
+                this.externalUrl = 'tamucerah.html';
+            }
+        }
     };
 }
 
