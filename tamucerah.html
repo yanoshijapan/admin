@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Buku Tamu - Yanoshi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+    <style>
+        :root {
+            --theme-accent: #EAB308; --theme-white: #FFFFFF;
+            --text-dark: #1E293B; --text-mid: #64748B;
+            --border-soft: rgba(15,23,42,0.08); --border-theme: rgba(15,23,42,0.14);
+        }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 45%, #F8FAFC 100%); color: var(--text-dark); min-height: 100vh; }
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%); border-radius: 3px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        #toastContainer { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast { padding: 12px 18px; border-radius: 12px; color: white; font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif; box-shadow: 0 8px 24px rgba(15,23,42,0.18); pointer-events: auto; animation: toastIn 0.3s ease-out; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+        .toast.success { background: linear-gradient(135deg, #059669, #10b981); }
+        .toast.error   { background: linear-gradient(135deg, #dc2626, #991b1b); }
+        .toast.info    { background: linear-gradient(135deg, #334155, #1e293b); }
+    </style>
+</head>
+<body x-data="bukuTamuApp()" x-init="initBT()">
+
+    <div id="toastContainer"></div>
+
+    <!-- HEADER STICKY -->
+    <div id="pageHeader" class="sticky top-0 z-50 p-2 sm:p-4 bg-white border-b border-slate-200 shadow-lg flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-4 w-full">
+        <h2 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-widest border-l-4 border-yellow-500 pl-2 shrink-0 flex items-center gap-2">
+            Input Data CRM
+            <span x-show="isDraftLoaded" x-cloak class="px-2 py-0.5 bg-yellow-500 text-black text-[9px] rounded-full shadow-sm animate-pulse">Autosave On</span>
+        </h2>
+        
+        <div class="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+            <select x-model="selectedSheet" @change="saveDraft()" class="shrink-0 w-[100px] sm:w-auto px-2 py-1.5 sm:px-4 sm:py-2 border border-slate-300 rounded-lg outline-none transition text-[9px] sm:text-sm font-bold cursor-pointer bg-white text-slate-700 focus:border-yellow-500 shadow-inner">
+                <option value="" class="bg-white text-slate-700">- Pilih Sheet Dahulu -</option>
+                <template x-for="sh in availableSheets" :key="sh"><option :value="sh" x-text="sh" class="bg-white text-slate-700"></option></template>
+            </select>
+            <button @click="showExcelOptions = true" class="shrink-0 flex justify-center items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-green-50 border border-green-600 rounded-lg hover:bg-green-600 hover:text-white text-green-600 transition-all font-bold text-[9px] sm:text-[10px] uppercase shadow-sm active:scale-95">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Excel
+            </button>
+            <button @click="copyPrompt()" class="shrink-0 flex justify-center items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-transparent border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white text-blue-600 transition-all font-bold text-[9px] sm:text-[10px] uppercase shadow-sm active:scale-95">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Prompt
+            </button>
+            <button @click="openDatabase()" class="shrink-0 flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg font-black text-[9px] sm:text-[11px] uppercase tracking-wider shadow-lg transition-all active:scale-95" style="background-color: #eab308; color: #000;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3.5"></circle></svg> Lihat Data
+            </button>
+        </div>
+    </div>
+
+    <!-- TAMPILAN KARTU DRAFT DI LAYAR UTAMA -->
+    <div class="max-w-4xl mx-auto p-4 md:p-6 w-full relative">
+        <div x-show="loading" class="fixed inset-0 z-[100] flex flex-col justify-center items-center" style="background: rgba(15,23,42,0.5); backdrop-filter: blur(4px);" x-cloak>
+            <div class="animate-spin rounded-full h-12 w-12 border-4 border-slate-200/30 border-b-yellow-400 mb-4"></div>
+            <p class="font-bold text-sm text-white">Memproses...</p>
+        </div>
+
+        <div class="pb-32 mt-2">
+            <div class="flex justify-between items-center mb-4 px-1" x-show="entries.length > 0" x-cloak>
+                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"><span x-text="entries.length"></span> Data Siap Kirim</span>
+                <button @click="toggleAllCards()" class="text-[10px] font-bold uppercase tracking-wider text-yellow-600 hover:text-yellow-700 transition bg-yellow-50 border border-yellow-300 px-3 py-1.5 rounded-lg active:scale-95 flex items-center gap-1.5">
+                    <span x-text="allCardsOpen ? 'Tutup Semua' : 'Buka Semua'"></span>
+                    <svg class="transition-transform duration-300" :class="allCardsOpen ? 'rotate-180' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </div>
+
+            <!-- KARTU SUMMARY DRAFT -->
+            <template x-for="(item, index) in entries" :key="item.id">
+                <div class="p-4 sm:p-5 rounded-xl border mb-4 transition-all shadow-sm bg-slate-50" style="border-color: var(--border-soft);">
+                    <div class="flex justify-between items-center cursor-pointer select-none group" @click="item.isOpen = !item.isOpen; saveDraft()">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1 rounded bg-slate-100 group-hover:bg-slate-200 transition text-slate-500">
+                                <svg class="transition-transform duration-300" :class="item.isOpen ? 'rotate-180' : ''" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </div>
+                            <span class="font-black text-sm text-slate-800 flex items-center gap-2">
+                                <span class="bg-slate-100 px-2 py-0.5 rounded text-[10px]">#<span x-text="index + 1"></span></span>
+                                <span x-text="item.nama ? item.nama : 'Tanpa Nama'"></span>
+                                <span x-show="item.isClosing" class="text-[10px] bg-green-500 text-white px-2 py-0.5 rounded uppercase tracking-widest shadow-sm">Closing</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- AREA DETAIL KARTU -->
+                    <div class="space-y-3 mt-4 pt-4 border-t border-slate-100" x-show="item.isOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0">
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="bg-slate-100 p-2.5 rounded-lg border border-slate-100">
+                                <span class="block text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Sumber</span>
+                                <span class="font-bold text-yellow-600" x-text="item.sumber || '-'"></span>
+                            </div>
+                            <div class="bg-slate-100 p-2.5 rounded-lg border border-slate-100">
+                                <span class="block text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Link URL</span>
+                                <template x-if="item.link">
+                                    <a :href="item.link" target="_blank" class="font-bold text-blue-600 hover:text-blue-500 truncate block">Buka Link ↗</a>
+                                </template>
+                                <template x-if="!item.link"><span class="text-slate-500">-</span></template>
+                            </div>
+                            <div class="col-span-2 bg-slate-100 p-2.5 rounded-lg border border-slate-100">
+                                <span class="block text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Progress Terpilih</span>
+                                <div class="flex flex-wrap gap-1.5 mt-1">
+                                    <template x-for="p in item.progress" :key="p">
+                                        <span class="bg-yellow-50 border border-yellow-300 text-yellow-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider" x-text="p"></span>
+                                    </template>
+                                    <template x-if="item.progress.length === 0"><span class="text-gray-500 italic text-[10px]">Belum ada progress</span></template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 pt-2">
+                            <button @click="openFormModal(item.id)" class="flex-1 py-2 rounded-lg bg-slate-100 hover:bg-yellow-500 hover:text-black transition font-bold text-[10px] uppercase tracking-widest text-slate-700 border border-slate-300">✏️ Edit Data</button>
+                            <button @click="removeEntry(item.id)" class="px-4 py-2 rounded-lg bg-red-50 hover:bg-red-600 transition font-bold text-[10px] uppercase tracking-widest text-red-600 hover:text-white border border-red-200">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <button @click="openFormModal()" class="w-full py-5 rounded-xl border-2 border-dashed font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-slate-100 border-slate-300 text-slate-500 shadow-sm active:scale-95">
+                <svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Tambah Inputan Baru
+            </button>
+        </div>
+
+        <div class="fixed bottom-0 left-0 right-0 p-4 border-t z-20 shadow-[0_-8px_24px_rgba(15,23,42,0.08)]" style="background: #ffffff; border-color: var(--border-soft);">
+            <div class="max-w-4xl mx-auto flex gap-3 items-center">
+                <button x-show="isDraftLoaded" @click="clearDraft()" class="px-4 py-3.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 rounded-xl font-bold text-xs uppercase tracking-wider transition-all whitespace-nowrap active:scale-95" x-cloak>
+                    🗑 Batal
+                </button>
+                <button @click="submitData()" :disabled="loading" class="w-full py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm disabled:opacity-50">
+                    <span x-text="loading ? 'Mengirim Data...' : '📥 Input Seluruh Data'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MODAL POPUP FORM INPUT/EDIT           -->
+    <!-- ===================================== -->
+    <div x-show="showFormModal" x-cloak class="fixed inset-0 z-[110] flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-md pb-0 sm:p-4">
+        <div class="bg-white border border-slate-300 rounded-t-2xl sm:rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col h-[90vh] sm:h-auto sm:max-h-[90vh]" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-full sm:translate-y-10" x-transition:enter-end="opacity-100 translate-y-0">
+            
+            <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest" x-text="formEditMode ? 'Edit Data Pelanggan' : 'Input Pelanggan Baru'"></h3>
+                <button @click="showFormModal = false" class="text-slate-500 hover:text-red-500 transition-colors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            </div>
+            
+            <div class="p-5 overflow-y-auto space-y-4" style="scrollbar-width: thin;">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5 text-slate-500">Nama Pelanggan</label>
+                    <input type="text" x-model="formData.nama" placeholder="Ketik nama pelanggan..." class="w-full px-4 py-3 rounded-xl text-sm font-medium bg-slate-100 border border-slate-300 text-slate-800 outline-none focus:border-yellow-500 shadow-inner">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5 text-slate-500">Link Akun / URL</label>
+                    <input type="text" x-model="formData.link" placeholder="Paste link IG/FB/TikTok/Web..." class="w-full px-4 py-3 rounded-xl text-sm font-medium bg-slate-100 border border-slate-300 text-slate-800 outline-none focus:border-yellow-500 shadow-inner">
+                </div>
+
+                <label class="inline-flex items-center gap-2 cursor-pointer p-3 rounded-xl transition w-full" :style="formData.isClosing ? 'background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.5);' : 'background:rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.1);'">
+                    <input type="checkbox" x-model="formData.isClosing" class="w-5 h-5 rounded cursor-pointer transition accent-green-500">
+                    <span class="text-xs font-black tracking-widest uppercase" :class="formData.isClosing ? 'text-green-600' : 'text-slate-500'">🏆 Status Closing</span>
+                </label>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5 text-slate-500">Sumber</label>
+                        <select x-model="formData.sumber" class="w-full px-4 py-3 rounded-xl text-xs font-bold cursor-pointer bg-slate-100 border border-slate-300 text-slate-800 outline-none focus:border-yellow-500">
+                            <option value="" class="bg-white text-slate-700">-- Pilih --</option>
+                            <option value="IG" class="bg-white text-slate-700">IG</option><option value="FB" class="bg-white text-slate-700">FB</option><option value="TikTok" class="bg-white text-slate-700">TikTok</option>
+                            <option value="Chatbot" class="bg-white text-slate-700">Chatbot</option><option value="Web" class="bg-white text-slate-700">Web</option><option value="EXATA" class="bg-white text-slate-700">EXATA</option>
+                            <option value="Jastip" class="bg-white text-slate-700">Jastip</option><option value="LPK" class="bg-white text-slate-700">LPK</option><option value="Senior/Teman" class="bg-white text-slate-700">Senior/Teman</option>
+                            <option value="Leads Exata" class="bg-white text-slate-700">Leads Exata</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <label class="flex items-center gap-2 cursor-pointer p-3 w-full rounded-xl transition h-[40px] mt-1" :style="formData.isJepang ? 'background:rgba(234,179,8,0.15); border:1px solid rgba(234,179,8,0.5);' : 'background:rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.1);'">
+                            <input type="checkbox" x-model="formData.isJepang" class="w-4 h-4 rounded cursor-pointer transition accent-yellow-500">
+                            <span class="text-[10px] font-black tracking-widest uppercase" :class="formData.isJepang ? 'text-yellow-700' : 'text-slate-500'">Jepang 🇯🇵</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 pt-4 mt-2">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider mb-2 text-yellow-600">Progress Awal (Bisa Pilih > 1)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-100 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="formData.progress.includes('Interest / Tanya Harga') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="formData.progress" value="Interest / Tanya Harga" class="w-4 h-4 rounded accent-yellow-500 cursor-pointer">
+                            <span class="text-[10px] font-medium text-slate-700">Interest / Tanya Harga</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-100 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="formData.progress.includes('Belum Urgent') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="formData.progress" value="Belum Urgent" class="w-4 h-4 rounded accent-yellow-500 cursor-pointer">
+                            <span class="text-[10px] font-medium text-slate-700">Belum Urgent</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-100 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="formData.progress.includes('Cancel') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="formData.progress" value="Cancel" class="w-4 h-4 rounded accent-yellow-500 cursor-pointer">
+                            <span class="text-[10px] font-medium text-slate-700">Cancel</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-100 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="formData.progress.includes('Ghosting after FU') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="formData.progress" value="Ghosting after FU" class="w-4 h-4 rounded accent-yellow-500 cursor-pointer">
+                            <span class="text-[10px] font-medium text-slate-700">Ghosting after FU</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-100 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="formData.progress.includes('Belum Lunas/DP') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="formData.progress" value="Belum Lunas/DP" class="w-4 h-4 rounded accent-yellow-500 cursor-pointer">
+                            <span class="text-[10px] font-medium text-slate-700">Belum Lunas/DP</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-100 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="formData.progress.includes('Belum Closing') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="formData.progress" value="Belum Closing" class="w-4 h-4 rounded accent-yellow-500 cursor-pointer">
+                            <span class="text-[10px] font-medium text-slate-700">Belum Closing</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5 text-slate-500">Catatan Tambahan</label>
+                    <input type="text" x-model="formData.catatan" placeholder="Ketik catatan..." class="w-full px-4 py-3 rounded-xl text-sm font-medium bg-slate-100 border border-slate-300 text-slate-800 outline-none focus:border-yellow-500 shadow-inner">
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 bg-slate-50 shrink-0">
+                <button @click="saveFormModal()" :disabled="!formData.nama" class="w-full py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-xs disabled:opacity-50 flex items-center justify-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    Simpan Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================================== -->
+    <!-- MODAL POPUP PILIHAN DOWNLOAD EXCEL    -->
+    <!-- ===================================== -->
+    <div x-show="showExcelOptions" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="bg-white border border-slate-300 rounded-2xl w-full max-w-sm shadow-2xl flex flex-col relative" @click.away="showExcelOptions = false">
+            <div class="p-5 text-center border-b border-slate-200">
+                <div class="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </div>
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">Download Data Excel</h3>
+                <p class="text-[10px] font-bold text-slate-500 mt-1">Pilih jangkauan data yang ingin diunduh.</p>
+            </div>
+            <div class="p-5 flex flex-col gap-3">
+                <button @click="doDownloadExcel('all')" class="w-full py-3 bg-slate-100 border border-slate-200 hover:bg-green-600 hover:border-green-500 transition text-slate-700 hover:text-white text-xs font-bold uppercase tracking-wider rounded-xl">
+                    📁 Download Semua Sheet
+                </button>
+                <button @click="doDownloadExcel('single')" :disabled="!selectedSheet" class="w-full py-3 bg-slate-100 border border-slate-200 hover:bg-green-600 hover:border-green-500 transition text-slate-700 hover:text-white text-xs font-bold uppercase tracking-wider rounded-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                    📄 Download Sheet Terpilih Saja
+                </button>
+                <button @click="showExcelOptions = false" class="w-full py-2 text-gray-500 hover:text-red-500 transition text-[10px] font-bold uppercase tracking-wider mt-2">Batal</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================================== -->
+    <!-- MODAL POPUP DATABASE (LIHAT DATA)     -->
+    <!-- ===================================== -->
+    <div x-show="showModalDB" class="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm" x-cloak>
+        <div class="bg-white border border-slate-300 rounded-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden shadow-2xl relative">
+            
+            <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-yellow-600"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg> Database CRM</h3>
+                <button @click="showModalDB = false" class="text-slate-500 hover:text-red-500 transition-colors bg-slate-100 rounded-full p-1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            </div>
+
+            <div class="p-3 bg-white border-b border-slate-100 flex flex-col gap-3 relative z-10">
+                <div class="flex flex-col sm:flex-row gap-2 items-center">
+                    <!-- BUNGKUSAN BARU: Menyatukan Checkbox dan Search Bar dalam 1 baris di HP -->
+                    <div class="flex items-center w-full gap-2">
+                        <label class="flex items-center justify-center p-2.5 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:border-yellow-500 transition shrink-0">
+                            <input type="checkbox" class="w-4 h-4 cursor-pointer rounded bg-black accent-yellow-500" :checked="selectedDBItems.length === filteredDB().length && filteredDB().length > 0" @change="$event.target.checked ? selectedDBItems = filteredDB().map(i => i.uid) : selectedDBItems = []">
+                        </label>
+                        <div class="relative flex-1 w-full">
+                            <input type="text" x-model="dbQuery" placeholder="Cari nama, sumber, keyword..." class="w-full bg-slate-100 border border-slate-300 rounded-lg pl-9 pr-3 py-2.5 text-slate-800 text-xs outline-none focus:border-yellow-500 transition">
+                            <svg class="absolute left-3 top-2.5 text-gray-500" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </div>
+                    </div>
+                        
+                    <!-- Tombol Evaluasi & Rekap -->
+                    <div class="flex gap-2 w-full sm:w-auto shrink-0">
+                        <button @click="bukaEvaluasi()" class="flex-1 sm:flex-none px-3 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-black uppercase text-[10px] tracking-wider rounded-lg shadow-md hover:scale-105 transition flex justify-center gap-1.5 items-center shrink-0">📈 Evaluasi</button>
+                        <button @click="bukaRekap()" class="flex-1 sm:flex-none px-3 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-black uppercase text-[10px] tracking-wider rounded-lg shadow-md hover:scale-105 transition flex justify-center gap-1.5 items-center shrink-0">📊 Rekap</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <select x-model="dbSheetFilter" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none font-bold text-slate-700 focus:border-yellow-500 cursor-pointer">
+                        <option value="" class="bg-white text-slate-700">Semua Sheet (Bulan)</option>
+                        <template x-for="sh in availableSheets" :key="sh"><option :value="sh" x-text="sh" class="bg-white text-slate-700"></option></template>
+                    </select>
+                    <select x-model="dbProgressFilter" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none font-bold text-slate-700 focus:border-yellow-500 cursor-pointer">
+                        <option value="" class="bg-white text-slate-700">Semua Progress</option>
+                        <option value="Interest / Tanya Harga" class="bg-white text-slate-700">Interest / Tanya Harga</option>
+                        <option value="Belum Urgent" class="bg-white text-slate-700">Belum Urgent</option>
+                        <option value="Cancel" class="bg-white text-slate-700">Cancel</option>
+                        <option value="Ghosting after FU" class="bg-white text-slate-700">Ghosting after FU</option>
+                        <option value="Belum Lunas/DP" class="bg-white text-slate-700">Belum Lunas/DP</option>
+                        <option value="Belum Closing" class="bg-white text-slate-700">Belum Closing</option>
+                        <option value="closing" class="bg-white text-slate-700">Closing (Check)</option>
+                    </select>
+                    <select x-model="dbSumberFilter" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none font-bold text-slate-700 focus:border-yellow-500 cursor-pointer">
+                        <option value="" class="bg-white text-slate-700">Semua Sumber</option>
+                        <option value="IG" class="bg-white text-slate-700">IG</option><option value="FB" class="bg-white text-slate-700">FB</option><option value="TikTok" class="bg-white text-slate-700">TikTok</option><option value="Chatbot" class="bg-white text-slate-700">Chatbot</option><option value="Web" class="bg-white text-slate-700">Web</option><option value="EXATA" class="bg-white text-slate-700">EXATA</option><option value="Jastip" class="bg-white text-slate-700">Jastip</option><option value="LPK" class="bg-white text-slate-700">LPK</option><option value="Senior/Teman" class="bg-white text-slate-700">Senior/Teman</option><option value="Leads Exata" class="bg-white text-slate-700">Leads Exata</option>
+                    </select>
+                </div>
+            </div>
+
+            <div x-show="selectedDBItems.length > 0" class="flex justify-between items-center px-4 py-2 bg-red-50 border-b border-red-200 z-10" x-cloak>
+                <span class="text-[11px] font-bold text-red-600 uppercase tracking-wider"><span x-text="selectedDBItems.length"></span> Data Terpilih</span>
+                <button @click="deleteSelectedDB()" class="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> Hapus</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-100" style="scrollbar-width: none;">
+                <div x-show="dbLoading" class="flex flex-col items-center justify-center h-full">
+                    <div class="animate-spin w-8 h-8 border-4 border-yellow-500 border-t-transparent rounded-full mb-3"></div><span class="text-xs font-bold text-slate-500 tracking-widest uppercase">Mengambil Data...</span>
+                </div>
+                <div x-show="!dbLoading && filteredDB().length === 0" class="text-center py-10 flex flex-col items-center">
+                    <span class="text-4xl mb-2">📭</span><span class="text-gray-500 text-xs font-bold">Tidak ada data ditemukan.</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <template x-for="(item, idx) in filteredDB()" :key="item.uid">
+                        <div class="p-4 rounded-2xl bg-slate-50 border relative transition-all flex flex-col gap-3 shadow-lg" :class="selectedDBItems.includes(item.uid) ? 'border-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.2)]' : 'border-slate-200'">
+                            
+                            <div class="flex justify-between items-start gap-3">
+                                <div class="flex items-start gap-3">
+                                    <input type="checkbox" class="w-5 h-5 cursor-pointer rounded mt-0.5" :checked="selectedDBItems.includes(item.uid)" @change="toggleSelectDB(item.uid)">
+                                    <div class="flex flex-col">
+                                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5"><span x-text="item.sheet"></span> (Baris <span x-text="item.rowNumber"></span>)</span>
+                                        <span class="text-base font-black text-slate-800 leading-tight" x-text="item.nama"></span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-end gap-1.5 shrink-0">
+                                    <span x-show="item.isJepang" class="px-2 py-0.5 bg-yellow-500 text-black text-[9px] font-black tracking-widest rounded shadow-sm">JEPANG 🇯🇵</span>
+                                    <span x-show="item.isClosing" class="px-2 py-0.5 bg-green-500 text-white text-[9px] font-black tracking-widest rounded shadow-sm flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> CLOSING</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-x-3 gap-y-2 mt-1 pt-3 border-t border-slate-100">
+                                <div class="flex flex-col bg-slate-100 p-2 rounded-lg border border-slate-100">
+                                    <span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Sumber</span>
+                                    <span class="text-xs font-bold text-yellow-600" x-text="item.sumber || '-'"></span>
+                                </div>
+                                <div class="flex flex-col bg-slate-100 p-2 rounded-lg border border-slate-100">
+                                    <span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Link / URL</span>
+                                    <template x-if="item.link">
+                                        <a :href="item.link" target="_blank" class="text-xs font-bold text-blue-600 hover:text-blue-500 truncate">Buka Link ↗</a>
+                                    </template>
+                                    <template x-if="!item.link"><span class="text-xs text-slate-500">-</span></template>
+                                </div>
+                                <div class="flex flex-col bg-slate-100 p-2 rounded-lg border border-slate-100 col-span-2">
+                                    <span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Progress</span>
+                                    <span class="text-xs font-black text-yellow-700 uppercase tracking-wide leading-snug" x-text="item.progress || 'BELUM FOLLOW UP'"></span>
+                                </div>
+                            </div>
+
+                            <div class="mt-1 flex flex-col">
+                                <span class="text-[9px] text-gray-500 uppercase tracking-wider mb-0.5">Catatan Admin</span>
+                                <span class="text-[11px] font-medium text-slate-600 italic leading-snug" x-text="item.catatan || 'Tidak ada catatan.'"></span>
+                            </div>
+                            
+                            <button @click="bukaModalUpdate(item)" class="mt-2 w-full py-2.5 bg-gradient-to-r from-slate-50 to-slate-100 hover:from-yellow-500 hover:to-yellow-600 hover:text-black text-slate-700 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm border border-slate-200 hover:border-yellow-400 active:scale-95">Update Progress</button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL UPDATE PROGRESS DATABASE -->
+        <div x-show="modalUpdateOpen" x-cloak class="fixed inset-0 z-[70] flex items-center justify-center bg-black bg-opacity-70 px-4 backdrop-blur-md">
+            <div class="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl" style="background: linear-gradient(165deg, #ffffff 0%, #f8fafc 100%); border: 1px solid rgba(15,23,42,0.08);" @click.away="tutupModalUpdate()">
+                <h3 class="text-base font-black mb-1 text-slate-800">Update Progress</h3>
+                <p class="text-xs mb-3 text-slate-500">Pelanggan: <strong class="text-slate-800" x-text="activeCustomer?.nama"></strong><br>Progress Lama: <strong class="text-yellow-600 uppercase leading-relaxed" x-text="activeCustomer?.progress || '-'"></strong></p>
+                
+                <div class="mb-3">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5 text-slate-500">Pilih Progress Baru</label>
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-50 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="selectedProgress.includes('Interest / Tanya Harga') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="selectedProgress" value="Interest / Tanya Harga" class="w-4 h-4 rounded accent-yellow-500">
+                            <span class="text-xs font-bold text-slate-700">Interest / Tanya Harga</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-50 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="selectedProgress.includes('Belum Urgent') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="selectedProgress" value="Belum Urgent" class="w-4 h-4 rounded accent-yellow-500">
+                            <span class="text-xs font-bold text-slate-700">Belum Urgent</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-50 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="selectedProgress.includes('Cancel') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="selectedProgress" value="Cancel" class="w-4 h-4 rounded accent-yellow-500">
+                            <span class="text-xs font-bold text-slate-700">Cancel</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-50 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="selectedProgress.includes('Ghosting after FU') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="selectedProgress" value="Ghosting after FU" class="w-4 h-4 rounded accent-yellow-500">
+                            <span class="text-xs font-bold text-slate-700">Ghosting after FU</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-50 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="selectedProgress.includes('Belum Lunas/DP') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="selectedProgress" value="Belum Lunas/DP" class="w-4 h-4 rounded accent-yellow-500">
+                            <span class="text-xs font-bold text-slate-700">Belum Lunas/DP</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border bg-slate-50 cursor-pointer transition border-slate-200 hover:border-yellow-500" :class="selectedProgress.includes('Belum Closing') ? 'border-yellow-500 bg-yellow-500/10' : ''">
+                            <input type="checkbox" x-model="selectedProgress" value="Belum Closing" class="w-4 h-4 rounded accent-yellow-500">
+                            <span class="text-xs font-bold text-slate-700">Belum Closing</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider mb-1.5 text-slate-500">Update Link URL</label>
+                    <input type="text" x-model="selectedLink" placeholder="Update link..." class="w-full px-4 py-2.5 rounded-xl outline-none transition text-sm font-medium bg-slate-50 border border-slate-200 text-slate-800 focus:border-yellow-500">
+                </div>
+
+                <label class="flex items-center gap-2 mb-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer transition hover:border-green-500">
+                    <input type="checkbox" x-model="selectedIsClosing" class="w-4 h-4 rounded accent-green-500">
+                    <span class="text-xs font-bold text-slate-600">Tandai sebagai <span class="text-green-600">CLOSING</span> 🏆</span>
+                </label>
+
+                <input type="text" x-model="selectedCatatan" placeholder="Update catatan..." class="w-full px-4 py-3 rounded-xl mb-6 outline-none transition text-sm font-medium bg-slate-50 border border-slate-200 text-slate-800 focus:border-yellow-500">
+                <div class="flex justify-end space-x-3">
+                    <button @click="tutupModalUpdate()" class="px-5 py-2.5 font-bold text-xs rounded-xl transition bg-slate-100 border border-slate-200 text-slate-700 hover:text-yellow-600">Batal</button>
+                    <button @click="simpanUpdateStatus()" :disabled="selectedProgress.length === 0 && !selectedCatatan && activeCustomer?.isClosing === selectedIsClosing && activeCustomer?.link === selectedLink" class="px-6 py-2.5 text-black rounded-xl font-black shadow-lg transition bg-yellow-500 hover:bg-yellow-400 text-xs disabled:opacity-50 disabled:cursor-not-allowed">Simpan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL POPUP EVALUASI -->
+        <div x-show="showModalEvaluasi" x-cloak class="fixed inset-0 z-[90] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <div class="bg-white border border-slate-300 rounded-2xl w-full max-w-sm shadow-2xl overflow-hidden flex flex-col relative" @click.away="showModalEvaluasi = false">
+                
+                <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
+                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">📈 Evaluasi Data</h3>
+                    <button @click="showModalEvaluasi = false" class="text-slate-500 hover:text-red-500 transition-colors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                </div>
+                
+                <div class="p-4 pb-0 shrink-0">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Sumber Sheet (Bulan)</label>
+                    <select x-model="evalSelectedSheet" @change="hitungEvaluasi()" class="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl text-sm font-bold text-slate-800 focus:border-blue-500 outline-none transition cursor-pointer shadow-inner mb-2">
+                        <option value="" class="bg-white text-slate-700">-- Pilih Sheet Evaluasi --</option>
+                        <template x-for="sh in availableSheets" :key="sh"><option :value="sh" x-text="sh" class="bg-white text-slate-700"></option></template>
+                    </select>
+                </div>
+
+                <div class="overflow-y-auto" style="scrollbar-width: none; max-height: 60vh;">
+                    <div x-show="evalData" x-transition id="evalCanvasArea" class="p-5 pt-2 flex flex-col gap-4 bg-white">
+                        <div class="text-center mb-1" x-show="evalSelectedSheet">
+                            <h2 class="text-base font-black text-slate-800 uppercase tracking-widest">EVALUASI: <span x-text="evalSelectedSheet"></span></h2>
+                            <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mt-1">Yanoshi CRM Dashboard</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-slate-100 border border-slate-200 rounded-xl p-4 text-center flex flex-col items-center justify-center shadow-inner">
+                                <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">Total Leads Input</span>
+                                <span class="text-3xl font-black text-slate-800" x-text="evalData?.total || 0"></span>
+                            </div>
+                            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center flex flex-col items-center justify-center shadow-inner relative overflow-hidden">
+                                <div class="absolute inset-0" style="background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);"></div>
+                                <span class="text-[9px] text-blue-500 font-bold uppercase tracking-widest mb-1 relative z-10">Closing Rate</span>
+                                <span class="text-3xl font-black text-blue-600 relative z-10"><span x-text="evalData?.closingRate || 0"></span>%</span>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 rounded-xl p-3 flex justify-between items-center px-4 shadow-sm">
+                            <span class="text-xs font-bold text-green-600 uppercase tracking-widest">Total Closing (🏆)</span>
+                            <span class="text-xl font-black text-green-600" x-text="evalData?.closingCount || 0"></span>
+                        </div>
+                        <div class="bg-slate-100 border border-slate-200 rounded-xl p-4 shadow-inner">
+                            <h4 class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-3 border-b border-slate-200 pb-2 flex items-center gap-1.5"><span class="text-sm leading-none">👥</span> Breakdown Sumber</h4>
+                            <div class="flex flex-wrap gap-2" x-html="evalData?.sumberHtml || ''"></div>
+                        </div>
+                        <div class="bg-slate-100 border border-slate-200 rounded-xl p-4 shadow-inner">
+                            <h4 class="text-[10px] font-bold text-yellow-600 uppercase tracking-widest mb-3 border-b border-slate-200 pb-2 flex items-center gap-1.5"><span class="text-sm leading-none">📋</span> Breakdown Progress</h4>
+                            <div class="space-y-2.5" x-html="evalData?.progressHtml || ''"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex border-t border-slate-200 bg-white shrink-0" x-show="evalData">
+                    <button @click="showModalEvaluasi = false" class="flex-1 py-4 text-slate-500 hover:text-slate-900 font-black text-xs uppercase tracking-widest transition">Tutup</button>
+                    <button @click="unduhEvaluasi()" class="flex-1 py-4 bg-blue-600 text-white font-black text-xs uppercase tracking-widest shadow-lg hover:bg-blue-500 transition flex items-center justify-center gap-2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Unduh Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL POPUP REKAP DATA -->
+        <div x-show="showModalRekap" x-cloak class="fixed inset-0 z-[80] flex items-center justify-center bg-black bg-opacity-80 px-2 sm:px-4 backdrop-blur-md">
+            <div class="bg-white rounded-2xl w-full max-w-4xl flex flex-col relative overflow-hidden border border-slate-300 shadow-[0_10px_40px_rgba(234,179,8,0.15)]">
+                <div class="overflow-x-auto w-full no-scrollbar flex justify-start lg:justify-center" style="scrollbar-width: thin;">
+                    <div id="rekapCanvasArea" class="p-8 relative bg-[#ffffff] font-['Montserrat'] w-[800px] shrink-0 flex flex-col" style="min-height: 450px;">
+                        <div class="absolute top-0 right-0 w-48 h-48 bg-yellow-400/20 rounded-full blur-3xl"></div>
+                        <div class="flex items-center gap-4 mb-6 relative z-10 border-b border-gray-300 pb-4 w-full">
+                            <div class="w-14 h-14 rounded-xl bg-yellow-500 flex items-center justify-center text-black font-black text-3xl leading-none shadow-sm">📊</div>
+                            <div class="flex-1">
+                                <h2 class="text-black font-black text-2xl uppercase tracking-widest leading-none mt-1">Rekapitulasi CRM</h2>
+                                <div class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-2">Generated by Yanoshi Dashboard</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-row gap-6 relative z-10 flex-1 w-full">
+                            <div class="w-1/3 flex flex-col gap-4">
+                                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
+                                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Total Customer</span>
+                                    <span class="text-4xl font-black text-black leading-none" x-text="rekapData.totalCustomer"></span>
+                                </div>
+                                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
+                                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Periode Waktu</span>
+                                    <span class="text-3xl font-black text-yellow-600 leading-none"><span x-text="rekapData.totalHari"></span> Hari</span>
+                                </div>
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mt-auto text-center shadow-inner">
+                                    <p class="text-[12px] font-bold text-gray-800 leading-relaxed italic">
+                                        "Selama <strong class="text-yellow-600" x-text="rekapData.totalHari + ' hari'"></strong>, dominasi status prospek terbanyak saat ini ada pada tahap <strong class="text-black font-black uppercase" x-text="rekapData.highestProgress"></strong>."
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="w-2/3 flex flex-col gap-5">
+                                <div>
+                                    <h3 class="text-xs text-yellow-600 font-black uppercase tracking-widest border-b border-gray-200 pb-2 mb-3">Breakdown Sumber Customer</h3>
+                                    <div class="flex flex-wrap gap-2" x-html="rekapData.sumberHtml"></div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xs text-yellow-600 font-black uppercase tracking-widest border-b border-gray-200 pb-2 mb-3">Breakdown Progress Customer</h3>
+                                    <div class="flex flex-col gap-2" x-html="rekapData.progressHtml"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex border-t border-slate-200 bg-white">
+                    <button @click="showModalRekap = false" class="flex-1 py-4 text-slate-500 hover:text-slate-900 font-black text-xs uppercase tracking-widest transition">Tutup</button>
+                    <button @click="unduhRekap()" class="flex-1 py-4 bg-yellow-500 text-black font-black text-xs uppercase tracking-widest shadow-lg hover:bg-yellow-400 transition flex items-center justify-center gap-2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Unduh Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showToast(msg, type = 'success') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`; t.textContent = msg; c.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(60px)'; t.style.transition = 'all 0.3s ease'; setTimeout(() => t.remove(), 300); }, 3000);
+        }
+
+        function bukuTamuApp() {
+            return {
+                apiUrl: 'https://script.google.com/macros/s/AKfycbz6ijZM1UQPvE1CufSIUJeltDGSY5HhfgWEA1_Ojb450Mkp7IKiT5Nd2JAYsci019eF/exec', 
+                availableSheets: [], selectedSheet: '', loading: false, entries: [],
+                
+                isDraftLoaded: false, allCardsOpen: true, 
+                showExcelOptions: false,
+                
+                // Form Modal State
+                showFormModal: false, formEditMode: false, currentEditId: null,
+                formData: { nama: '', link: '', sumber: '', isJepang: false, progress: [], isClosing: false, catatan: '' },
+
+                showModalDB: false, dbLoading: false, dbData: [], dbQuery: '', selectedDBItems: [], 
+                dbSheetFilter: '', dbProgressFilter: '', dbSumberFilter: '', 
+                
+                modalUpdateOpen: false, activeCustomer: null, selectedProgress: [], selectedCatatan: '', selectedIsClosing: false, selectedLink: '',
+                
+                showModalRekap: false, rekapData: { totalCustomer: 0, totalHari: 0, sumberHtml: '', progressHtml: '', highestProgress: '' },
+                showModalEvaluasi: false, evalSelectedSheet: '', evalData: null,
+
+                initBT() { 
+                    this.loadDraft(); 
+                    this.fetchSheets(); 
+                    setInterval(() => { this.fetchSheets(); if (this.showModalDB) { this.silentUpdateDatabase(); } }, 120000);
+                },
+
+                toggleAllCards() {
+                    this.allCardsOpen = !this.allCardsOpen;
+                    this.entries.forEach(e => e.isOpen = this.allCardsOpen);
+                    this.saveDraft();
+                },
+
+                saveDraft() {
+                    const draftData = { sheet: this.selectedSheet, data: this.entries };
+                    localStorage.setItem('yanoshi_tamu_draft', JSON.stringify(draftData));
+                    this.isDraftLoaded = true; 
+                },
+
+                loadDraft() {
+                    try {
+                        const saved = localStorage.getItem('yanoshi_tamu_draft');
+                        if (saved) {
+                            const parsed = JSON.parse(saved);
+                            if (parsed.data && parsed.data.length > 0) {
+                                const hasData = parsed.data.some(e => e.nama !== '');
+                                if (hasData) {
+                                    this.entries = parsed.data.map(e => ({
+                                        ...e, 
+                                        isClosing: e.isClosing || false,
+                                        progress: Array.isArray(e.progress) ? e.progress : (e.progress ? e.progress.split(', ') : []),
+                                        isOpen: e.isOpen !== undefined ? e.isOpen : true,
+                                        link: e.link || ''
+                                    }));
+                                    this.selectedSheet = parsed.sheet || '';
+                                    this.isDraftLoaded = true;
+                                    return; 
+                                }
+                            }
+                        }
+                    } catch (e) {}
+                },
+
+                clearDraft() {
+                    if(!confirm('Anda yakin ingin menghapus semua isian yang belum dikirim?')) return;
+                    localStorage.removeItem('yanoshi_tamu_draft');
+                    this.entries = []; this.selectedSheet = ''; this.isDraftLoaded = false;
+                    showToast('Draft dibatalkan.', 'info');
+                },
+
+                // MEMBUKA MODAL UNTUK TAMBAH / EDIT
+                openFormModal(id = null) {
+                    if (id) {
+                        this.formEditMode = true;
+                        this.currentEditId = id;
+                        const item = this.entries.find(e => e.id === id);
+                        this.formData = { ...item };
+                    } else {
+                        this.formEditMode = false;
+                        this.currentEditId = null;
+                        this.formData = { nama: '', link: '', sumber: '', isJepang: false, progress: [], isClosing: false, catatan: '' };
+                    }
+                    this.showFormModal = true;
+                },
+
+                saveFormModal() {
+                    if (this.formEditMode) {
+                        const index = this.entries.findIndex(e => e.id === this.currentEditId);
+                        if (index !== -1) {
+                            this.entries[index] = { ...this.formData, id: this.currentEditId, isOpen: true };
+                        }
+                    } else {
+                        this.entries.push({ ...this.formData, id: Date.now() + Math.random(), isOpen: true });
+                    }
+                    this.saveDraft();
+                    this.showFormModal = false;
+                },
+                
+                removeEntry(id) { 
+                    this.entries = this.entries.filter(e => e.id !== id); this.saveDraft();
+                    if (this.entries.length === 0) { this.isDraftLoaded = false; localStorage.removeItem('yanoshi_tamu_draft'); }
+                },
+
+                // DOWNLOAD EXCEL BERDASARKAN SHEET
+                async doDownloadExcel(type) {
+                    this.showExcelOptions = false;
+                    this.loading = true; showToast('Menyiapkan file Excel, mohon tunggu...', 'info');
+                    try {
+                        let fetchUrl = `${this.apiUrl}?action=downloadExcel&type=${type}`;
+                        if (type === 'single') fetchUrl += `&sheetName=${encodeURIComponent(this.selectedSheet)}`;
+
+                        const res = await fetch(fetchUrl); const result = await res.json();
+                        if (result.success && result.base64) {
+                            const fileName = type === 'single' ? `Rekap CRM - ${this.selectedSheet}.xlsx` : `Rekap CRM Keseluruhan.xlsx`;
+                            const byteCharacters = atob(result.base64); const byteNumbers = new Array(byteCharacters.length);
+                            for (let i = 0; i < byteCharacters.length; i++) { byteNumbers[i] = byteCharacters.charCodeAt(i); }
+                            const byteArray = new Uint8Array(byteNumbers); const blob = new Blob([byteArray], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+                            const link = document.createElement('a'); link.href = window.URL.createObjectURL(blob); link.download = fileName; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                            showToast('Berhasil mengunduh Excel! ✅', 'success');
+                        } else { showToast('Gagal: ' + (result.message || 'Server Error'), 'error'); }
+                    } catch (e) { showToast('Gagal terhubung ke server.', 'error'); }
+                    this.loading = false;
+                },
+                
+                teksPrompt: `Pilih role. 
+
+Goal : 
+Mendapatkan hasil analisa dan insight mendalam tentang customer Yanoshi untuk kebutuhan pengembangan teknik dan cara treatment customer.  
+
+Context : 
+Dari data excel ini, tolong analisa mendalam dan berikan saya insight dan rangkuman tentang customer Yanoshi. 
+Berikut juga saya cantumkan rangkuman insight demografi dari keseluruhan customer yang datang ke sosial media instagram Yanoshi :
+-Audiens laki laki : 71,3%
+-Audiens wanita : 28,7%
+-Rentang usia : 18 sampai 34 tahun
+-Lokasi terbanyak : Jepang 59,0% dan Indonesia 39,7%
+
+Berikut penjelasan singkat tentang Yanoshi Japan Omiyage :
+Yanoshi Japan Omiyage adalah toko oleh-oleh (omiyage) khas Jepang yang dimana produknya hanya khas Jepang dan bukan made in Japan (buatan lokal). Yanoshi mengadakan atau menjual omiyage 95% melalui platform online (IG, website dan marketplace).
+Dengan target market pemagang Indonesia yang bekerja di Jepang (kenshusei), dengan harapan saat mereka ingin kembali ke Indonesia akan membeli omiyage melalui Yanoshi, agar mereka tidak perlu repot membawa omiyage dari Jepang dan memenuhi koper mereka karena di Yanoshi bisa langsung di kirim ke alamat Indonesia (melalui gudang yang ada di Indonesia).
+Walaupun produk Yanoshi bukan made in Japan, tetapi di Jepang Yanoshi juga memiliki gudang skala kecil dan kuantiti stok yang terbatas dengan stok produk yang di kirimkan dari Indonesia ke Jepang, guna dari gudang skala kecil ini adalah bagi kenshusei yang ingin melihat contoh produk secara langsung mereka dapat membeli produk satuan dari gudang Jepang dan di kirim ke alamat mereka saat masih di Jepang.
+Selain market kenshusei Yanoshi juga melayani pembelian dari turis ataupun pembeli lokal (yang ada di Indonesia), tetapi saat ini persentase terbesar penjualan masih dari market kenshusei.
+
+Output : 
+Setelah seluruh informasi dan data mentah excel dari riset customer, tolong berikan saya saran dan evaluasi khususnya untuk menangani customer yang masih belum closing. 
+Bagaimana Follow Up yang tepat dan bagaimana lanjutan chat yang tepat agar customer dapat merespons.
+Lalu bagaimana selanjutnya cara menangani dan melayani customer yang datang karena interest terhadap Yanoshi agar mereka tidak ghosting.`,
+                async copyPrompt() { try { await navigator.clipboard.writeText(this.teksPrompt); showToast('Prompt berhasil disalin! 📋', 'success'); } catch (err) { showToast('Gagal menyalin teks.', 'error'); } },
+                async fetchSheets() { try { const response = await fetch(`${this.apiUrl}?action=getSheets`); const result = await response.json(); this.availableSheets = result.sheets || []; } catch(e) {} },
+                
+                async submitData() {
+                    if (!this.selectedSheet) return showToast('Pilih Sheet Tujuan di bagian atas!', 'error');
+                    const validData = this.entries.filter(e => e.nama.trim() !== '').map(e => ({
+                        ...e,
+                        progress: Array.isArray(e.progress) ? e.progress.join(', ') : e.progress
+                    }));
+
+                    if (validData.length === 0) return showToast('Tidak ada data Pelanggan untuk dikirim!', 'error');
+                    this.loading = true;
+                    try {
+                        const payload = { action: 'submitBukuTamu', sheetName: this.selectedSheet, data: validData };
+                        const response = await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+                        const textResult = await response.text();
+                        if (textResult.includes("Timeout") || textResult.includes("Error")) { showToast('Gagal: Server Sibuk.', 'error'); this.loading = false; return; }
+                        let result = JSON.parse(textResult);
+                        
+                        if (result.success) { 
+                            showToast('Data CRM berhasil diinput! ✅', 'success'); 
+                            localStorage.removeItem('yanoshi_tamu_draft');
+                            this.entries = []; this.isDraftLoaded = false; 
+                        } else { showToast('Gagal: ' + (result.message || 'Server Error'), 'error'); }
+                    } catch (e) { showToast('Gagal terhubung ke server.', 'error'); }
+                    this.loading = false;
+                },
+
+                async openDatabase() {
+                    this.showModalDB = true; this.dbLoading = true; this.dbData = []; this.dbQuery = ''; 
+                    this.dbSheetFilter = ''; this.dbProgressFilter = ''; this.dbSumberFilter = ''; 
+                    this.selectedDBItems = []; 
+                    try {
+                        const res = await fetch(`${this.apiUrl}?action=getAllData`); const result = await res.json();
+                        if (result.success && result.data) { 
+                            this.dbData = result.data.map(item => { 
+                                item.uid = item.sheet + '_' + item.rowNumber; 
+                                item.isClosing = item.isClosing === true || String(item.isClosing).toLowerCase() === 'true' || String(item.closing).toLowerCase() === 'true' || item.progress === 'closing';
+                                return item; 
+                            }).reverse(); 
+                        }
+                    } catch (e) { showToast("Gagal mengambil database", "error"); }
+                    this.dbLoading = false;
+                },
+
+                async silentUpdateDatabase() {
+                    try {
+                        const res = await fetch(`${this.apiUrl}?action=getAllData`); const result = await res.json();
+                        if (result.success && result.data) { 
+                            this.dbData = result.data.map(item => { 
+                                item.uid = item.sheet + '_' + item.rowNumber; 
+                                item.isClosing = item.isClosing === true || String(item.isClosing).toLowerCase() === 'true' || String(item.closing).toLowerCase() === 'true' || item.progress === 'closing';
+                                return item; 
+                            }).reverse(); 
+                        }
+                    } catch (e) { }
+                },
+
+                filteredDB() {
+                    let result = this.dbData;
+                    
+                    if (this.dbSheetFilter !== '') result = result.filter(item => item.sheet === this.dbSheetFilter);
+                    if (this.dbProgressFilter !== '') {
+                        if (this.dbProgressFilter === 'closing') { result = result.filter(item => item.isClosing); } 
+                        else { result = result.filter(item => item.progress && item.progress.includes(this.dbProgressFilter) && !item.isClosing); }
+                    }
+                    if (this.dbSumberFilter !== '') result = result.filter(item => item.sumber === this.dbSumberFilter);
+                    if (this.dbQuery && this.dbQuery.trim() !== '') { const q = this.dbQuery.trim().toLowerCase(); result = result.filter(item => JSON.stringify(item).toLowerCase().includes(q)); }
+                    return result;
+                },
+
+                toggleSelectDB(uid) { if (this.selectedDBItems.includes(uid)) { this.selectedDBItems = this.selectedDBItems.filter(id => id !== uid); } else { this.selectedDBItems.push(uid); } },
+
+                async deleteSelectedDB() {
+                    if (!confirm(`Apakah Anda yakin ingin menghapus ${this.selectedDBItems.length} data ini dari sistem?`)) return;
+                    this.dbLoading = true; const payloadData = this.selectedDBItems.map(uid => { const parts = uid.split('_'); return { sheet: parts[0], row: parseInt(parts[1]) }; });
+                    try {
+                        const payload = { action: 'deleteBukuTamu', data: payloadData };
+                        const response = await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+                        let result = JSON.parse(await response.text());
+                        if (result.success) { showToast(`${this.selectedDBItems.length} Data berhasil dihapus! 🗑️`, 'success'); this.selectedDBItems = []; await this.openDatabase(); } else { showToast('Gagal menghapus data.', 'error'); }
+                    } catch (e) { showToast('Terjadi kesalahan jaringan.', 'error'); }
+                    this.dbLoading = false;
+                },
+
+                bukaModalUpdate(customer) { 
+                    this.activeCustomer = customer; 
+                    let pStr = customer.progress && customer.progress !== '-' ? customer.progress : '';
+                    this.selectedProgress = pStr ? pStr.split(', ') : []; 
+                    
+                    this.selectedCatatan = customer.catatan || ''; 
+                    this.selectedLink = customer.link || ''; 
+                    this.selectedIsClosing = customer.isClosing || false;
+                    this.modalUpdateOpen = true; 
+                },
+                tutupModalUpdate() { this.modalUpdateOpen = false; this.activeCustomer = null; },
+                
+                async simpanUpdateStatus() {
+                    this.modalUpdateOpen = false; this.dbLoading = true; 
+                    try {
+                        const finalProgressStr = this.selectedProgress.join(', ');
+                        const payload = { action: 'updateProgressCustomer', sheetName: this.activeCustomer.sheet, rowNumber: this.activeCustomer.rowNumber, progress: finalProgressStr, catatan: this.selectedCatatan, isClosing: this.selectedIsClosing, link: this.selectedLink };
+                        
+                        const response = await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+                        const result = await response.json();
+                        if (result.success) { showToast('Progress & Link diupdate! ✅', 'success'); await this.openDatabase(); } else { showToast('Gagal update', 'error'); }
+                    } catch(e) { showToast('Gagal terhubung', 'error'); }
+                    this.dbLoading = false;
+                },
+
+                bukaEvaluasi() {
+                    this.evalSelectedSheet = '';
+                    this.evalData = null;
+                    this.showModalEvaluasi = true;
+                },
+                
+                hitungEvaluasi() {
+                    if (!this.evalSelectedSheet) { this.evalData = null; return; }
+                    const dataSheet = this.dbData.filter(d => d.sheet === this.evalSelectedSheet);
+                    const total = dataSheet.length;
+                    const progressCounts = {}; const sumberCounts = {}; let closingCount = 0;
+                    
+                    dataSheet.forEach(d => {
+                        let pList = (d.progress && d.progress !== '-') ? d.progress.split(', ') : ['Belum di Follow Up'];
+                        if(pList.length === 0 || d.progress === '') pList = ['Belum di Follow Up'];
+                        pList.forEach(p => { progressCounts[p] = (progressCounts[p] || 0) + 1; });
+                        
+                        let src = d.sumber || "Tanpa Sumber"; if(src === '') src = "Tanpa Sumber";
+                        sumberCounts[src] = (sumberCounts[src] || 0) + 1;
+                        if (d.isClosing) { closingCount++; }
+                    });
+                    
+                    const closingRate = total > 0 ? ((closingCount / total) * 100).toFixed(1) : 0;
+                    
+                    let evalSumberHtml = '';
+                    if (Object.keys(sumberCounts).length === 0) { evalSumberHtml = '<div class="text-xs text-gray-500 italic text-center w-full py-1">Belum ada data sumber.</div>'; } 
+                    else { evalSumberHtml = Object.keys(sumberCounts).map(src => `<span class="bg-slate-100 border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm flex items-center gap-2"><span class="uppercase">${src}</span><strong class="text-blue-600 text-xs">${sumberCounts[src]}</strong></span>`).join(''); }
+
+                    let evalProgressHtml = '';
+                    if (Object.keys(progressCounts).length === 0) { evalProgressHtml = '<div class="text-xs text-gray-500 italic text-center py-2">Belum ada progress tercatat.</div>'; } 
+                    else { evalProgressHtml = Object.keys(progressCounts).map(prog => `<div class="flex justify-between items-center text-xs font-bold border-b border-slate-100 pb-2 last:border-0 last:pb-0"><span class="text-slate-600 uppercase tracking-wider">${prog}</span><span class="bg-white text-slate-700 px-2.5 py-0.5 rounded shadow-sm">${progressCounts[prog]}</span></div>`).join(''); }
+
+                    this.evalData = { total, closingCount, closingRate, sumberHtml: evalSumberHtml, progressHtml: evalProgressHtml };
+                },
+
+                unduhEvaluasi() {
+                    const el = document.getElementById("evalCanvasArea"); 
+                    if (!el) return; showToast("Sedang memproses gambar...", "info"); 
+
+                    htmlToImage.toPng(el, { 
+                        pixelRatio: 2, backgroundColor: '#ffffff', width: el.scrollWidth, height: el.scrollHeight,
+                        style: { transform: 'scale(1)', transformOrigin: 'top left', margin: '0' }, fontEmbedCSS: '', skipFonts: true 
+                    }).then(dataUrl => {
+                        const link = document.createElement("a"); link.download = `Evaluasi_${this.evalSelectedSheet}_${new Date().getTime()}.png`; 
+                        link.href = dataUrl; link.click(); showToast("Gambar Evaluasi Berhasil Diunduh! 📸", "success");
+                    }).catch(err => { console.error("Gagal buat gambar:", err); showToast("Gagal membuat gambar evaluasi.", "error"); });
+                },
+
+                bukaRekap() {
+                    const currentData = this.filteredDB();
+                    if (currentData.length === 0) { showToast("Data kosong, tidak ada yang bisa direkap.", "error"); return; }
+                    let sumCounts = {}; let progCounts = {}; let minDate = new Date(); let maxDate = new Date(0); let validDateFound = false;
+
+                    currentData.forEach(item => {
+                        let src = item.sumber || "Tanpa Sumber"; sumCounts[src] = (sumCounts[src] || 0) + 1;
+                        let pList = (item.progress && item.progress !== '-') ? item.progress.split(', ') : ['Belum di Follow Up'];
+                        if(pList.length === 0 || item.progress === '') pList = ['Belum di Follow Up'];
+                        pList.forEach(p => { progCounts[p] = (progCounts[p] || 0) + 1; });
+                        
+                        if (item.tglInput) {
+                            let parts = item.tglInput.split('/');
+                            if (parts.length === 3) { let d = new Date(parts[2], parts[1]-1, parts[0]); if (d < minDate) minDate = d; if (d > maxDate) maxDate = d; validDateFound = true; }
+                        }
+                    });
+
+                    let totalDays = 1; if (validDateFound) { let diffTime = Math.abs(maxDate - minDate); totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; }
+                    let htmlSumber = Object.keys(sumCounts).sort((a,b) => sumCounts[b] - sumCounts[a]).map(k => `<span class="bg-gray-100 px-3 py-1.5 rounded-lg text-[11px] font-bold text-black shadow-sm border border-gray-300">${k} <strong class="text-yellow-600 ml-1">${sumCounts[k]}</strong></span>`).join('');
+                    
+                    let highestProg = ''; let maxPCount = -1;
+                    let htmlProgress = Object.keys(progCounts).sort((a,b) => progCounts[b] - progCounts[a]).map(k => {
+                        if (k !== 'Belum di Follow Up' && progCounts[k] > maxPCount) { maxPCount = progCounts[k]; highestProg = k; }
+                        return `<div class="flex justify-between items-center text-[11px] font-bold text-gray-800 bg-white px-4 py-2 rounded-xl border border-gray-300 uppercase shadow-sm"><span>${k}</span> <span class="text-black font-black bg-yellow-400 px-2.5 py-0.5 rounded">${progCounts[k]}</span></div>`;
+                    }).join('');
+
+                    if (highestProg === '') highestProg = "Belum di Follow Up";
+                    this.rekapData = { totalCustomer: currentData.length, totalHari: totalDays, sumberHtml: htmlSumber, progressHtml: htmlProgress, highestProgress: highestProg };
+                    this.showModalRekap = true;
+                },
+
+                unduhRekap() {
+                    const el = document.getElementById("rekapCanvasArea"); showToast("Sedang memproses gambar...", "info"); 
+                    htmlToImage.toPng(el, { 
+                        pixelRatio: 2, backgroundColor: '#ffffff', width: el.scrollWidth, height: el.scrollHeight, 
+                        style: { transform: 'scale(1)', transformOrigin: 'top left', margin: '0' }, fontEmbedCSS: '', skipFonts: true
+                    }).then(dataUrl => {
+                        const link = document.createElement("a"); link.download = `Rekap_CRM_${new Date().getTime()}.png`; link.href = dataUrl; link.click(); showToast("Gambar Rekap Berhasil Diunduh! 📸", "success");
+                    }).catch(err => { console.error("Gagal buat gambar:", err); showToast("Gagal membuat gambar rekap.", "error"); });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
