@@ -346,6 +346,20 @@
                             <span x-show="summaryLoaded" style="color: #fff;" x-text="': ' + countBelumKirim" x-cloak x-transition.opacity.duration.300ms></span>
                         </div>
                     </div>
+                    <!-- BARIS 4: Total Pencapaian (Target Harian) -->
+                    <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4 pt-2 mt-1" style="border-top: 1px solid rgba(255,255,255,0.12);">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
+                            <span style="color: rgba(255,255,255,0.9);">Total Pencapaian</span>
+                        </div>
+                        <div class="flex items-center justify-end min-w-[30px]">
+                            <div x-show="!pencapaianLoaded" class="relative w-3.5 h-3.5 flex items-center justify-center">
+                                <div class="absolute w-full h-full border-[1.5px] border-white/10 rounded-full"></div>
+                                <div class="absolute w-full h-full border-[1.5px] border-yellow-500 border-t-transparent border-l-transparent rounded-full animate-spin"></div>
+                            </div>
+                            <span x-show="pencapaianLoaded" style="color: #fff;" x-text="': ' + grandTercapai + '/' + grandTarget + ' (' + grandPct + '%)'" x-cloak x-transition.opacity.duration.300ms></span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -921,6 +935,7 @@ const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0O
 const PESANAN_STATUS_API_URL = 'https://script.google.com/macros/s/AKfycbz3V7oaXEBuQAATvcrZsDtGFIXAKTl_h3drbgjksBkJEbFZhjJP2WUSTrPv9mxHm35M/exec';
 const ADMIN_SALES_API_URL = 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec';
 const STOK_API_URL = 'https://script.google.com/macros/s/AKfycbw6TaXv2RsoZMNC8j2PVFBYCzxm1mLvrRpDNr5skYxBtg4GmM1fh4P3q4kWEs-ndSBUaQ/exec'; 
+const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbz00fFyDEd_Lj8N5Z-SW4zeznpzxSndsX8Z0zFzCTwHgY98VkimviBJASq8Lj20KCME/exec'; // Sumber data Total Pencapaian (sama dgn pencapaian.html)
 
 // ==========================================
 // STATE UTAMA (MENGURUS IFRAME POPUP)
@@ -932,6 +947,7 @@ function appState() {
         loginForm: { username: '', password: '' }, loginLoading: false, loginError: '',
         editForm: { username: '', newPassword: '', confirmPassword: '' }, editError: '', editSaving: false,
         countKirimHariIni: 0, countBelumBayar: 0, countBelumKirim: 0, summaryLoaded: false,
+        grandTercapai: 0, grandTarget: 0, grandPct: 0, pencapaianLoaded: false,
         resiOpen: false, ongkirOpen: false, brastelOpen: false,
 
 				
@@ -941,9 +957,10 @@ function appState() {
             if (saved) { 
                 this.isLoggedIn = true; this.currentUser = saved; 
                 this.loadSummary(); // Load pertama kali
+                this.loadPencapaian(); // Load total pencapaian pertama kali
                 
                 // AUTO SYNC GAIB TIAP 2 MENIT (120.000 ms)
-                setInterval(() => { this.loadSummary(); }, 120000); 
+                setInterval(() => { this.loadSummary(); this.loadPencapaian(); }, 120000); 
             }
             startLiveClock();
         },
@@ -966,6 +983,30 @@ function appState() {
                     this.summaryLoaded = true;
                 }
             } catch (e) { console.error("Gagal load summary banner"); }
+        },
+
+        async loadPencapaian() {
+            try {
+                const response = await fetch(TH_GAS_URL);
+                const data = await response.json();
+                if (data.status === 'success' && Array.isArray(data.items)) {
+                    let gTarget = 0, gTercapai = 0;
+                    data.items.forEach(item => {
+                        gTarget += parseInt(item.target) || 0;
+                        gTercapai += parseInt(item.tercapai) || 0;
+                    });
+                    this.grandTarget = gTarget;
+                    this.grandTercapai = gTercapai;
+                    this.grandPct = gTarget > 0 ? Math.round((gTercapai / gTarget) * 100) : 0;
+                    this.pencapaianLoaded = true;
+                }
+            } catch (e) { console.error("Gagal load total pencapaian banner"); }
+        },
+
+        pencapaianColor() {
+            if (this.grandPct >= 50) return '#10b981';
+            if (this.grandPct >= 30) return '#f59e0b';
+            return '#ef4444';
         },
 
         async doLogin() {
