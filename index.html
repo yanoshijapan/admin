@@ -300,12 +300,18 @@
                             </div>
                             
                             <!-- Notifikasi Ticker Form Pesanan -->
-														<div x-show="recentOrders.length > 0" class="overflow-hidden bg-gray-100 border border-gray-300 rounded-lg px-3 py-1 flex items-center gap-2 shadow-md w-fit max-w-[240px] h-[36px]" x-cloak>
+														<div x-show="notifLoading || recentOrders.length > 0" class="overflow-hidden bg-gray-100 border border-gray-300 rounded-lg px-3 py-1 flex items-center gap-2 shadow-md w-fit min-w-[150px] max-w-[240px] h-[36px]" x-cloak>
 																<!-- Ikon Lonceng -->
 																<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-600 shrink-0"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
 																
-																<!-- Teks Notifikasi -->
-																<div class="text-[10px] font-bold text-black whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-300"
+																<!-- SAAT LOADING: Animasi Garis Memanjang (Skeleton) -->
+																<div x-show="notifLoading" class="flex items-center gap-1.5 w-full">
+																		<div class="h-2 bg-gray-300 rounded w-16 animate-pulse"></div>
+																		<div class="h-2 bg-gray-300 rounded w-10 animate-pulse" style="animation-delay: 150ms"></div>
+																</div>
+
+																<!-- SAAT DATA ADA: Teks Notifikasi -->
+																<div x-show="!notifLoading && recentOrders.length > 0" class="text-[10px] font-bold text-black whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-300"
 																		 :class="showNotifAnim ? 'opacity-100' : 'opacity-0'"
 																		 x-text="displayedNotifText">
 																</div>
@@ -964,6 +970,7 @@ function appState() {
         showNotifAnim: true,
         displayedNotifText: '', 
         notifInterval: null,
+				notifLoading: true,
 				
         init() {
             const saved = localStorage.getItem('yanoshi_user') || sessionStorage.getItem('yanoshi_user');
@@ -988,8 +995,12 @@ function appState() {
         },
 
         async loadFormOrders() {
+            this.notifLoading = true; // Nyalakan efek loading setiap kali fetching
             try {
-                if(FORM_API_URL === 'URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI') return; 
+                if(FORM_API_URL === 'URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI') {
+                    this.notifLoading = false;
+                    return; 
+                }
                 const res = await fetch(`${FORM_API_URL}?action=getOrders`);
                 const json = await res.json();
                 if (json.status === 'success') {
@@ -998,7 +1009,10 @@ function appState() {
                     this.recentOrders = json.data.filter(o => (now - new Date(o.waktu_masuk)) < 86400000);
                     this.updateNotifText(); 
                 }
-            } catch (e) { console.error("Gagal load data notifikasi form", e); }
+            } catch (e) { 
+                console.error("Gagal load data notifikasi form", e); 
+            }
+            this.notifLoading = false; // Matikan efek loading setelah data selesai ditarik/gagal
         },
 
         updateNotifText() {
