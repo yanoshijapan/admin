@@ -6,6 +6,9 @@
     <title>Yanoshi Dashboard</title>
     
     <link rel="manifest" href="manifest.json">
+	<link rel="preconnect" href="https://script.google.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <meta name="theme-color" content="#050505">
     <link rel="apple-touch-icon" href="https://yanoshijapan.github.io/asetonline/logoappyanoshi.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -995,24 +998,29 @@ function appState() {
         },
 
         async loadFormOrders() {
-            this.notifLoading = true; // Nyalakan efek loading setiap kali fetching
+            // 1. Munculkan data cache langsung jika ada (Instan)
+            const cached = localStorage.getItem('cache_recentOrders');
+            if (cached) {
+                this.recentOrders = JSON.parse(cached);
+                this.updateNotifText();
+            }
+            
+            this.notifLoading = true;
             try {
                 if(FORM_API_URL === 'URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI') {
-                    this.notifLoading = false;
-                    return; 
+                    this.notifLoading = false; return; 
                 }
                 const res = await fetch(`${FORM_API_URL}?action=getOrders`);
                 const json = await res.json();
                 if (json.status === 'success') {
                     const now = new Date();
-                    // Hanya memfilter data yang masuk di bawah 24 Jam
                     this.recentOrders = json.data.filter(o => (now - new Date(o.waktu_masuk)) < 86400000);
+                    // 2. Simpan data terbaru ke cache
+                    localStorage.setItem('cache_recentOrders', JSON.stringify(this.recentOrders));
                     this.updateNotifText(); 
                 }
-            } catch (e) { 
-                console.error("Gagal load data notifikasi form", e); 
-            }
-            this.notifLoading = false; // Matikan efek loading setelah data selesai ditarik/gagal
+            } catch (e) { console.error("Gagal load data notifikasi form", e); }
+            this.notifLoading = false;
         },
 
         updateNotifText() {
@@ -1057,10 +1065,19 @@ function appState() {
         },
 
         async loadSummary() {
+            const cached = localStorage.getItem('cache_summary');
+            if (cached) {
+                const result = JSON.parse(cached);
+                this.countKirimHariIni = result.filter(c => c.statusCustomer === 'kirim hari ini').length;
+                this.countBelumBayar = result.filter(c => c.statusCustomer === 'belum bayar').length;
+                this.countBelumKirim = result.filter(c => c.statusCustomer === 'belum di kirim').length;
+                this.summaryLoaded = true;
+            }
             try {
                 const response = await fetch(`${PESANAN_STATUS_API_URL}?action=getAllCustomerData`);
                 const result = await response.json();
                 if (Array.isArray(result)) {
+                    localStorage.setItem('cache_summary', JSON.stringify(result));
                     this.countKirimHariIni = result.filter(c => c.statusCustomer === 'kirim hari ini').length;
                     this.countBelumBayar = result.filter(c => c.statusCustomer === 'belum bayar').length;
                     this.countBelumKirim = result.filter(c => c.statusCustomer === 'belum di kirim').length;
@@ -1070,17 +1087,23 @@ function appState() {
         },
 
         async loadPencapaian() {
+            const cached = localStorage.getItem('cache_pencapaian');
+            if (cached) {
+                const data = JSON.parse(cached);
+                let gTarget = 0, gTercapai = 0;
+                data.forEach(item => { gTarget += parseInt(item.target) || 0; gTercapai += parseInt(item.tercapai) || 0; });
+                this.grandTarget = gTarget; this.grandTercapai = gTercapai;
+                this.grandPct = gTarget > 0 ? Math.round((gTercapai / gTarget) * 100) : 0;
+                this.pencapaianLoaded = true;
+            }
             try {
                 const response = await fetch(TH_GAS_URL);
                 const data = await response.json();
                 if (data.status === 'success' && Array.isArray(data.items)) {
+                    localStorage.setItem('cache_pencapaian', JSON.stringify(data.items));
                     let gTarget = 0, gTercapai = 0;
-                    data.items.forEach(item => {
-                        gTarget += parseInt(item.target) || 0;
-                        gTercapai += parseInt(item.tercapai) || 0;
-                    });
-                    this.grandTarget = gTarget;
-                    this.grandTercapai = gTercapai;
+                    data.items.forEach(item => { gTarget += parseInt(item.target) || 0; gTercapai += parseInt(item.tercapai) || 0; });
+                    this.grandTarget = gTarget; this.grandTercapai = gTercapai;
                     this.grandPct = gTarget > 0 ? Math.round((gTercapai / gTarget) * 100) : 0;
                     this.pencapaianLoaded = true;
                 }
@@ -1193,12 +1216,23 @@ function formPesananApp() {
                 showToast("URL API Form Pesanan belum diatur!", "error");
                 return;
             }
-            this.loading = true;
+            
+            // 1. Cek memori lokal, jika ada tampilkan instan
+            const cached = localStorage.getItem('cache_formOrdersAll');
+            if (cached) {
+                this.orders = JSON.parse(cached);
+            } else {
+                // Hanya munculkan spinner penuh jika memori benar-benar kosong (login pertama)
+                this.loading = true; 
+            }
+
             try {
                 const res = await fetch(`${FORM_API_URL}?action=getOrders`);
                 const json = await res.json();
                 if (json.status === 'success') {
                     this.orders = json.data;
+                    // 2. Simpan diam-diam ke memori untuk load berikutnya
+                    localStorage.setItem('cache_formOrdersAll', JSON.stringify(json.data));
                 }
             } catch (e) {
                 console.error('Error fetching form data', e);
