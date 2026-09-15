@@ -129,18 +129,112 @@
         function stokApp() {
             return {
                 apiUrl: STOK_API_URL, loading: false, rawData: [], searchQuery: '', activeCat: 'kaos oversize',
-                categories: ['kaos oversize', 'kaos premium', 'jaket hoodie', 'kakejiku deluxe', 'kakejiku premium', 'gantungan kunci', 'sake set', 'katana'],
+                categories: ['kaos oversize', 'kaos premium', 'jaket hoodie', 'kakejiku deluxe', 'kakejiku premium', 'keychain set (6 pcs)', 'keychain neko', 'magnet jepang', 'sake set', 'katana'],
                 
                 mapping: {
-                    "kaos oversize": [{ nama: "Yanoshi Black", rows: [4, 5, 6] }, { nama: "Yanoshi White", rows: [8, 9, 10] }, { nama: "Ramen", rows: [12, 13, 14] }, { nama: "Vending", rows: [16, 17, 18] }, { nama: "Akatsuki", rows: [20, 21, 22] }, { nama: "Flower Maiden", rows: [24, 25, 26] }],
-                    "kaos premium": [{ nama: "Kaos 8B", rows: [65, 66, 67, 68, 69] }, { nama: "Kaos 9B", rows: [71, 72, 73, 74] }, { nama: "Kaos 10W", rows: [76, 77, 78, 79] }, { nama: "Kaos 11B", rows: [81, 82, 83, 84] }, { nama: "Kaos 12B", rows: [86, 87, 88, 89, 90] }, { nama: "Kaos 13B", rows: [92, 93, 94, 95] }, { nama: "Kaos 14B", rows: [97, 98, 99, 100] }, { nama: "Kaos 15B", rows: [102, 103, 104, 105] }, { nama: "Kaos 16W", rows: [107, 108, 109, 110] }, { nama: "Kaos 17B", rows: [112, 113, 114, 115, 116] }, { nama: "Kaos 18B", rows: [118, 119, 120, 121] }, { nama: "Kaos 19K", rows: [123, 124, 125, 126] }, { nama: "Kaos 22B", rows: [128, 129, 130, 131] }, { nama: "Kaos 23P", rows: [133, 134, 135, 136] }, { nama: "Kaos 24Y", rows: [138, 139, 140, 141] }],
-                    "jaket hoodie": [{ nama: "Nippon", rows: [144, 145, 146, 147, 148] }, { nama: "Kabuto", rows: [150, 151, 152, 153, 154] }, { nama: "Phoenix", rows: [156, 157, 158, 159, 160] }, { nama: "Osaka", rows: [162, 163, 164, 165, 166] }],
-                    "kakejiku deluxe": [{ nama: "KD 5", rows: [168] }, { nama: "KD 7", rows: [169] }, { nama: "KD 8", rows: [170] }, { nama: "KD 9", rows: [171] }, { nama: "KD 1", rows: [172] }, { nama: "KD 2", rows: [173] }, { nama: "KD 3", rows: [174] }, { nama: "KD 4", rows: [175] }, { nama: "KD 10", rows: [176] }, { nama: "KD 11", rows: [177] }, { nama: "KD 13", rows: [178] }],
-                    "kakejiku premium": [{ nama: "KP 1", rows: [180] }, { nama: "KP 2", rows: [181] }, { nama: "KP 3", rows: [182] }, { nama: "KP 4", rows: [183] }, { nama: "KP 5", rows: [184] }, { nama: "KP 6", rows: [185] }, { nama: "KP 7", rows: [186] }, { nama: "KP 8", rows: [187] }, { nama: "KP 9", rows: [188] }, { nama: "KP 10", rows: [189] }, { nama: "KP 11", rows: [190] }, { nama: "KP 13", rows: [191] }],
-                    "gantungan kunci": [{ nama: "Japan Icon Vol 1", rows: [193] }, { nama: "Japan Icon Vol 2", rows: [194] }, { nama: "Sushi", rows: [195] }],
-                    "sake set": [{ nama: "Set A", rows: [197] }, { nama: "Set C", rows: [198] }, { nama: "Set G", rows: [199] }, { nama: "Set P", rows: [200] }],
-                    "katana": [{ nama: "Gold", rows: [202] }, { nama: "Hitam", rows: [203] }, { nama: "Putih", rows: [204] }]
-                },
+									"kaos oversize": [
+										{ nama: "Ramen Ovs", rows: [4, 5, 6] },
+										{ nama: "Vending Ovs", rows: [8, 9, 10] },
+										{ nama: "Akatsuki Ovs", rows: [12, 13, 14] },
+										{ nama: "Flower Maiden Ovs", rows: [16, 17, 18] },
+										{ nama: "Grafitti White Ovs", rows: [20, 21, 22] },
+										{ nama: "Grafitti Black Ovs", rows: [24, 25, 26] }
+									],
+									
+									"kaos premium": [
+										{ nama: "Kaos 8B", rows: [65, 66, 67, 68, 69] },
+										{ nama: "Kaos 9B", rows: [71, 72, 73, 74] },
+										{ nama: "Kaos 10W", rows: [76, 77, 78, 79] },
+										{ nama: "Kaos 11B", rows: [81, 82, 83, 84] },
+										{ nama: "Kaos 12B", rows: [86, 87, 88, 89, 90] },
+										{ nama: "Kaos 13B", rows: [92, 93, 94, 95] },
+										{ nama: "Kaos 14B", rows: [97, 98, 99, 100] },
+										{ nama: "Kaos 15B", rows: [102, 103, 104, 105] },
+										{ nama: "Kaos 16W", rows: [107, 108, 109, 110] },
+										{ nama: "Kaos 17B", rows: [112, 113, 114, 115, 116] },
+										{ nama: "Kaos 18B", rows: [118, 119, 120, 121] },
+										{ nama: "Kaos 19K", rows: [123, 124, 125, 126] },
+										{ nama: "Kaos 22B", rows: [128, 129, 130, 131] },
+										{ nama: "Kaos 23P", rows: [133, 134, 135, 136] },
+										{ nama: "Kaos 24Y", rows: [138, 139, 140, 141] }
+									],
+									
+									"jaket hoodie": [
+										{ nama: "Hoodie Nippon", rows: [144, 145, 146, 147, 148] },
+										{ nama: "Hoodie Kabuto", rows: [150, 151, 152, 153, 154] },
+										{ nama: "Hoodie Phoenix", rows: [156, 157, 158, 159, 160] },
+										{ nama: "Hoodie Osaka", rows: [162, 163, 164, 165, 166] }
+									],
+									
+									"kakejiku deluxe": [
+										{ nama: "KD 6", rows: [168] },
+										{ nama: "KD 12", rows: [169] },
+										{ nama: "KD 5", rows: [170] },
+										{ nama: "KD 7", rows: [171] },
+										{ nama: "KD 8", rows: [172] },
+										{ nama: "KD 9", rows: [173] },
+										{ nama: "KD 1", rows: [174] },
+										{ nama: "KD 2", rows: [175] },
+										{ nama: "KD 3", rows: [176] },
+										{ nama: "KD 4", rows: [177] },
+										{ nama: "KD 10", rows: [178] },
+										{ nama: "KD 11", rows: [179] },
+										{ nama: "KD 13", rows: [180] }
+									],
+									
+									"kakejiku premium": [
+										{ nama: "KP 6", rows: [182] },
+										{ nama: "KP 1", rows: [183] },
+										{ nama: "KP 2", rows: [184] },
+										{ nama: "KP 3", rows: [185] },
+										{ nama: "KP 4", rows: [186] },
+										{ nama: "KP 5", rows: [187] },
+										{ nama: "KP 7", rows: [188] },
+										{ nama: "KP 8", rows: [189] },
+										{ nama: "KP 9", rows: [190] },
+										{ nama: "KP 10", rows: [191] },
+										{ nama: "KP 11", rows: [192] },
+										{ nama: "KP 13", rows: [193] }
+									],
+									
+									"keychain set (6 pcs)": [
+										{ nama: "Japan Keychain", rows: [195] },
+										{ nama: "Japan Icon Vol 1 Keychain", rows: [196] },
+										{ nama: "Japan Icon Vol 2 Keychain", rows: [197] },
+										{ nama: "Sushi Keychain", rows: [198] },
+										{ nama: "Chibi Chan Keychain", rows: [199] }
+									],
+									
+									"keychain neko": [
+										{ nama: "Maneki Neko Red Keychain", rows: [212] },
+										{ nama: "Maneki Neko Black Keychain", rows: [213] }
+									],
+									
+									"magnet jepang": [
+										{ nama: "Magnet Osaka Castle", rows: [215] },
+										{ nama: "Magnet Fuji", rows: [216] },
+										{ nama: "Magnet Himeji", rows: [217] },
+										{ nama: "Magnet Fuji Sakura", rows: [218] },
+										{ nama: "Magnet I Love Japan", rows: [219] },
+										{ nama: "Magnet Tokyo", rows: [220] },
+										{ nama: "Magnet Sensoji", rows: [221] },
+										{ nama: "Magnet Shirakawa Go", rows: [222] },
+										{ nama: "Magnet Dotonbori Osaka", rows: [223] }
+									],
+									
+									"sake set": [
+										{ nama: "Sake Set A", rows: [201] },
+										{ nama: "Sake Set C", rows: [202] },
+										{ nama: "Sake Set G", rows: [203] },
+										{ nama: "Sake Set P", rows: [204] }
+									],
+									
+									"katana": [
+										{ nama: "Katana Gold", rows: [206] },
+										{ nama: "Katana Hitam", rows: [207] },
+										{ nama: "Katana Putih", rows: [208] }
+									]
+								},
 
                 initStok() { 
                     this.fetchData(false); 
