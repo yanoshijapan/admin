@@ -107,7 +107,7 @@
         .welcome-title { font-size: 24px; font-weight: 800; color: #1a1a1a; line-height: 1.2; text-shadow: none; }
         .welcome-subtitle { font-size: 13px; color: #444; font-weight: 600; margin-top: 6px; text-shadow: none; }
         .welcome-gold { background: linear-gradient(135deg, #B8941C 0%, #D4AF37 50%, #9C7A1D 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none; display: inline-block; }
-        .welcome-clock { font-size: 24px; font-weight: 900; color: #1a1a1a; letter-spacing: 2px; margin-top: 14px; font-variant-numeric: tabular-nums; text-shadow: none; }
+        .welcome-clock { font-size: 24px; font-weight: 900; color: #1a1a1a; letter-spacing: 2px; margin-top: 4px; font-variant-numeric: tabular-nums; text-shadow: none; }
         .welcome-clock-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2.5px; color: #666; margin-top: 2px; text-shadow: none; }
 
         /* ===== SECTION TITLE ===== */
@@ -124,13 +124,6 @@
         .menu-icon { width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; background: linear-gradient(155deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid var(--border-theme); color: var(--theme-white); }
         .menu-icon svg { width: 24px; height: 24px; }
         .menu-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--theme-silver); line-height: 1.3; margin: 0; }
-
-        /* --- 2. BORDER GRADASI BIRU NEON (STATIS) --- */
-        .menu-beam { position: relative; background: linear-gradient(145deg, #2a2a2e 0%, #1a1a1d 100%) !important; border: none !important; box-shadow: 0 0 10px rgba(0, 243, 255, 0.15) !important; transition: all 0.3s ease; }
-        .menu-beam::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; background: linear-gradient(135deg, #00f3ff 0%, #0044ff 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
-        .menu-beam.active { background: #00f3ff !important; box-shadow: 0 0 20px rgba(0, 243, 255, 0.5) !important; }
-        .menu-beam.active::before { display: none; }
-        .menu-beam.active > .menu-icon svg, .menu-beam.active > .menu-label { color: #000 !important; }
 
         /* ===== POPUP MASTER MODAL ===== */
         .popup-overlay { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: flex-end; justify-content: center; padding: 0; animation: popupFadeIn 0.2s ease-out; }
@@ -274,7 +267,6 @@
             <div class="dropdown-user-role">Administrator</div>
         </div>
         
-        <!-- Pindah Menu Tutorial Menjadi Menu Dropdown Hamburger -->
         <div class="dropdown-item" @click="toggleLocalPanel('tutorial', 'Pusat Tutorial', 'tutorial')">
             <span class="icon">
                 <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -295,15 +287,35 @@
         <div class="content-wrap">
 
             <div class="welcome-banner flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                <div class="relative z-10">
-                    <div class="welcome-title">Halo, <span class="welcome-gold" x-text="currentUser"></span> ! 👋</div>
-                    <div class="welcome-subtitle" x-text="getGreeting()"></div>
-                    <div class="welcome-clock" id="liveClock">--:--:--</div>
-                    <div class="welcome-clock-label">Waktu Sekarang</div>
+                <div class="relative z-10 w-full flex flex-row lg:flex-col items-center lg:items-start justify-between lg:justify-start gap-4">
+                    <div>
+                        <div class="welcome-title">Halo, <span class="welcome-gold" x-text="currentUser"></span> ! 👋</div>
+                        <div class="welcome-subtitle" x-text="getGreeting()"></div>
+                        
+                        <!-- JAM & NOTIFIKASI FORM MUNCUL DI SINI (Responsif Layout) -->
+                        <div class="mt-4 flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-2">
+                            <div>
+                                <div class="welcome-clock" id="liveClock">--:--:--</div>
+                                <div class="welcome-clock-label">Waktu Sekarang</div>
+                            </div>
+                            
+                            <!-- Notifikasi Ticker Form Pesanan -->
+														<div x-show="recentOrders.length > 0" class="overflow-hidden bg-gray-100 border border-gray-300 rounded-lg px-3 py-1 flex items-center gap-2 shadow-md w-fit max-w-[240px] h-[36px]" x-cloak>
+																<!-- Ikon Lonceng -->
+																<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-600 shrink-0"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+																
+																<!-- Teks Notifikasi -->
+																<div class="text-[10px] font-bold text-black whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-300"
+																		 :class="showNotifAnim ? 'opacity-100' : 'opacity-0'"
+																		 x-text="displayedNotifText">
+																</div>
+														</div>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- SUMMARY NOTIFICATION BADGES -->
-                <div class="relative z-10 flex flex-col gap-3 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg min-w-[260px] min-h-[100px] justify-center" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
+								<!-- SUMMARY NOTIFICATION BADGES -->
+								<div class="relative z-10 flex flex-col gap-3 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg min-w-[260px] lg:min-w-[340px] min-h-[100px] justify-center whitespace-nowrap" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
                     <!-- BARIS 1: Kirim Hari Ini -->
                     <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
                         <div class="flex items-center gap-3">
@@ -365,36 +377,38 @@
 
             <div class="section-title">Menu Utama</div>
             
-            <!-- ============================================== -->
-            <!-- GRID MENU (DENGAN PEMANGGILAN IFRAME & LOKAL)  -->
-            <!-- ============================================== -->
-			<div class="menu-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 40px;">
+            <div class="menu-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 40px;">
                 
-                <!-- 1. PENCAPAIAN (Iframe) -->
                 <div class="menu-card" @click="openIframe('Target Harian', 'pencapaian.html', 'pencapaian')">
                     <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                     <div class="menu-label">Pencapaian</div>
                 </div>
                 
-                <!-- 2. PESANAN ONLINE (Iframe) -->
                 <div class="menu-card" @click="openIframe('Admin Pesanan Online', 'pesanan.html', 'pesanan')">
                     <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
                     <div class="menu-label">Online</div>
                 </div>
                 
-                <!-- 3. STATUS CUSTOMER (Iframe dengan border neon) -->
-                <div class="menu-card" @click="openIframe('Status Customer', 'customer.html', 'status_customer')">
+                <div class="menu-card menu-beam" @click="openIframe('Status Customer', 'customer.html', 'status_customer')">
                     <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
                     <div class="menu-label">Customer</div>
                 </div>
                 
-                <!-- 4. ADMIN SALES / PACKING (Lokal dengan border neon) -->
-                <div class="menu-card" @click="toggleLocalPanel('admin_sales', 'Status Packing', 'admin_sales')">
-                    <div class="menu-icon"><svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
-                    <div class="menu-label">Packing</div>
-                </div>
+                <!-- MENU FORM (Menggantikan Menu Packing) -->
+                <div class="menu-card menu-beam" @click="toggleLocalPanel('form_pesanan', 'Data Form Pesanan', 'form_pesanan')">
+										<!-- Tambahkan class 'relative' di sini -->
+										<div class="menu-icon relative">
+												<svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+												
+												<!-- BADGE NOTIFIKASI MERAH -->
+												<div x-show="recentOrders.length > 0" 
+														 class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-black min-w-[20px] h-5 px-1 flex items-center justify-center rounded-full shadow-md border border-[#131315] z-10" 
+														 x-text="recentOrders.length" x-cloak>
+												</div>
+										</div>
+										<div class="menu-label">Form</div>
+								</div>
                 
-                <!-- 5. BUKU TAMU (Iframe) -->
                 <div class="menu-card" @click="openIframe('Buku Tamu', 'tamu.html', 'buku_tamu')">
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
@@ -402,7 +416,6 @@
                     <div class="menu-label">CRM</div>
                 </div>
                 
-                <!-- 6. STOK PRODUK (Iframe) -->
                 <div class="menu-card" @click="openIframe('Stok Produk', 'stok.html', 'stok_produk')">
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -410,7 +423,6 @@
                     <div class="menu-label">Stok</div>
                 </div>
 
-                <!-- 7. DATA SURVEY (Iframe) -->
                 <div class="menu-card" @click="openIframe('Data Survey', 'survey.html', 'survey')">
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -418,7 +430,6 @@
                     <div class="menu-label">Survey</div>
                 </div>
 
-                <!-- 8. BANK SCRIPT (Lokal) -->
                 <div class="menu-card" @click="toggleLocalPanel('bank_script', 'Bank Script', 'bank_script')">
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><line x1="9" y1="10" x2="15" y2="10"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
@@ -426,7 +437,6 @@
                     <div class="menu-label">Script</div>
                 </div>
 
-                <!-- 9. KALKULATOR DISKON (Lokal) -->
                 <div class="menu-card" @click="toggleLocalPanel('kalkulator', 'Kalkulator Diskon', 'kalkulator')">
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="14.01"></line><line x1="12" y1="14" x2="12" y2="14.01"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="16" y1="18" x2="16" y2="18.01"></line><line x1="12" y1="18" x2="12" y2="18.01"></line><line x1="8" y1="18" x2="8" y2="18.01"></line></svg>
@@ -434,7 +444,6 @@
                     <div class="menu-label">Kalkulator</div>
                 </div>
 
-                <!-- 10. CETAK STIKER WIDE (External) -->
 				<div class="menu-card" @click="openIframe('Cetak Stiker', 'https://yanoshijapan.github.io/cetakstiker/dashboard-stiker/index.html', 'stiker')">
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8.01" y2="16"></line><line x1="16" y1="16" x2="16.01" y2="16"></line></svg>
@@ -442,7 +451,6 @@
                     <div class="menu-label">Stiker</div>
                 </div>
 
-                <!-- 11. WEBSTORE (External) -->
 				<div class="menu-card" @click="openIframe('Yanoshi Webstore', 'https://yanoshistore.netlify.app/', 'webstore')">
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8.01" y2="16"></line><line x1="16" y1="16" x2="16.01" y2="16"></line></svg>
@@ -450,7 +458,6 @@
                     <div class="menu-label">Webstore</div>
                 </div>
 
-                <!-- 12. CHATBOT AI (Lokal Iframe) -->
                 <div class="menu-card" @click="openIframe('Yanoshi AI Chatbot', 'https://bot.yanoshi.com/', 'chatbot')">
                     <div class="menu-icon">
                         <svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8.01" y2="16"></line><line x1="16" y1="16" x2="16.01" y2="16"></line></svg>
@@ -459,7 +466,7 @@
                 </div>
             </div>
 
-            <!-- ================== EMBED PANELS BAWAAN (TIDAK ADA YANG DIHAPUS) ================== -->
+            <!-- EMBED PANELS -->
             <div class="embed-panel">
                 <div class="embed-header">
                     <div class="embed-title-wrap">
@@ -549,7 +556,7 @@
 </div>
 
 <!-- ========================================================= -->
-<!-- SINGLE POPUP MASTER CONTAINER (IFRAME & LOKAL DINAMIS)    -->
+<!-- SINGLE POPUP MASTER CONTAINER                             -->
 <!-- ========================================================= -->
 <div class="popup-overlay" x-show="popupOpen" @click.self="closePopup()" x-cloak>
     <div class="popup-sheet">
@@ -560,7 +567,10 @@
                     <svg x-show="popupIcon === 'pencapaian'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
                     <svg x-show="popupIcon === 'pesanan'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     <svg x-show="popupIcon === 'status_customer'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    <svg x-show="popupIcon === 'admin_sales'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    
+                    <!-- Icon Menu Form -->
+                    <svg x-show="popupIcon === 'form_pesanan'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    
                     <svg x-show="popupIcon === 'buku_tamu'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                     <svg x-show="popupIcon === 'stok_produk'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     <svg x-show="popupIcon === 'survey'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -578,16 +588,11 @@
                     <span class="text-[10px] font-bold text-gray-300 group-hover:text-white uppercase tracking-widest transition-colors">
                         Mode : <span x-text="iframeUrl.includes('tamucerah.html') ? 'Cerah' : 'Gelap'" :style="iframeUrl.includes('tamucerah.html') ? 'color: #facc15; font-weight: 900;' : 'color: white;'"></span>
                     </span>
-                    
-                    <!-- Animasi Track Switch Berbasis Inline CSS -->
                     <div class="relative w-[34px] h-[18px] rounded-full transition-colors duration-300 shadow-inner border border-[rgba(255,255,255,0.1)]" 
                          :style="iframeUrl.includes('tamucerah.html') ? 'background-color: #eab308;' : 'background-color: #1b1b20;'">
-                        
-                        <!-- Lingkaran Switch Berbasis Transform GPU -->
                         <div class="absolute top-[2px] w-[12px] h-[12px] rounded-full bg-white shadow-md transition-transform duration-300 ease-in-out" 
                              :style="iframeUrl.includes('tamucerah.html') ? 'transform: translateX(18px);' : 'transform: translateX(2px);'">
                         </div>
-
                     </div>
                 </button>
 
@@ -602,69 +607,84 @@
         
         <div class="popup-body">
             
-            <!-- 1. MODE IFRAME: Untuk memuat ke-6 File HTML secara Instan (Sangat Ringan!) -->
             <template x-if="popupPanel === 'iframe'">
                 <iframe :src="iframeUrl" class="popup-iframe rounded-b-2xl"></iframe>
             </template>
 
-            <!-- 2. KONTEN LOKAL: ADMIN SALES (PACKING) -->
-            <div x-show="popupPanel === 'admin_sales'" x-data="adminSalesApp()" x-init="initSales()" @tambah-ke-sales.window="tambahDariStatus($event.detail.nama)" class="w-full h-full overflow-y-auto p-4 md:p-6" x-cloak>
-                <div class="sticky top-0 z-10 pb-4 mb-6 pt-1" style="background: linear-gradient(180deg, #18181c 60%, transparent 100%); border-bottom: 1px solid var(--border-soft);">
-                    <div class="flex flex-col gap-4">
-                        <div class="flex gap-2">
-                            <input type="text" x-model="inputNama" placeholder="Masukkan Nama Pelanggan..." @keydown.enter="tambahData()" class="flex-1 px-4 py-2 border rounded-lg outline-none transition text-sm font-medium bg-[#1b1b20] border-[rgba(255,255,255,0.2)] text-white">
-                            <button @click="tambahData()" class="text-white font-bold px-6 py-2 rounded-lg transition shadow-sm text-sm" style="background: var(--grad-black);">Submit</button>
-                        </div>
-                        <div class="flex flex-wrap sm:flex-nowrap gap-2">
-                            <input type="date" x-model="fTgl" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium bg-[#1b1b20] border-[rgba(255,255,255,0.2)] text-white">
-                            <input type="text" x-model="fNama" placeholder="Cari Nama..." class="px-3 py-2 border rounded-lg text-sm outline-none font-medium flex-1 bg-[#1b1b20] border-[rgba(255,255,255,0.2)] text-white">
-                            <select x-model="fPack" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium cursor-pointer bg-[#1b1b20] border-[rgba(255,255,255,0.2)] text-white">
-                                <option value="">Semua Packing</option><option value="Menunggu">Menunggu</option><option value="Sudah di Packing">Sudah di Packing</option><option value="Belum Lengkap">Belum Lengkap</option>
-                            </select>
-                            <select x-model="fKirim" class="px-3 py-2 border rounded-lg text-sm outline-none font-medium cursor-pointer bg-[#1b1b20] border-[rgba(255,255,255,0.2)] text-white">
-                                <option value="">Semua Kirim</option><option value="true">Sudah Kirim</option><option value="false">Belum Kirim</option>
-                            </select>
-                        </div>
+            <!-- 2. KONTEN LOKAL: MENU FORM PESANAN BARU -->
+            <!-- Hapus p-4 md:p-6 di sini agar sticky bisa benar-benar mentok ke atas -->
+            <div x-show="popupPanel === 'form_pesanan'" x-data="formPesananApp()" x-init="initForm()" class="w-full h-full overflow-y-auto" x-cloak>
+                
+                <!-- Sticky Header (Membeku) -->
+                <div class="sticky top-0 z-30 px-4 md:px-6 py-4 bg-[#18181c] border-b border-[rgba(255,255,255,0.15)] shadow-2xl">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="date" x-model="fDate" class="px-3 py-2 border border-[rgba(255,255,255,0.2)] rounded-lg text-sm font-medium bg-[#1b1b20] text-white outline-none focus:border-yellow-500 cursor-pointer w-full sm:w-auto shadow-sm">
+                        
+                        <select x-model="fSort" class="px-3 py-2 border border-[rgba(255,255,255,0.2)] rounded-lg text-sm font-medium bg-[#1b1b20] text-white outline-none focus:border-yellow-500 cursor-pointer w-full sm:w-auto shadow-sm">
+                            <option value="newest">Terbaru ke Terlama</option>
+                            <option value="oldest">Terlama ke Terbaru</option>
+                        </select>
+                        
+                        <input type="text" x-model="fSearch" placeholder="Filter by input keyword apapun..." class="px-3 py-2 border border-[rgba(255,255,255,0.2)] rounded-lg text-sm font-medium flex-1 bg-[#1b1b20] text-white outline-none focus:border-yellow-500 shadow-sm">
+                        
+                        <button @click="fetchData()" class="px-4 py-2 bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.2)] text-white rounded-lg text-sm font-bold transition shadow-sm w-full sm:w-auto">Refresh</button>
                     </div>
                 </div>
 
-                <div x-show="loading" class="flex justify-center items-center py-16"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div></div>
-
-                <div x-show="selectedIds.length > 0" x-transition class="border rounded-xl p-3 mb-4 flex flex-col sm:flex-row justify-between items-center shadow-sm gap-3 bg-[rgba(255,255,255,0.05)] border-[rgba(255,255,255,0.1)]">
-                    <div class="flex items-center gap-3 w-full sm:w-auto">
-                        <input type="checkbox" class="w-5 h-5 rounded cursor-pointer" @change="$event.target.checked ? selectedIds = filteredData.map(d => d.id) : selectedIds = []" :checked="filteredData.length > 0 && selectedIds.length === filteredData.length">
-                        <span class="text-sm font-extrabold text-white" x-text="selectedIds.length + ' Data Terpilih'"></span>
-                    </div>
-                    <div class="flex w-full sm:w-auto gap-2">
-                        <button @click="kirimMultiData()" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold shadow-md transition text-black bg-[var(--grad-white)]">Tandai Dikirim</button>
-                        <button @click="hapusMultiData()" class="flex-1 sm:flex-none text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md transition bg-red-600">Hapus</button>
-                    </div>
+                <div x-show="loading" class="flex justify-center items-center py-16">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+                </div>
+                
+                <div x-show="!loading && filteredOrders.length === 0" class="text-center py-12 px-4 text-gray-400 font-bold text-sm">
+                    Tidak ada data pesanan ditemukan.
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-10" x-show="!loading">
-                    <template x-for="item in filteredData" :key="item.id">
-                        <div class="rounded-xl shadow-sm border border-l-4 p-5 flex flex-col gap-3 transition-transform hover:-translate-y-1 hover:shadow-md" :style="getCardStyle(item)">
-                            <div class="flex justify-between items-start">
-                                <div class="flex items-start gap-3">
-                                    <input type="checkbox" :value="item.id" x-model="selectedIds" class="mt-1 w-5 h-5 rounded cursor-pointer transition">
-                                    <div>
-                                        <h3 class="font-extrabold text-lg break-words text-white" x-text="item.nama"></h3>
-                                        <p class="text-xs font-medium mt-1 text-gray-400">Diinput: <span x-text="formatTanggal(item.tanggal)"></span></p>
-                                    </div>
-                                </div>
-                                <button @click="hapusData(item.id)" class="px-3 py-1.5 text-xs font-bold rounded transition shrink-0 ml-3 bg-[rgba(255,255,255,0.05)] text-gray-400">Hapus</button>
-                            </div>
-                            <div class="flex gap-2 text-[11px] font-bold uppercase tracking-wide mt-2">
-                                <span :class="item.status_packing === 'Sudah di Packing' ? 'bg-yellow-100 text-yellow-700' : item.status_packing === 'Belum Lengkap' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'" class="px-2.5 py-1 rounded" x-text="'Packing: ' + item.status_packing"></span>
-                                <span :class="item.status_kirim ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'" class="px-2.5 py-1 rounded" x-text="'Kirim: ' + (item.status_kirim ? 'Sudah' : 'Belum')"></span>
-                            </div>
-                            <div class="text-[12px] font-semibold p-2 rounded-lg mt-1 bg-[rgba(255,255,255,0.03)] text-white" x-show="item.note">Note Admin: <span class="text-gray-400" x-text="item.note"></span></div>
-                            <button x-show="!item.status_kirim" @click="bukaModalKirim(item.id)" class="mt-3 font-bold py-2.5 rounded-lg text-xs transition uppercase tracking-wide shadow-sm bg-[var(--grad-white)] text-black">
-                                Tandai Sudah Kirim
-                            </button>
+                <!-- Grid Kartu Form (3 Kolom) - Padding dipindahkan ke sini -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 px-4 md:px-6 pt-5 pb-12" x-show="!loading">
+                    <template x-for="item in filteredOrders" :key="item.orderId">
+                        <div @click="selectedOrder = item" 
+                             :class="isBaru(item.waktu_masuk) ? 'bg-green-900/20 border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.15)]' : 'bg-[#1b1b20] border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)]'"
+                             class="p-5 rounded-xl border cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md flex flex-col gap-2 relative">
+                             
+                             <div x-show="isBaru(item.waktu_masuk)" class="absolute -top-2 -right-2 bg-green-500 text-black text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-md">Baru</div>
+                             
+                             <h3 class="font-extrabold text-white text-lg break-words" x-text="item.namaPemesan || 'Tanpa Nama'"></h3>
+                             <p class="text-xs text-gray-400 font-medium mt-1">Masuk: <span class="text-gray-300" x-text="formatTanggal(item.waktu_masuk)"></span></p>
                         </div>
                     </template>
-                    <div x-show="filteredData.length === 0" class="col-span-full text-center py-12 text-gray-400 font-bold text-sm">Belum ada data input sales.</div>
+                </div>
+                
+                <!-- Detail Modal Pop-Up di dalam Form -->
+                <div x-show="selectedOrder" class="fixed inset-0 z-[6000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" x-cloak>
+                    <div class="bg-[#131315] border border-[rgba(255,255,255,0.15)] rounded-2xl w-full max-w-xl p-6 shadow-2xl relative flex flex-col max-h-[90vh]" @click.away="selectedOrder = null">
+                        <div class="flex justify-between items-center border-b border-[rgba(255,255,255,0.1)] pb-3 mb-4">
+                            <h3 class="text-white font-black text-sm uppercase tracking-wider flex items-center gap-2">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                Detail Pesanan
+                            </h3>
+                            <button @click="selectedOrder = null" class="text-gray-400 hover:text-white transition"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                        </div>
+                        <div class="overflow-y-auto space-y-4 pr-1" style="scrollbar-width: thin;">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Nama Pemesan</label><div class="text-sm font-bold text-white bg-[rgba(255,255,255,0.05)] p-2 rounded-lg" x-text="selectedOrder?.namaPemesan || '-'"></div></div>
+                                <div><label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">No WA Pemesan</label><div class="text-sm font-bold text-white bg-[rgba(255,255,255,0.05)] p-2 rounded-lg" x-text="selectedOrder?.noPemesan || '-'"></div></div>
+                                <div><label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Nama Penerima</label><div class="text-sm font-bold text-white bg-[rgba(255,255,255,0.05)] p-2 rounded-lg" x-text="selectedOrder?.namaPenerima || '-'"></div></div>
+                                <div><label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">No WA Penerima</label><div class="text-sm font-bold text-white bg-[rgba(255,255,255,0.05)] p-2 rounded-lg" x-text="selectedOrder?.noPenerima || '-'"></div></div>
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Alamat Pengiriman</label>
+                                <div class="text-sm font-medium text-gray-300 p-3 bg-[#0a0a0c] border border-[rgba(255,255,255,0.1)] rounded-lg" x-text="selectedOrder?.alamat || '-'"></div>
+                            </div>
+                            <div>
+																<label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Request Tanggal Kirim</label>
+																<div class="text-sm font-bold text-white bg-[rgba(255,255,255,0.05)] p-2.5 rounded-lg w-fit border border-[rgba(255,255,255,0.1)]" x-text="formatTanggalKirim(selectedOrder?.tanggalKirim)"></div>
+														</div>
+                            <div>
+                                <label class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Detail List Pesanan</label>
+                                <div class="text-xs font-medium text-gray-300 p-3 bg-[#0a0a0c] border border-[rgba(255,255,255,0.1)] rounded-lg whitespace-pre-wrap min-h-[100px]" x-text="selectedOrder?.detailText || '-'"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -676,15 +696,11 @@
                     <button @click="activeTab = 'biasa'" :class="activeTab === 'biasa' ? 'bg-yellow-500 text-black shadow-md font-black' : 'text-white hover:text-yellow-400'" class="flex-1 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-200">🔢 Kalkulator</button>
                 </div>
 
-                <!-- KALKULATOR DISKON -->
                 <div x-show="activeTab === 'diskon'" class="flex flex-col pb-6">
-                    
                     <div x-show="loading" class="flex items-center gap-2 mb-3 text-xs font-bold text-yellow-500">
                         <div class="animate-spin w-4 h-4 border-2 border-yellow-500 border-t-transparent rounded-full"></div>
                         Mengambil data harga...
                     </div>
-
-                    <!-- Area Input Produk & Keterangan -->
                     <div class="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] p-4 rounded-xl mb-4 shrink-0">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                             <select x-model="tempCat" @change="tempProd = ''" class="w-full px-3 py-2.5 rounded-lg outline-none text-sm font-bold bg-[#1b1b20] border border-[rgba(255,255,255,0.15)] text-white cursor-pointer">
@@ -695,8 +711,6 @@
                                 <option value="">-- Pilih Tipe Produk --</option>
                                 <template x-for="prod in getProducts(tempCat)" :key="prod.nama"><option :value="prod.nama" x-text="prod.nama"></option></template>
                             </select>
-                            
-                            <!-- Kolom Keterangan & Harga Manual -->
                             <div class="flex flex-col gap-1.5 col-span-1">
                                 <label class="text-[10px] font-bold uppercase tracking-wider text-gray-300">Keterangan / Nama Manual</label>
                                 <input type="text" x-model="keteranganManual" placeholder="Contoh: Custom Item..." class="w-full px-3 py-2.5 border border-[rgba(255,255,255,0.15)] rounded-lg outline-none text-sm font-bold bg-[#1b1b20] text-white focus:border-yellow-500 shadow-inner">
@@ -719,15 +733,12 @@
                                 <input type="number" x-model.number="tempQty" min="1" class="w-full h-full text-center bg-[#1b1b20] border border-[rgba(255,255,255,0.15)] rounded-lg pl-8 pr-2 py-2 outline-none text-white font-bold text-sm focus:border-white transition">
                                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300 font-bold text-[10px] uppercase tracking-wider pointer-events-none">QTY</span>
                             </div>
-                            <!-- Tombol Tambah -->
                             <button @click="addItem()" :disabled="tempHarga === 0 || tempQty < 1" class="px-5 font-black text-white rounded-lg transition-all hover:bg-yellow-600 disabled:opacity-40 disabled:cursor-not-allowed text-xs uppercase tracking-wider bg-yellow-500 shadow-md">Tambah</button>
                         </div>
                     </div>
-
-                    <!-- KONTAINER LIST KERANJANG (DIJAMIN MUNCUL DENGAN MIN-HEIGHT & MAX-HEIGHT JELAS) -->
+                    
                     <div class="bg-[rgba(0,0,0,0.2)] border border-[rgba(255,255,255,0.08)] rounded-xl p-3 mb-4 shrink-0">
                         <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">List Produk Terpilih (<span x-text="selectedItems.length"></span>)</div>
-                        
                         <div class="space-y-2 overflow-y-auto pr-1" style="max-height: 180px; min-height: 80px; scrollbar-width: thin;">
                             <template x-for="(item, idx) in selectedItems" :key="item.id">
                                 <div class="flex justify-between items-center p-3 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)]">
@@ -741,15 +752,12 @@
                                     </div>
                                 </div>
                             </template>
-                            
-                            <!-- Pesan Kosong -->
                             <div x-show="selectedItems.length === 0" class="text-center py-6 text-xs font-bold text-gray-400 uppercase tracking-widest border border-dashed border-[rgba(255,255,255,0.15)] rounded-xl">
                                 List Produk Kosong
                             </div>
                         </div>
                     </div>
-
-                    <!-- Kalkulasi Total & Diskon -->
+                    
                     <div class="border-t border-[rgba(255,255,255,0.1)] pt-4 shrink-0">
                         <div class="flex justify-between items-center mb-3 px-2">
                             <span class="text-[11px] font-bold text-gray-300 uppercase tracking-wide">Total Sebelum Diskon</span>
@@ -783,13 +791,11 @@
                     </div>
                 </div>
 
-                <!-- KALKULATOR BIASA (STANDAR) -->
                 <div x-show="activeTab === 'biasa'" class="flex flex-col h-full bg-[#131315] rounded-xl p-4 border border-[rgba(255,255,255,0.05)]">
                     <div class="bg-black rounded-xl p-5 mb-5 text-right overflow-x-auto border border-[rgba(255,255,255,0.08)] shadow-inner flex flex-col justify-end min-h-[90px]" style="scrollbar-width: none;">
                         <div class="text-[11px] font-bold text-gray-400 mb-1" x-text="calcHistory"></div>
                         <div class="text-4xl font-mono text-white tracking-widest break-all" x-text="calcDisplay"></div>
                     </div>
-                    
                     <div class="grid grid-cols-4 gap-3 flex-1 text-lg">
                         <button @click="cClear()" class="col-span-2 rounded-xl font-black bg-red-900/30 text-red-400 hover:bg-red-900/50 transition py-3">Hapus</button>
                         <button @click="cDel()" class="rounded-xl font-black bg-[rgba(255,255,255,0.08)] text-white hover:bg-[rgba(255,255,255,0.15)] transition py-3">⌫</button>
@@ -858,7 +864,6 @@
                     </template>
                 </div>
 
-                <!-- MODAL POPUP FORM SCRIPT -->
                 <div x-show="isModalOpen" x-cloak class="fixed inset-0 z-[5000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
                     <div class="bg-[#131315] border border-[rgba(255,255,255,0.15)] rounded-2xl w-full max-w-md p-6 shadow-2xl relative flex flex-col max-h-[90vh]" @click.away="closeModal()">
                         <div class="flex justify-between items-center border-b border-[rgba(255,255,255,0.1)] pb-3 mb-4">
@@ -901,7 +906,7 @@
                 </div>
             </div>
 
-            <!-- 6. KONTEN LOKAL: CHATBOT IFRAME LANGSUNG (Di dalam Popup Master, tapi bukan file pisahan) -->
+            <!-- 6. KONTEN LOKAL: CHATBOT IFRAME LANGSUNG -->
             <div x-show="popupPanel === 'chatbot'" class="w-full flex flex-col h-full bg-[#0a0a0c]" x-cloak>
                 <iframe src="https://bot.yanoshi.com/" class="w-full h-full border-none" allow="microphone; camera" sandbox="allow-same-origin allow-scripts allow-forms allow-popups" loading="lazy"></iframe>
             </div>
@@ -931,14 +936,17 @@
 
 <!-- ================== SCRIPT & GLOBAL UTILITIES ================== -->
 <script>
+// =============== CONSTANTS API URL ===============
 const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0OHcpS102oD6frRSgacOdiADCt5C0Zphp7wI8mkDP3dKDvo-d6mCw/exec';
 const PESANAN_STATUS_API_URL = 'https://script.google.com/macros/s/AKfycbz3V7oaXEBuQAATvcrZsDtGFIXAKTl_h3drbgjksBkJEbFZhjJP2WUSTrPv9mxHm35M/exec';
-const ADMIN_SALES_API_URL = 'https://script.google.com/macros/s/AKfycbxSxXRkkVV793Ws2XivvLfdiw9u1zzsZkLPitM8hhcHmZ2ionKVYLB3HDgo3as4QKnQ9Q/exec';
 const STOK_API_URL = 'https://script.google.com/macros/s/AKfycbw6TaXv2RsoZMNC8j2PVFBYCzxm1mLvrRpDNr5skYxBtg4GmM1fh4P3q4kWEs-ndSBUaQ/exec'; 
-const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbz00fFyDEd_Lj8N5Z-SW4zeznpzxSndsX8Z0zFzCTwHgY98VkimviBJASq8Lj20KCME/exec'; // Sumber data Total Pencapaian (sama dgn pencapaian.html)
+const TH_GAS_URL = 'https://script.google.com/macros/s/AKfycbz00fFyDEd_Lj8N5Z-SW4zeznpzxSndsX8Z0zFzCTwHgY98VkimviBJASq8Lj20KCME/exec';
+
+// GANTI CONSTANT INI DENGAN URL APPS SCRIPT WEB APP YANG BARU ANDA DEPLOY!
+const FORM_API_URL = 'https://script.google.com/macros/s/AKfycbyaO_agw7tJeJzshMlgE-KtW8GzEAv4w1t6OoJq5yEh9h83_sK9-LH2MF9Oxz4hCoER/exec'; 
 
 // ==========================================
-// STATE UTAMA (MENGURUS IFRAME POPUP)
+// STATE UTAMA (MENGURUS IFRAME POPUP & NOTIFIKASI FORM)
 // ==========================================
 function appState() {
     return {
@@ -950,19 +958,26 @@ function appState() {
         grandTercapai: 0, grandTarget: 0, grandPct: 0, pencapaianLoaded: false,
         resiOpen: false, ongkirOpen: false, brastelOpen: false,
 
+        // Variabel Notifikasi Form (PASTIKAN INI ADA)
+        recentOrders: [],
+        currentNotifIndex: 0,
+        showNotifAnim: true,
+        displayedNotifText: '', 
+        notifInterval: null,
 				
-				// PADA appState()
         init() {
             const saved = localStorage.getItem('yanoshi_user') || sessionStorage.getItem('yanoshi_user');
             if (saved) { 
                 this.isLoggedIn = true; this.currentUser = saved; 
-                this.loadSummary(); // Load pertama kali
-                this.loadPencapaian(); // Load total pencapaian pertama kali
+                this.loadSummary(); 
+                this.loadPencapaian(); 
+                this.loadFormOrders();
                 
                 // AUTO SYNC GAIB TIAP 2 MENIT (120.000 ms)
-                setInterval(() => { this.loadSummary(); this.loadPencapaian(); }, 120000); 
+                setInterval(() => { this.loadSummary(); this.loadPencapaian(); this.loadFormOrders(); }, 120000); 
             }
             startLiveClock();
+            this.startNotifTicker(); 
         },
 
         getGreeting() {
@@ -970,6 +985,61 @@ function appState() {
             const d = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             let g = h < 12 ? 'Selamat Pagi' : h < 15 ? 'Selamat Siang' : h < 18 ? 'Selamat Sore' : 'Selamat Malam';
             return `${g} — ${d}`;
+        },
+
+        async loadFormOrders() {
+            try {
+                if(FORM_API_URL === 'URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI') return; 
+                const res = await fetch(`${FORM_API_URL}?action=getOrders`);
+                const json = await res.json();
+                if (json.status === 'success') {
+                    const now = new Date();
+                    // Hanya memfilter data yang masuk di bawah 24 Jam
+                    this.recentOrders = json.data.filter(o => (now - new Date(o.waktu_masuk)) < 86400000);
+                    this.updateNotifText(); 
+                }
+            } catch (e) { console.error("Gagal load data notifikasi form", e); }
+        },
+
+        updateNotifText() {
+            if (!this.recentOrders || this.recentOrders.length === 0) {
+                this.displayedNotifText = '';
+                return;
+            }
+            // Mencegah error jika panjang array tiba-tiba menyusut
+            if (this.currentNotifIndex >= this.recentOrders.length) {
+                this.currentNotifIndex = 0;
+            }
+            const order = this.recentOrders[this.currentNotifIndex];
+            this.displayedNotifText = `${order.namaPemesan || 'Tanpa Nama'} baru saja mengisi form`;
+        },
+
+        startNotifTicker() {
+            // 1. Bersihkan interval lama jika ada (mencegah clashing)
+            if (this.notifInterval) clearInterval(this.notifInterval);
+
+            // 2. Mulai interval baru
+            this.notifInterval = setInterval(() => {
+                // Hanya jalankan animasi berputar jika ada lebih dari 1 order terbaru
+                if (this.recentOrders && this.recentOrders.length > 1) {
+                    
+                    this.showNotifAnim = false; // Hilangkan teks
+                    
+                    // Jeda 400ms (sedikit lebih lama dari 300ms durasi CSS agar browser punya waktu untuk render)
+                    setTimeout(() => {
+                        // Paksa jadi hitungan matematika (+)
+                        this.currentNotifIndex++;
+                        
+                        // Kembali ke 0 jika indeks sudah melewati jumlah data
+                        if (this.currentNotifIndex >= this.recentOrders.length) {
+                            this.currentNotifIndex = 0;
+                        }
+                        
+                        this.updateNotifText(); // Ganti teks notifikasi
+                        this.showNotifAnim = true; // Munculkan kembali
+                    }, 400); 
+                }
+            }, 3000);
         },
 
         async loadSummary() {
@@ -1003,12 +1073,6 @@ function appState() {
             } catch (e) { console.error("Gagal load total pencapaian banner"); }
         },
 
-        pencapaianColor() {
-            if (this.grandPct >= 50) return '#10b981';
-            if (this.grandPct >= 30) return '#f59e0b';
-            return '#ef4444';
-        },
-
         async doLogin() {
             if (!this.loginForm.username || !this.loginForm.password) { this.loginError = 'Username dan password wajib diisi.'; return; }
             this.loginLoading = true; this.loginError = '';
@@ -1020,6 +1084,7 @@ function appState() {
                     localStorage.setItem('yanoshi_user', this.currentUser); sessionStorage.setItem('yanoshi_user', this.currentUser);
                     showToast('Login berhasil! Selamat datang 👋', 'success');
                     this.loadSummary();
+                    this.loadFormOrders();
                 } else { this.loginError = data.message || 'Username atau password salah.'; }
             } catch (e) { this.loginError = 'Gagal menghubungi server. Cek koneksi internet.'; }
             this.loginLoading = false;
@@ -1054,20 +1119,17 @@ function appState() {
             this.editSaving = false;
         },
 
-        // MEMBUKA FILE HTML TERPISAH DI DALAM IFRAME POPUP
         openIframe(title, url, iconKey) {
             this.popupPanel = 'iframe';
             this.popupTitle = title;
             this.externalUrl = url;
             const cacheBuster = new Date().getTime();
-            // Menggabungkan URL asli + embedded=true + v=angkaUnik
             this.iframeUrl = url + (url.includes('?') ? '&' : '?') + 'embedded=true&v=' + cacheBuster;
 			this.popupIcon = iconKey;
             this.popupOpen = true;
             this.menuOpen = false; 
         },
 
-        // MEMBUKA PANEL FITUR LOKAL (YANG MASIH ADA DI DALAM inmil.html)
         toggleLocalPanel(panelName, title, iconKey) {
             this.popupPanel = panelName;
             this.popupTitle = title;
@@ -1082,16 +1144,13 @@ function appState() {
             setTimeout(() => { this.iframeUrl = ''; }, 300); 
         },
 
-        openExternal(url) { window.open(url, '_blank'); }, // <--- Jangan lupa tambah koma di sini!
+        openExternal(url) { window.open(url, '_blank'); },
 
-        // FUNGSI GANTI TEMA BUKU TAMU
         toggleTemaTamu() {
             if (this.iframeUrl.includes('tamucerah.html')) {
-                // Ubah ke Dark Mode
                 this.iframeUrl = 'tamu.html?embedded=true';
                 this.externalUrl = 'tamu.html';
             } else {
-                // Ubah ke Light Mode
                 this.iframeUrl = 'tamucerah.html?embedded=true';
                 this.externalUrl = 'tamucerah.html';
             }
@@ -1100,65 +1159,92 @@ function appState() {
 }
 
 // ==========================================
-// ADMIN SALES APP (PACKING)
+// FORM PESANAN APP (MENU PENGGANTI PACKING)
 // ==========================================
-function adminSalesApp() {
+function formPesananApp() {
     return {
-        apiUrl: ADMIN_SALES_API_URL, localData: [], loading: false, inputNama: '', fTgl: '', fNama: '', fPack: '', fKirim: '', modalKirimId: null, selectedIds: [],
-        formatTanggal(dateStr) { if (!dateStr) return '-'; return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); },
-        // PADA adminSalesApp()
-        initSales() { 
-            this.localData = JSON.parse(localStorage.getItem('dashOpsData')) || []; 
-            this.fetchData(false); 
-            
-            // AUTO SYNC GAIB TIAP 2 MENIT
-            setInterval(() => { 
-                // Hanya update jika panel Admin Sales sedang dibuka
-                const appEl = document.querySelector('[x-data="appState()"]');
-                if (appEl && appEl._x_dataStack && appEl._x_dataStack[0].popupPanel === 'admin_sales') {
-                    this.fetchData(true); 
-                }
-            }, 120000);
+        loading: false,
+        orders: [],
+        fDate: '',
+        fSearch: '',
+        fSort: 'newest',
+        selectedOrder: null,
+
+        initForm() {
+            this.fetchData();
         },
-				
-				async fetchData(isSilent = false) {
-            if (!isSilent) this.loading = true;
-            try { if (this.apiUrl && this.apiUrl.startsWith('http')) { const response = await fetch(this.apiUrl); this.localData = await response.json(); localStorage.setItem('dashOpsData', JSON.stringify(this.localData)); } } catch (error) { console.error('Fetch error:', error); }
-            if (!isSilent) this.loading = false;
-        },
-        async sendToSheet(action, dataObj) {
+        
+        async fetchData() {
+            if(FORM_API_URL === 'URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI') {
+                showToast("URL API Form Pesanan belum diatur!", "error");
+                return;
+            }
             this.loading = true;
             try {
-                if (this.apiUrl && this.apiUrl.startsWith('http')) { await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: action, data: dataObj }) }); await this.fetchData(); } else {
-                    if(action === 'tambah') this.localData.push(dataObj); if(action === 'hapus') this.localData = this.localData.filter(d => d.id !== dataObj.id);
-                    if(action === 'update') { let idx = this.localData.findIndex(d => d.id === dataObj.id); if (idx !== -1) Object.assign(this.localData[idx], dataObj); }
-                    localStorage.setItem('dashOpsData', JSON.stringify(this.localData)); this.loading = false;
+                const res = await fetch(`${FORM_API_URL}?action=getOrders`);
+                const json = await res.json();
+                if (json.status === 'success') {
+                    this.orders = json.data;
                 }
-            } catch (error) { showToast('Gagal sinkronisasi.', 'error'); this.loading = false; }
+            } catch (e) {
+                console.error('Error fetching form data', e);
+            }
+            this.loading = false;
         },
-        tambahData() { if (!this.inputNama) return showToast('Nama tidak boleh kosong!', 'error'); const newData = { id: Date.now().toString(), nama: this.inputNama, tanggal: new Date().toISOString().split('T')[0], status_packing: 'Menunggu', status_kirim: false, note: '' }; this.inputNama = ''; this.sendToSheet('tambah', newData); },
-        hapusData(id) { if(confirm('Yakin ingin menghapus?')) { this.sendToSheet('hapus', { id: id }); } },
-        async hapusMultiData() {
-            if (this.selectedIds.length === 0) return; if (!confirm(`Hapus ${this.selectedIds.length} data terpilih permanen?`)) return;
-            this.loading = true; const idsToDelete = [...this.selectedIds]; this.selectedIds = []; 
-            this.localData = this.localData.filter(d => !idsToDelete.includes(d.id)); localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
-            if (this.apiUrl && this.apiUrl.startsWith('http')) {
-                try { for (let id of idsToDelete) { await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: 'hapus', data: { id: id } }) }); } await this.fetchData(true); showToast(`${idsToDelete.length} data dihapus.`, 'info'); } catch (error) { showToast('Gagal menghapus.', 'error'); }
-            } this.loading = false;
+
+        get filteredOrders() {
+            let result = [...this.orders];
+            
+            // Filter by Date
+            if (this.fDate) {
+                result = result.filter(o => {
+                    const d = new Date(o.waktu_masuk);
+                    const dStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+                    return dStr === this.fDate;
+                });
+            }
+            // Filter by Keyword Apa Saja
+            if (this.fSearch) {
+                const s = this.fSearch.toLowerCase();
+                result = result.filter(o => 
+                    (o.namaPemesan && o.namaPemesan.toLowerCase().includes(s)) ||
+                    (o.namaPenerima && o.namaPenerima.toLowerCase().includes(s)) ||
+                    (o.noPemesan && String(o.noPemesan).includes(s)) ||
+                    (o.noPenerima && String(o.noPenerima).includes(s)) ||
+                    (o.detailText && o.detailText.toLowerCase().includes(s)) ||
+                    (o.alamat && o.alamat.toLowerCase().includes(s))
+                );
+            }
+            // Sorting Terbaru/Terlama
+            result.sort((a, b) => {
+                const dateA = new Date(a.waktu_masuk).getTime();
+                const dateB = new Date(b.waktu_masuk).getTime();
+                return this.fSort === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+            
+            return result;
         },
-        async kirimMultiData() {
-            if (this.selectedIds.length === 0) return; if (!confirm(`Tandai ${this.selectedIds.length} data SUDAH DIKIRIM?`)) return;
-            this.loading = true; const idsToUpdate = [...this.selectedIds]; this.selectedIds = []; 
-            this.localData = this.localData.map(d => { if (idsToUpdate.includes(d.id)) { return { ...d, status_kirim: true }; } return d; }); localStorage.setItem('dashOpsData', JSON.stringify(this.localData));
-            if (this.apiUrl && this.apiUrl.startsWith('http')) {
-                try { for (let id of idsToUpdate) { let item = this.localData.find(d => d.id === id); if(item) { await fetch(this.apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: 'update', data: item }) }); } } await this.fetchData(true); showToast(`${idsToUpdate.length} pesanan terkirim.`, 'success'); } catch (error) { showToast('Gagal mengupdate.', 'error'); }
-            } this.loading = false;
+
+        isBaru(dateStr) {
+            return (new Date() - new Date(dateStr)) < 24 * 60 * 60 * 1000;
         },
-        bukaModalKirim(id) { let item = this.localData.find(d => d.id === id); if(item) { item.status_kirim = true; this.sendToSheet('update', item); } },
-        getCardStyle(item) { if (this.selectedIds.includes(item.id)) { return 'background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.2); border-left-color:var(--theme-white);'; } if (item.status_kirim === true) { return 'background:#064e3b; border-color:rgba(16,185,129,0.3); border-left-color:#10b981;'; } if (item.status_packing === 'Belum Lengkap') { return 'background:#450a0a; border-color:rgba(239,68,68,0.3); border-left-color:#ef4444;'; } return 'background:#1b1b20; border-color:rgba(255,255,255,0.08); border-left-color:var(--theme-light);'; },
-        get filteredData() { let data = [...this.localData]; if(this.fTgl) { data = data.filter(d => { let dDate = new Date(d.tanggal); let localDateStr = dDate.getFullYear() + "-" + String(dDate.getMonth() + 1).padStart(2, '0') + "-" + String(dDate.getDate()).padStart(2, '0'); return localDateStr === this.fTgl || d.tanggal === this.fTgl; }); } if(this.fNama) data = data.filter(d => d.nama.toLowerCase().includes(this.fNama.toLowerCase())); if(this.fPack) data = data.filter(d => d.status_packing === this.fPack); if(this.fKirim !== "") data = data.filter(d => String(d.status_kirim) === this.fKirim); return data.sort((a, b) => b.id - a.id); }
-    };
+
+        formatTanggal(dateStr) {
+            if (!dateStr) return '-';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+        },
+
+        // TAMBAHAN FUNGSI BARU DI SINI
+        formatTanggalKirim(dateStr) {
+            if (!dateStr || dateStr === '-') return '-';
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr; 
+            return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+    }
 }
+
 
 // ==========================================
 // KALKULATOR APP
