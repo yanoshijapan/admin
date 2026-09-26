@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -1475,6 +1475,182 @@ function meowAndRefresh() { document.getElementById('refreshLoader').classList.a
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { const mainEl = document.querySelector('[x-data="appState()"]'); if (mainEl && mainEl._x_dataStack) { const data = mainEl._x_dataStack[0]; if (data && data.popupOpen) data.closePopup(); if (data && data.editUserModal) data.editUserModal = false; } } });
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err)); }); }
 </script>-->
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>hello, goodbye</title>
+<style>
+  :root {
+    --bg1: #0a0e17;
+    --bg2: #131a2b;
+    --accent1: #00fff2;
+    --accent2: #ff2fd0;
+    --text: #e8f1ff;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+  body {
+    background: radial-gradient(circle at 50% 30%, var(--bg2), var(--bg1) 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: 'Courier New', ui-monospace, monospace;
+  }
+  canvas#particles {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .stage {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+  .word {
+    position: relative;
+    font-size: clamp(2.2rem, 9vw, 6rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    opacity: 0;
+    text-shadow: 0 0 20px rgba(0,255,242,0.25);
+  }
+  .glitch {
+    position: relative;
+    display: inline-block;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    opacity: 0.8;
+    mix-blend-mode: screen;
+  }
+  .glitch::before { color: var(--accent1); }
+  .glitch::after { color: var(--accent2); }
+
+  .w1 { animation: showGlitch1 4s ease-in-out infinite; }
+  .w1::before { animation: shift1a 4s infinite; }
+  .w1::after { animation: shift1b 4s infinite; }
+
+  .w2 { animation: showGlitch2 4s ease-in-out infinite; }
+  .w2::before { animation: shift2a 4s infinite; }
+  .w2::after { animation: shift2b 4s infinite; }
+
+  @keyframes showGlitch1 {
+    0%   { opacity: 0; filter: blur(6px); }
+    8%   { opacity: 1; filter: blur(0); }
+    38%  { opacity: 1; }
+    46%  { opacity: 0; filter: blur(6px); }
+    100% { opacity: 0; }
+  }
+  @keyframes showGlitch2 {
+    0%   { opacity: 0; }
+    50%  { opacity: 0; filter: blur(6px); }
+    58%  { opacity: 1; filter: blur(0); }
+    88%  { opacity: 1; }
+    96%  { opacity: 0; filter: blur(6px); }
+    100% { opacity: 0; }
+  }
+  @keyframes shift1a {
+    0%,100% { transform: translate(0,0); }
+    20% { transform: translate(-3px,1px); }
+    40% { transform: translate(2px,-2px); }
+    60% { transform: translate(-2px,2px); }
+    80% { transform: translate(3px,0); }
+  }
+  @keyframes shift1b {
+    0%,100% { transform: translate(0,0); }
+    20% { transform: translate(3px,-1px); }
+    40% { transform: translate(-2px,2px); }
+    60% { transform: translate(2px,-2px); }
+    80% { transform: translate(-3px,0); }
+  }
+  @keyframes shift2a {
+    0%,100% { transform: translate(0,0); }
+    25% { transform: translate(3px,-1px); }
+    50% { transform: translate(-3px,1px); }
+    75% { transform: translate(2px,2px); }
+  }
+  @keyframes shift2b {
+    0%,100% { transform: translate(0,0); }
+    25% { transform: translate(-3px,1px); }
+    50% { transform: translate(3px,-1px); }
+    75% { transform: translate(-2px,-2px); }
+  }
+</style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <div class="stage">
+    <span class="word w1 glitch" data-text="hello">hello</span>
+    <span class="word w2 glitch" data-text="goodbye">goodbye</span>
+  </div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  const COUNT = 70;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < COUNT; i++) {
+      particles.push({
+        x: rand(0, w),
+        y: rand(0, h),
+        r: rand(0.6, 2.2),
+        vx: rand(-0.15, 0.15),
+        vy: rand(-0.25, -0.05),
+        a: rand(0.15, 0.7),
+        hue: Math.random() > 0.5 ? '0,255,242' : '255,47,208'
+      });
+    }
+  }
+  initParticles();
+
+  function tick() {
+    ctx.clearRect(0, 0, w, h);
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.y < -10) { p.y = h + 10; p.x = rand(0, w); }
+      if (p.x < -10) p.x = w + 10;
+      if (p.x > w + 10) p.x = -10;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.hue},${p.a})`;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = `rgba(${p.hue},0.8)`;
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+</script>
+
 
 <!-- OVERLAY LOADING -->
 <div id="refreshLoader"><div class="dot-loader"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
