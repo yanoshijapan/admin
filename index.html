@@ -223,7 +223,7 @@
 <div id="toastContainer"></div>
 
 <!-- ================== LOGIN PAGE ================== -->
-<div id="loginPage" x-show="!isLoggedIn" x-cloak>
+<!--<div id="loginPage" x-show="!isLoggedIn" x-cloak>
     <div class="login-card">
         <img src="https://yanoshijapan.github.io/asetonline/logoputih.png" alt="Yanoshi" class="login-logo">
         <div class="login-title">
@@ -255,7 +255,7 @@
 <div x-show="isLoggedIn" x-cloak>
 
     <!-- ================== HEADER ================== -->
-    <header id="mainHeader">
+    <!--<header id="mainHeader">
         <img src="https://yanoshijapan.github.io/asetonline/logoputih.png" alt="Yanoshi" class="header-logo" @click="activePanel = null">
 
         <button class="hamburger-btn" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen">
@@ -264,17 +264,17 @@
     </header>
 
     <!-- ================== DROPDOWN MENU ================== -->
-    <div class="user-dropdown" x-show="menuOpen" @click.outside="menuOpen = false" x-cloak>
+    <!--<div class="user-dropdown" x-show="menuOpen" @click.outside="menuOpen = false" x-cloak>
         <div class="dropdown-user-info">
             <div class="dropdown-user-name" x-text="currentUser"></div>
             <div class="dropdown-user-role">Administrator</div>
         </div>
         
         <!-- MENU PUSAT AKUN BARU -->
-        <div class="dropdown-item" @click="openIframe('Pusat Akun', 'https://yanoshijapan.github.io/pusatakun/', 'pusat_akun')">
+       <!-- <div class="dropdown-item" @click="openIframe('Pusat Akun', 'https://yanoshijapan.github.io/pusatakun/', 'pusat_akun')">
             <span class="icon">
                 <!-- Ikon User -->
-                <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+               <!-- <svg class="icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </span> 
             Pusat Akun
         </div>
@@ -295,7 +295,7 @@
     </div>
 
     <!-- ================== MAIN CONTENT ================== -->
-    <main id="mainContent">
+    <!--<main id="mainContent">
         <div class="content-wrap">
 
             <div class="welcome-banner flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
@@ -305,25 +305,25 @@
                         <div class="welcome-subtitle" x-text="getGreeting()"></div>
                         
                         <!-- JAM & NOTIFIKASI FORM MUNCUL DI SINI (Responsif Layout) -->
-                        <div class="mt-4 flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-2">
+                     <!--   <div class="mt-4 flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-2">
                             <div>
                                 <div class="welcome-clock" id="liveClock">--:--:--</div>
                                 <div class="welcome-clock-label">Waktu Sekarang</div>
                             </div>
                             
                             <!-- Notifikasi Ticker Form Pesanan -->
-														<div x-show="notifLoading || recentOrders.length > 0" class="overflow-hidden bg-gray-100 border border-gray-300 rounded-lg px-3 py-1 flex items-center gap-2 shadow-md w-fit min-w-[150px] max-w-[240px] h-[36px]" x-cloak>
+												<!--		<div x-show="notifLoading || recentOrders.length > 0" class="overflow-hidden bg-gray-100 border border-gray-300 rounded-lg px-3 py-1 flex items-center gap-2 shadow-md w-fit min-w-[150px] max-w-[240px] h-[36px]" x-cloak>
 																<!-- Ikon Lonceng -->
-																<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-600 shrink-0"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+													<!--			<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-600 shrink-0"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
 																
 																<!-- SAAT LOADING: Animasi Garis Memanjang (Skeleton) -->
-																<div x-show="notifLoading" class="flex items-center gap-1.5 w-full">
+															<!--	<div x-show="notifLoading" class="flex items-center gap-1.5 w-full">
 																		<div class="h-2 bg-gray-300 rounded w-16 animate-pulse"></div>
 																		<div class="h-2 bg-gray-300 rounded w-10 animate-pulse" style="animation-delay: 150ms"></div>
 																</div>
 
 																<!-- SAAT DATA ADA: Teks Notifikasi -->
-																<div x-show="!notifLoading && recentOrders.length > 0" class="text-[10px] font-bold text-black whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-300"
+															<!--	<div x-show="!notifLoading && recentOrders.length > 0" class="text-[10px] font-bold text-black whitespace-nowrap overflow-hidden text-ellipsis transition-opacity duration-300"
 																		 :class="showNotifAnim ? 'opacity-100' : 'opacity-0'"
 																		 x-text="displayedNotifText">
 																</div>
@@ -333,9 +333,9 @@
                 </div>
                 
 								<!-- SUMMARY NOTIFICATION BADGES -->
-								<div class="relative z-10 flex flex-col gap-3 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg min-w-[260px] lg:min-w-[340px] min-h-[100px] justify-center whitespace-nowrap" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
+							<!--	<div class="relative z-10 flex flex-col gap-3 w-full lg:w-auto mt-4 lg:mt-0 p-4 rounded-xl border shadow-lg min-w-[260px] lg:min-w-[340px] min-h-[100px] justify-center whitespace-nowrap" style="background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
                     <!-- BARIS 1: Kirim Hari Ini -->
-                    <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
+                <!--    <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
                         <div class="flex items-center gap-3">
                             <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
                             <span style="color: rgba(255,255,255,0.9);">Kirim Hari Ini</span>
@@ -349,8 +349,8 @@
                         </div>
                     </div>
                     <!-- BARIS 2: Belum Bayar -->
-                    <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
-                        <div class="flex items-center gap-3">
+                 <!--   <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
+                 <!--       <div class="flex items-center gap-3">
                             <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
                             <span style="color: rgba(255,255,255,0.9);">Belum Bayar</span>
                         </div>
@@ -363,7 +363,7 @@
                         </div>
                     </div>
                     <!-- BARIS 3: Sdh Bayar / Blm Kirim -->
-                    <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
+                <!--    <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4">
                         <div class="flex items-center gap-3">
                             <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
                             <span style="color: rgba(255,255,255,0.9);">Sdh Bayar / Blm Kirim</span>
@@ -377,7 +377,7 @@
                         </div>
                     </div>
                     <!-- BARIS 4: Total Pencapaian (Target Harian) -->
-                    <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4 pt-2 mt-1" style="border-top: 1px solid rgba(255,255,255,0.12);">
+               <!--     <div class="flex items-center justify-between gap-8 text-[9px] font-bold uppercase tracking-wider h-4 pt-2 mt-1" style="border-top: 1px solid rgba(255,255,255,0.12);">
                         <div class="flex items-center gap-3">
                             <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: var(--grad-white); box-shadow: 0 0 8px rgba(255,255,255,0.7);"></div>
                             <span style="color: rgba(255,255,255,0.9);">Total Pencapaian</span>
@@ -413,13 +413,13 @@
                 </div>
                 
                 <!-- MENU FORM (Menggantikan Menu Packing) -->
-                <div class="menu-card menu-beam" @click="toggleLocalPanel('form_pesanan', 'Data Form Pesanan', 'form_pesanan')">
+             <!--   <div class="menu-card menu-beam" @click="toggleLocalPanel('form_pesanan', 'Data Form Pesanan', 'form_pesanan')">
 										<!-- Tambahkan class 'relative' di sini -->
-										<div class="menu-icon relative">
+									<!--	<div class="menu-icon relative">
 												<svg class="icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
 												
 												<!-- BADGE NOTIFIKASI MERAH -->
-												<div x-show="recentOrders.length > 0" 
+											<!--	<div x-show="recentOrders.length > 0" 
 														 class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-black min-w-[20px] h-5 px-1 flex items-center justify-center rounded-full shadow-md border border-[#131315] z-10" 
 														 x-text="recentOrders.length" x-cloak>
 												</div>
@@ -485,7 +485,7 @@
             </div>
 
             <!-- EMBED PANELS -->
-            <div class="embed-panel">
+         <!--   <div class="embed-panel">
                 <div class="embed-header">
                     <div class="embed-title-wrap">
                         <div class="embed-icon"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
@@ -576,7 +576,7 @@
 <!-- ========================================================= -->
 <!-- SINGLE POPUP MASTER CONTAINER                             -->
 <!-- ========================================================= -->
-<div class="popup-overlay" x-show="popupOpen" @click.self="closePopup()" x-cloak>
+<!--<div class="popup-overlay" x-show="popupOpen" @click.self="closePopup()" x-cloak>
     <div class="popup-sheet">
         <div class="popup-drag-handle"></div>
         <div class="popup-header">
@@ -587,7 +587,7 @@
                     <svg x-show="popupIcon === 'status_customer'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                     
                     <!-- Icon Menu Form -->
-                    <svg x-show="popupIcon === 'form_pesanan'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    <!--<svg x-show="popupIcon === 'form_pesanan'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
                     
                     <svg x-show="popupIcon === 'buku_tamu'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                     <svg x-show="popupIcon === 'stok_produk'" class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -632,10 +632,10 @@
 
             <!-- 2. KONTEN LOKAL: MENU FORM PESANAN BARU -->
             <!-- Hapus p-4 md:p-6 di sini agar sticky bisa benar-benar mentok ke atas -->
-            <div x-show="popupPanel === 'form_pesanan'" x-data="formPesananApp()" x-init="initForm()" class="w-full h-full overflow-y-auto" x-cloak>
+            <!--<div x-show="popupPanel === 'form_pesanan'" x-data="formPesananApp()" x-init="initForm()" class="w-full h-full overflow-y-auto" x-cloak>
                 
                 <!-- Sticky Header (Membeku) -->
-                <div class="sticky top-0 z-30 px-4 md:px-6 py-4 bg-[#18181c] border-b border-[rgba(255,255,255,0.15)] shadow-2xl">
+               <!-- <div class="sticky top-0 z-30 px-4 md:px-6 py-4 bg-[#18181c] border-b border-[rgba(255,255,255,0.15)] shadow-2xl">
                     <div class="flex flex-col sm:flex-row gap-3">
                         <input type="date" x-model="fDate" class="px-3 py-2 border border-[rgba(255,255,255,0.2)] rounded-lg text-sm font-medium bg-[#1b1b20] text-white outline-none focus:border-yellow-500 cursor-pointer w-full sm:w-auto shadow-sm">
                         
@@ -659,7 +659,7 @@
                 </div>
 
                 <!-- Grid Kartu Form (3 Kolom) - Padding dipindahkan ke sini -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 px-4 md:px-6 pt-5 pb-12" x-show="!loading">
+                <!--<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 px-4 md:px-6 pt-5 pb-12" x-show="!loading">
                     <template x-for="item in filteredOrders" :key="item.orderId">
                         <div @click="selectedOrder = item" 
                              :class="isBaru(item.waktu_masuk) ? 'bg-green-900/20 border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.15)]' : 'bg-[#1b1b20] border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)]'"
@@ -674,7 +674,7 @@
                 </div>
                 
                 <!-- Detail Modal Pop-Up di dalam Form -->
-                <div x-show="selectedOrder" class="fixed inset-0 z-[6000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" x-cloak>
+               <!-- <div x-show="selectedOrder" class="fixed inset-0 z-[6000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" x-cloak>
                     <div class="bg-[#131315] border border-[rgba(255,255,255,0.15)] rounded-2xl w-full max-w-xl p-6 shadow-2xl relative flex flex-col max-h-[90vh]" @click.away="selectedOrder = null">
                         <div class="flex justify-between items-center border-b border-[rgba(255,255,255,0.1)] pb-3 mb-4">
                             <h3 class="text-white font-black text-sm uppercase tracking-wider flex items-center gap-2">
@@ -708,9 +708,9 @@
             </div>
 
             <!-- 3. KONTEN LOKAL: KALKULATOR -->
-            <div x-show="popupPanel === 'kalkulator'" x-data="kalkulatorApp()" x-init="initCalc()" @keydown.window="handleKey($event, $el)" class="w-full h-full overflow-y-auto p-4 md:p-6" x-cloak>    
+            <!--<div x-show="popupPanel === 'kalkulator'" x-data="kalkulatorApp()" x-init="initCalc()" @keydown.window="handleKey($event, $el)" class="w-full h-full overflow-y-auto p-4 md:p-6" x-cloak>    
                 <!-- Tab Pilihan -->
-                <div class="flex gap-2 mb-4 p-1 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)] shrink-0">
+               <!-- <div class="flex gap-2 mb-4 p-1 bg-[rgba(255,255,255,0.05)] rounded-xl border border-[rgba(255,255,255,0.1)] shrink-0">
                     <button @click="activeTab = 'diskon'" :class="activeTab === 'diskon' ? 'bg-yellow-500 text-black shadow-md font-black' : 'text-white hover:text-yellow-400'" class="flex-1 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-200">💰 Hitung Diskon</button>
                     <button @click="activeTab = 'biasa'" :class="activeTab === 'biasa' ? 'bg-yellow-500 text-black shadow-md font-black' : 'text-white hover:text-yellow-400'" class="flex-1 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all duration-200">🔢 Kalkulator</button>
                 </div>
@@ -843,7 +843,7 @@
             </div>
 
             <!-- 4. KONTEN LOKAL: BANK SCRIPT -->
-            <div x-show="popupPanel === 'bank_script'" x-data="bankScriptApp()" x-init="initBankScript()" class="w-full h-full overflow-y-auto p-4 md:p-6" x-cloak>
+            <!--<div x-show="popupPanel === 'bank_script'" x-data="bankScriptApp()" x-init="initBankScript()" class="w-full h-full overflow-y-auto p-4 md:p-6" x-cloak>
                 <div class="sticky top-0 z-40 pb-4 mb-4 pt-1 bg-[#131315] border-b border-[rgba(255,255,255,0.1)] w-full shadow-md">
                     <div class="flex justify-between items-center mb-2">
                         <h2 class="text-sm font-black text-white uppercase tracking-widest border-l-4 border-yellow-500 pl-2">Bank Script</h2>
@@ -908,7 +908,7 @@
             </div>
 
             <!-- 5. KONTEN LOKAL: TUTORIAL -->
-            <div x-show="popupPanel === 'tutorial'" x-data="tutorialApp()" x-init="initTutorial()" class="w-full h-full overflow-y-auto p-4 md:p-6" x-cloak>
+            <!--<div x-show="popupPanel === 'tutorial'" x-data="tutorialApp()" x-init="initTutorial()" class="w-full h-full overflow-y-auto p-4 md:p-6" x-cloak>
                 <div class="flex-1 space-y-4 pb-10">
                     <div x-show="loading" class="flex flex-col items-center justify-center py-12"><div class="animate-spin w-8 h-8 border-4 border-yellow-500 border-t-transparent rounded-full mb-3"></div><span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Memuat Tutorial...</span></div>
                     <div x-show="!loading && tutorials.length === 0" class="text-center py-12 text-gray-500 font-bold text-xs uppercase tracking-widest flex flex-col items-center"><span class="text-4xl mb-2">📭</span> Belum ada data tutorial.</div>
@@ -926,7 +926,7 @@
             </div>
 
             <!-- 6. KONTEN LOKAL: CHATBOT IFRAME LANGSUNG -->
-            <div x-show="popupPanel === 'chatbot'" class="w-full flex flex-col h-full bg-[#0a0a0c]" x-cloak>
+           <!-- <div x-show="popupPanel === 'chatbot'" class="w-full flex flex-col h-full bg-[#0a0a0c]" x-cloak>
                 <iframe src="https://bot.yanoshi.com/" class="w-full h-full border-none" allow="microphone; camera" sandbox="allow-same-origin allow-scripts allow-forms allow-popups" loading="lazy"></iframe>
             </div>
 
@@ -935,7 +935,7 @@
 </div>
 
 <!-- ================== MODAL EDIT USER ================== -->
-<div class="modal-overlay" x-show="editUserModal" @click.self="editUserModal = false" x-cloak>
+<!--<div class="modal-overlay" x-show="editUserModal" @click.self="editUserModal = false" x-cloak>
     <div class="modal-box">
         <div class="modal-title" style="display:flex;align-items:center;gap:8px;">
             <svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--theme-white)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
