@@ -954,7 +954,7 @@
 </div>
 
 <!-- ================== SCRIPT & GLOBAL UTILITIES ================== -->
-<script>
+<!--<script>
 // =============== CONSTANTS API URL ===============
 const AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbyDKg-CoeJX7-S5D0OHcpS102oD6frRSgacOdiADCt5C0Zphp7wI8mkDP3dKDvo-d6mCw/exec';
 const PESANAN_STATUS_API_URL = 'https://script.google.com/macros/s/AKfycbz3V7oaXEBuQAATvcrZsDtGFIXAKTl_h3drbgjksBkJEbFZhjJP2WUSTrPv9mxHm35M/exec';
@@ -1474,7 +1474,7 @@ function startLiveClock() { function tick() { const el = document.getElementById
 function meowAndRefresh() { document.getElementById('refreshLoader').classList.add('show'); const meowAudio = new Audio('https://www.myinstants.com/media/sounds/cat-meow.mp3'); meowAudio.volume = 0.8; meowAudio.play().catch(err => console.log(err)); setTimeout(() => { window.location.href = window.location.pathname + '?refresh=' + new Date().getTime(); }, 1200); }
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { const mainEl = document.querySelector('[x-data="appState()"]'); if (mainEl && mainEl._x_dataStack) { const data = mainEl._x_dataStack[0]; if (data && data.popupOpen) data.closePopup(); if (data && data.editUserModal) data.editUserModal = false; } } });
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err)); }); }
-</script>
+</script>-->
 
 <!-- OVERLAY LOADING -->
 <div id="refreshLoader"><div class="dot-loader"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
